@@ -1,0 +1,198 @@
+﻿@model DoanhthuSaleQuayViewModel
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Sale theo ngày đi</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">Sale theo ngày đi</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-search text-info"></i> Tìm Kiếm</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+
+            <form id="formSearch" autocomplete="off">
+                <div class="p-4 border rounded">
+
+                    <div class="form-group row">
+                        <div class="col-1">
+                            <label>Từ ngày</label>
+                        </div>
+                        <div class="col-2">
+                            <input value="@ViewBag.searchFromDate" name="tungay" class="form-control maskInput" id="txtTuNgay" />
+                        </div>
+
+                        <div class="col-1">
+                            <label>Đến ngày</label>
+                        </div>
+                        <div class="col-2">
+                            <input value="@ViewBag.searchToDate" name="denngay" class="form-control maskInput" id="txtDenNgay" />
+                        </div>
+
+
+                        <div class="col-1">
+                            <label>Chi nhánh</label>
+                        </div>
+                        <div class="col-2">
+                            <select name="chinhanh" class="form-control border-input ddlChiNhanh" id="ddlChiNhanh"
+                                    asp-items="@(new SelectList(Model.chiNhanhToReturnViewModels,"Name","Name", ViewBag.chiNhanh))">
+                            </select>
+                        </div>
+
+                        <div class="col-1">
+                            <label>Khối</label>
+                        </div>
+                        <div class="col-1">
+                            <select class="form-control" id="ddlKhoi" name="khoi">
+                                <option value="OB">OB</option>
+                                <option value="ND">ND</option>
+                            </select>
+                        </div>
+
+                        <div class="col-1">
+                            <span class="btn-group">
+                                <button type="submit" id="btnSearch" class="btn btn-outline-primary" formaction="/BaoCao/SaleTheoNgayDi"><i class="fa fa-search"></i></button>
+                                <button type="submit" id="btnExportAll1" class="btn btn-outline-success" formmethod="post" formaction="/BaoCao/SaleTheoNgayDiPost"><i class="fas fa-file-export"></i></button>
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </form>
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-list-alt text-info"></i> Danh Sách</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div>
+                <table class="table table-striped border" id="listAll">
+                    <thead>
+                        <tr class="table-info">
+                            <th>#</th>
+                            <th>STT</th>
+                            <th>Người xuất vé</th>
+                            <th>Code CN</th>
+                            <th>Tổng tiền</th>
+                            <th>Doanh số</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.DoanhthuSaleQuays != null)
+                        {
+                            @foreach (var item in Model.DoanhthuSaleQuays)
+                            {
+                                <tr>
+                                    <td>
+
+                                        <form id="frmDetail" asp-action="SaleTheoNgayDiChiTietToExcel">
+                                            <input type="hidden" name="tungay" id="hidTuNgay" />
+                                            <input type="hidden" name="denngay" id="hidDenNgay" />
+                                            <input type="hidden" name="nhanvien" id="hidNhanVien" />
+                                            <input type="hidden" name="chinhanh" id="hidChiNhanh" />
+                                            <input type="hidden" name="khoi" id="hidKhoi" />
+                                            <button type="button" data-nhanvien="@item.Nguoixuatve" data-chinhanh="@item.Chinhanh" class="btn btn-outline btn-success btnExportDetail"><i class="fas fa-file-export"></i></button>
+
+                                        </form>
+                                    </td>
+                                    <td>@Html.DisplayFor(m => item.Stt)</td>
+                                    <td>@Html.DisplayFor(m => item.Nguoixuatve)</td>
+                                    <td id="tdChiNhanh">@Html.DisplayFor(m => item.Chinhanh)</td>
+                                    <td>@Html.Raw(item.Doanhso.Value.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.Thucthu.Value.ToString("N0"))</td>
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+
+
+
+@section Scripts{
+    <script>
+
+        //$(function () {
+        //    $("#datepicker").datepicker({
+        //        dateFormat: 'dd/mm/yy'
+        //    });
+        //});
+
+        $('#listAll').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+        });
+    </script>
+    <script src="~/Admin/SaleTheoNgayDi/saleTheoNgayDiController.js"></script>
+}

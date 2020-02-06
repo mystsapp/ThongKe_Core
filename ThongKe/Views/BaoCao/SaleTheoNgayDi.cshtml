@@ -69,9 +69,8 @@
                             <label>Khối</label>
                         </div>
                         <div class="col-1">
-                            <select class="form-control" id="ddlKhoi" name="khoi">
-                                <option value="OB">OB</option>
-                                <option value="ND">ND</option>
+                            <select class="form-control" id="ddlKhoi" name="khoi"
+                                asp-items="@(new SelectList(Model.khoiViewModels, "Name", "Name", ViewBag.khoi))">
                             </select>
                         </div>
 

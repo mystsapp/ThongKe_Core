@@ -69,9 +69,8 @@
                             <label>Khối</label>
                         </div>
                         <div class="col-1">
-                            <select class="form-control" id="ddlKhoi" name="khoi">
-                                <option value="OB">OB</option>
-                                <option value="ND">ND</option>
+                            <select class="form-control" id="ddlKhoi" name="khoi"
+                                asp-items="@(new SelectList(Model.khoiViewModels, "Name", "Name", ViewBag.khoi))">
                             </select>
                         </div>
 
@@ -121,7 +120,7 @@
                         <tr class="table-info">
                             <th>#</th>
                             <th>STT</th>
-                            <th>Người xuất vé</th>
+                            <th>Văn phòng xuất vé</th>
                             <th>Code CN</th>
                             <th>Số khách</th>
                             <th>Tổng tiền</th>
@@ -134,27 +133,27 @@
                         {
                             @foreach (var item in Model.DoanthuQuayNgayBans)
                             {
-                        <tr>
-                            <td>
+                                <tr>
+                                    <td>
 
-                                <form id="frmDetail" asp-action="SaleTheoQuayChiTietToExcel">
-                                    <input type="hidden" name="tungay" id="hidTuNgay" />
-                                    <input type="hidden" name="denngay" id="hidDenNgay" />
-                                    <input type="hidden" name="nhanvien" id="hidNhanVien" />
-                                    <input type="hidden" name="chinhanh" id="hidChiNhanh" />
-                                    <input type="hidden" name="khoi" id="hidKhoi" />
-                                    <button type="button" data-daily="@item.Dailyxuatve" data-chinhanh="@item.Chinhanh" class="btn btn-outline btn-success btnExportDetail"><i class="fas fa-file-export"></i></button>
+                                        <form id="frmDetail" asp-action="QuayTheoNgayBanChiTietToExcel">
+                                            <input type="hidden" name="tungay" id="hidTuNgay" />
+                                            <input type="hidden" name="denngay" id="hidDenNgay" />
+                                            <input type="hidden" name="quay" id="hidQuay" />
+                                            <input type="hidden" name="chinhanh" id="hidChiNhanh" />
+                                            <input type="hidden" name="khoi" id="hidKhoi" />
+                                            <button type="button" data-daily="@item.Dailyxuatve" data-cn="@item.Chinhanh" class="btn btn-outline btn-success btnExportDetail"><i class="fas fa-file-export"></i></button>
 
-                                </form>
-                            </td>
-                            <td>@Html.DisplayFor(m => item.Stt)</td>
-                            <td>@Html.DisplayFor(m => item.Dailyxuatve)</td>
-                            <td id="tdChiNhanh">@Html.DisplayFor(m => item.Chinhanh)</td>
-                            <td>@Html.DisplayFor(m => item.Sokhach)</td>
-                            <td>@Html.Raw(item.Doanhso.Value.ToString("N0"))</td>
-                            <td>@Html.Raw(item.Doanhthu.Value.ToString("N0"))</td>
+                                        </form>
+                                    </td>
+                                    <td>@Html.DisplayFor(m => item.Stt)</td>
+                                    <td>@Html.DisplayFor(m => item.Dailyxuatve)</td>
+                                    <td id="tdChiNhanh">@Html.DisplayFor(m => item.Chinhanh)</td>
+                                    <td>@Html.DisplayFor(m => item.Sokhach)</td>
+                                    <td>@Html.Raw(item.Doanhso.Value.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.Doanhthu.Value.ToString("N0"))</td>
 
-                        </tr>
+                                </tr>
                             }
                         }
                     </tbody>
@@ -196,5 +195,6 @@
             "autoWidth": false,
         });
     </script>
-    <script src="~/Admin/SaleTheoQuay/saleTheoQuayController.js"></script>
+
+    <script src="~/Admin/QuayTheoNgayBan/quayTheoNgayBanController.js"></script>
 }

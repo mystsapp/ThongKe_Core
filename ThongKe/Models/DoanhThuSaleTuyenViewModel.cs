@@ -10,6 +10,10 @@ namespace ThongKe.Models
     {
         public IEnumerable<DoanhthuSaleTuyen> DoanhthuSaleTuyens { get; set; }
         public IEnumerable<TuyenThamQuanViewModel> tuyenThamQuanViewModels { get; set; }
-
+        public List<KhoiViewModel> khoiViewModels { get; set; }
+        public DoanhThuSaleTuyenViewModel()
+        {
+            khoiViewModels = new List<KhoiViewModel>();
+        }
     }
 }

@@ -1,15 +1,15 @@
-﻿@model DoanhthuSaleQuayViewModel
+﻿@model DoanthuQuayNgayBanViewModel
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Sale theo ngày bán</h1>
+                <h1>Doanh Thu Quầy Theo Ngày Đi</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active">Sale theo ngày bán</li>
+                    <li class="breadcrumb-item active">Doanh Thu Quầy Theo Ngày Đi</li>
                 </ol>
             </div>
         </div>
@@ -76,8 +76,8 @@
 
                         <div class="col-1">
                             <span class="btn-group">
-                                <button type="submit" id="btnSearch" class="btn btn-outline-primary" formaction="/BaoCao/SaleTheoQuay"><i class="fa fa-search"></i></button>
-                                <button type="submit" id="btnExportAll1" class="btn btn-outline-success" formmethod="post" formaction="/BaoCao/SaleTheoQuayPost"><i class="fas fa-file-export"></i></button>
+                                <button type="submit" id="btnSearch" class="btn btn-outline-primary" formaction="/BaoCao/QuayTheoNgayDi"><i class="fa fa-search"></i></button>
+                                <button type="submit" id="btnExportAll1" class="btn btn-outline-success" formmethod="post" formaction="/BaoCao/QuayTheoNgayDiPost"><i class="fas fa-file-export"></i></button>
                             </span>
                         </div>
 
@@ -120,36 +120,38 @@
                         <tr class="table-info">
                             <th>#</th>
                             <th>STT</th>
-                            <th>Người xuất vé</th>
+                            <th>Văn phòng xuất vé</th>
                             <th>Code CN</th>
+                            <th>Số khách</th>
                             <th>Tổng tiền</th>
                             <th>Doanh số</th>
 
                         </tr>
                     </thead>
                     <tbody>
-                        @if (Model.DoanhthuSaleQuays != null)
+                        @if (Model.DoanthuQuayNgayBans != null)
                         {
-                            @foreach (var item in Model.DoanhthuSaleQuays)
+                            @foreach (var item in Model.DoanthuQuayNgayBans)
                             {
                                 <tr>
                                     <td>
 
-                                        <form id="frmDetail" asp-action="SaleTheoQuayChiTietToExcel">
+                                        <form id="frmDetail" asp-action="QuayTheoNgayDiChiTietToExcel">
                                             <input type="hidden" name="tungay" id="hidTuNgay" />
                                             <input type="hidden" name="denngay" id="hidDenNgay" />
-                                            <input type="hidden" name="nhanvien" id="hidNhanVien" />
+                                            <input type="hidden" name="quay" id="hidQuay" />
                                             <input type="hidden" name="chinhanh" id="hidChiNhanh" />
                                             <input type="hidden" name="khoi" id="hidKhoi" />
-                                            <button type="button" data-nhanvien="@item.Nguoixuatve" data-chinhanh="@item.Chinhanh" class="btn btn-outline btn-success btnExportDetail"><i class="fas fa-file-export"></i></button>
+                                            <button type="button" data-daily="@item.Dailyxuatve" data-cn="@item.Chinhanh" class="btn btn-outline btn-success btnExportDetail"><i class="fas fa-file-export"></i></button>
 
                                         </form>
                                     </td>
                                     <td>@Html.DisplayFor(m => item.Stt)</td>
-                                    <td>@Html.DisplayFor(m => item.Nguoixuatve)</td>
+                                    <td>@Html.DisplayFor(m => item.Dailyxuatve)</td>
                                     <td id="tdChiNhanh">@Html.DisplayFor(m => item.Chinhanh)</td>
+                                    <td>@Html.DisplayFor(m => item.Sokhach)</td>
                                     <td>@Html.Raw(item.Doanhso.Value.ToString("N0"))</td>
-                                    <td>@Html.Raw(item.Thucthu.Value.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.Doanhthu.Value.ToString("N0"))</td>
 
                                 </tr>
                             }
@@ -193,5 +195,6 @@
             "autoWidth": false,
         });
     </script>
-    <script src="~/Admin/SaleTheoQuay/saleTheoQuayController.js"></script>
+
+    <script src="~/Admin/QuayTheoNgayBan/quayTheoNgayBanController.js"></script>
 }

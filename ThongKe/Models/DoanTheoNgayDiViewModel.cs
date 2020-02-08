@@ -6,12 +6,12 @@ using ThongKe.Data.Models;
 
 namespace ThongKe.Models
 {
-    public class DoanthuQuayNgayBanViewModel
+    public class DoanTheoNgayDiViewModel
     {
-        public IEnumerable<DoanThuDoanNgayDi> DoanthuQuayNgayBans { get; set; }
+        public IEnumerable<DoanhthuDoanNgayDi> DoanhthuDoanNgayDis { get; set; }
         public List<ChiNhanhToReturnViewModel> chiNhanhToReturnViewModels { get; set; }
         public List<KhoiViewModel> khoiViewModels { get; set; }
-        public DoanthuQuayNgayBanViewModel()
+        public DoanTheoNgayDiViewModel()
         {
             chiNhanhToReturnViewModels = new List<ChiNhanhToReturnViewModel>();
             khoiViewModels = new List<KhoiViewModel>();

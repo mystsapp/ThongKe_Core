@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ThongKe.Data.Models
 {
-    public partial class DoanthuQuayNgayBan
+    public partial class DoanThuDoanNgayDi
     {
         public long Stt { get; set; }
         public string Dailyxuatve { get; set; }

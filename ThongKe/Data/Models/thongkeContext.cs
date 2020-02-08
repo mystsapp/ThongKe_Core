@@ -28,7 +28,7 @@ namespace ThongKe.Data.Models
         public virtual DbSet<DoanhthuSaleTuyen> DoanhthuSaleTuyen { get; set; }
         public virtual DbSet<DoanhthuSaleTuyentqChitiet> DoanhthuSaleTuyentqChitiet { get; set; }
         public virtual DbSet<DoanhthuToanhethong> DoanhthuToanhethong { get; set; }
-        public virtual DbSet<DoanthuQuayNgayBan> DoanthuQuayNgayBan { get; set; }
+        public virtual DbSet<DoanThuDoanNgayDi> DoanthuQuayNgayBan { get; set; }
         public virtual DbSet<QuayNgayBan> QuayNgayBan { get; set; }
         public virtual DbSet<Thongkeweb> Thongkeweb { get; set; }
         public virtual DbSet<Thongkewebchitiet> Thongkewebchitiet { get; set; }
@@ -36,6 +36,7 @@ namespace ThongKe.Data.Models
         public virtual DbSet<TuyentqNgayban> TuyentqNgayban { get; set; }
         public virtual DbSet<TuyentqNgaydi> TuyentqNgaydi { get; set; }
         public virtual DbSet<TuyenThamQuanViewModel> Tuyentq { get; set; }
+        public virtual DbSet<TourBySGTCodeViewModel> TourBySGTCodeViewModels { get; set; }
 
 //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 //        {
@@ -534,7 +535,7 @@ namespace ThongKe.Data.Models
                     .HasColumnType("decimal(18, 0)");
             });
 
-            modelBuilder.Entity<DoanthuQuayNgayBan>(entity =>
+            modelBuilder.Entity<DoanThuDoanNgayDi>(entity =>
             {
                 entity.HasKey(e => e.Stt)
                     .HasName("PK_doanthuQuayNgayBan_1");

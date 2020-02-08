@@ -37,6 +37,7 @@ namespace ThongKe.Data.Models
         public virtual DbSet<TuyentqNgaydi> TuyentqNgaydi { get; set; }
         public virtual DbSet<TuyenThamQuanViewModel> Tuyentq { get; set; }
         public virtual DbSet<TourBySGTCodeViewModel> TourBySGTCodeViewModels { get; set; }
+        public virtual DbSet<TuyentqChiTietViewModel> TuyentqChiTietViewModels { get; set; }
 
 //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 //        {

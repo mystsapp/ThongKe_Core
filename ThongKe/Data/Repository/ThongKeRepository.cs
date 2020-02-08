@@ -33,8 +33,13 @@ namespace ThongKe.Data.Repository
 
         /////////////////// Doan theo ngay di /////////////////////////////////////////////////
         IEnumerable<DoanhthuDoanNgayDi> listDoanTheoNgayDi(string tungay, string denngay, string chinhanh, string khoi);
-        List<TourBySGTCodeViewModel> getTourbySgtcode(string sgtcode, string khoi);
         IEnumerable<DoanhthuDoanChitiet> DoanTheoNgayDiChiTietToExcel(string sgtcode, string khoi);
+
+        ////////////////////////////////////// Tuyentq Theo Ngay di //////////////////////////////////////////
+        IEnumerable<TuyentqNgaydi> listTuyentqTheoNgayDi(string tungay, string denngay, string chinhanh, string khoi);
+        IEnumerable<TuyentqChiTietViewModel> TuyentqTheoNgayDiChiTietToExcel(string tungay, string denngay, string chinhanh, string tuyentq, string khoi);
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        List<TourBySGTCodeViewModel> getTourbySgtcode(string sgtcode, string khoi);
 
     }
     public class ThongKeRepository : Repository<DoanThuDoanNgayDi>, IThongKeRepository
@@ -253,6 +258,67 @@ namespace ThongKe.Data.Repository
             var count = d.Count();
             return d;
         }
+
+        public IEnumerable<DoanhthuDoanChitiet> DoanTheoNgayDiChiTietToExcel(string sgtcode, string khoi)
+        {
+            var parameter = new SqlParameter[]
+             {
+                    new SqlParameter("@sgtcode",sgtcode),
+                    new SqlParameter("@khoi",khoi)
+             };
+            var result = _context.DoanhthuDoanChitiet.FromSqlRaw("EXECUTE dbo.spDoanhthuDoanChitiet @sgtcode, @khoi", parameter).ToList();
+            var count = result.Count();
+
+            return result;
+        }
+
+        ////////////////////////////////////// Tuyentq Theo Ngay di //////////////////////////////////////////
+        public IEnumerable<TuyentqNgaydi> listTuyentqTheoNgayDi(string tungay, string denngay, string chinhanh, string khoi)
+        {
+            if (tungay == null)
+                return null;
+            IEnumerable<TuyentqNgaydi> d = null;
+            var parameter = new SqlParameter[]
+              {
+                    new SqlParameter("@tungay",DateTime.Parse(tungay)),
+                    new SqlParameter("@denngay",DateTime.Parse(denngay)),
+                    new SqlParameter("@chinhanh",chinhanh)
+              };
+            if (khoi == "OB")
+            {
+                d = _context.TuyentqNgaydi.FromSqlRaw("EXECUTE dbo.spThongkeTuyentqTheoNgayDiOB @tungay, @denngay, @chinhanh", parameter).ToList();
+            }
+            else
+            {
+                d = _context.TuyentqNgaydi.FromSqlRaw("EXECUTE dbo.spThongkeTuyentqTheoNgayDiND @tungay, @denngay, @chinhanh", parameter).ToList();
+            }
+            var count = d.Count();
+            return d;
+        }
+
+        public IEnumerable<TuyentqChiTietViewModel> TuyentqTheoNgayDiChiTietToExcel(string tungay, string denngay, string chinhanh, string tuyentq, string khoi)
+        {
+            if (tungay == null)
+                return null;
+            IEnumerable<TuyentqChiTietViewModel> d = null;
+            var parameter = new SqlParameter[]
+              {
+                    new SqlParameter("@tungay",tungay),
+                    new SqlParameter("@denngay",denngay),
+                    new SqlParameter("@chinhanh",chinhanh),
+                    new SqlParameter("@tuyentq",tuyentq)
+              };
+            if (khoi == "OB")
+            {
+                d = _context.TuyentqChiTietViewModels.FromSqlRaw("EXECUTE dbo.spThongkeTuyentqChitietOB @tungay, @denngay, @chinhanh, @tuyentq", parameter).ToList();
+            }
+            else
+            {
+                d = _context.TuyentqChiTietViewModels.FromSqlRaw("EXECUTE dbo.spThongkeTuyentqChitietND @tungay, @denngay, @chinhanh, @tuyentq", parameter).ToList();
+            }
+            var count = d.Count();
+            return d;
+        }
         public List<TourBySGTCodeViewModel> getTourbySgtcode(string sgtcode, string khoi)
         {
             try
@@ -274,17 +340,6 @@ namespace ThongKe.Data.Repository
             }
         }
 
-        public IEnumerable<DoanhthuDoanChitiet> DoanTheoNgayDiChiTietToExcel(string sgtcode, string khoi)
-        {
-            var parameter = new SqlParameter[]
-             {
-                    new SqlParameter("@sgtcode",sgtcode),
-                    new SqlParameter("@khoi",khoi)
-             };
-            var result = _context.DoanhthuDoanChitiet.FromSqlRaw("EXECUTE dbo.spDoanhthuDoanChitiet @sgtcode, @khoi", parameter).ToList();
-            var count = result.Count();
-
-            return result;
-        }
+        
     }
 }

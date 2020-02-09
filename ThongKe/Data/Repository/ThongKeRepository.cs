@@ -38,6 +38,9 @@ namespace ThongKe.Data.Repository
         ////////////////////////////////////// Tuyentq Theo Ngay di //////////////////////////////////////////
         IEnumerable<TuyentqNgaydi> listTuyentqTheoNgayDi(string tungay, string denngay, string chinhanh, string khoi);
         IEnumerable<TuyentqChiTietViewModel> TuyentqTheoNgayDiChiTietToExcel(string tungay, string denngay, string chinhanh, string tuyentq, string khoi);
+
+        ////////////////////////////////////// Doan Theo Ngay di //////////////////////////////////////////
+        IEnumerable<Tuyentheoquy> TuyenTqTheoQuyToExcel(int quy, int nam, string chinhanh, string khoi);
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         List<TourBySGTCodeViewModel> getTourbySgtcode(string sgtcode, string khoi);
 
@@ -316,6 +319,22 @@ namespace ThongKe.Data.Repository
             {
                 d = _context.TuyentqChiTietViewModels.FromSqlRaw("EXECUTE dbo.spThongkeTuyentqChitietND @tungay, @denngay, @chinhanh, @tuyentq", parameter).ToList();
             }
+            var count = d.Count();
+            return d;
+        }
+
+        ////////////////////////////////////// Doan Theo Ngay di //////////////////////////////////////////
+        public IEnumerable<Tuyentheoquy> TuyenTqTheoQuyToExcel(int quy, int nam, string chinhanh, string khoi)
+        {
+            
+            var parameter = new SqlParameter[]
+              {
+                    new SqlParameter("@quy", quy),
+                    new SqlParameter("@nam", nam),
+                    new SqlParameter("@chinhanh",chinhanh),
+                    new SqlParameter("@khoi",khoi)
+              };
+            var d = _context.Tuyentheoquy.FromSqlRaw("EXECUTE dbo.spThongkeTuyenTheoQuy @quy, @nam, @chinhanh, @khoi", parameter).ToList();
             var count = d.Count();
             return d;
         }

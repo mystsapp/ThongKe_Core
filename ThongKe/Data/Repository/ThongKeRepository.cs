@@ -39,8 +39,11 @@ namespace ThongKe.Data.Repository
         IEnumerable<TuyentqNgaydi> listTuyentqTheoNgayDi(string tungay, string denngay, string chinhanh, string khoi);
         IEnumerable<TuyentqChiTietViewModel> TuyentqTheoNgayDiChiTietToExcel(string tungay, string denngay, string chinhanh, string tuyentq, string khoi);
 
-        ////////////////////////////////////// Doan Theo Ngay di //////////////////////////////////////////
+        ////////////////////////////////////// Tuyentq theo quy //////////////////////////////////////////
         IEnumerable<Tuyentheoquy> TuyenTqTheoQuyToExcel(int quy, int nam, string chinhanh, string khoi);
+
+        ////////////////////////////////////// Khach le he thong //////////////////////////////////////////
+        IEnumerable<DoanhthuToanhethong> listKhachLeHeThong(string tungay, string denngay, string chinhanh, string khoi);
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         List<TourBySGTCodeViewModel> getTourbySgtcode(string sgtcode, string khoi);
 
@@ -237,7 +240,7 @@ namespace ThongKe.Data.Repository
                    new SqlParameter("@quay",quay),
                     new SqlParameter("@chinhanh",chinhanh),
                     new SqlParameter("@tungay",DateTime.Parse(tungay)),
-                    new SqlParameter("@denngay",DateTime.Parse(denngay)),                   
+                    new SqlParameter("@denngay",DateTime.Parse(denngay)),
                     new SqlParameter("@khoi",khoi)
               };
             var d = _context.DoanhthuQuayChitiet.FromSqlRaw("EXECUTE dbo.spDoanhSoQuayChitietNgaydi @quay, @chinhanh, @tungay, @denngay, @khoi", parameter).ToList();
@@ -323,10 +326,10 @@ namespace ThongKe.Data.Repository
             return d;
         }
 
-        ////////////////////////////////////// Doan Theo Ngay di //////////////////////////////////////////
+        ////////////////////////////////////// Tuyentq theo quy //////////////////////////////////////////
         public IEnumerable<Tuyentheoquy> TuyenTqTheoQuyToExcel(int quy, int nam, string chinhanh, string khoi)
         {
-            
+
             var parameter = new SqlParameter[]
               {
                     new SqlParameter("@quy", quy),
@@ -335,6 +338,25 @@ namespace ThongKe.Data.Repository
                     new SqlParameter("@khoi",khoi)
               };
             var d = _context.Tuyentheoquy.FromSqlRaw("EXECUTE dbo.spThongkeTuyenTheoQuy @quy, @nam, @chinhanh, @khoi", parameter).ToList();
+            var count = d.Count();
+            return d;
+        }
+
+        ////////////////////////////////////// Khach le he thong //////////////////////////////////////////
+        public IEnumerable<DoanhthuToanhethong> listKhachLeHeThong(string tungay, string denngay, string chinhanh, string khoi)
+        {
+            if (tungay == null)
+                return null;
+            var parameter = new SqlParameter[]
+              {
+                    new SqlParameter("@tungay",DateTime.Parse(tungay)),
+                    new SqlParameter("@denngay",DateTime.Parse(denngay)),
+                    new SqlParameter("@chinhanh",chinhanh),
+                    new SqlParameter("@khoi",khoi)
+              };
+
+            var d = _context.DoanhthuToanhethong.FromSqlRaw("EXECUTE dbo.spThongkeKhachToanHeThong @tungay, @denngay, @chinhanh, @khoi", parameter).ToList();
+
             var count = d.Count();
             return d;
         }
@@ -359,6 +381,6 @@ namespace ThongKe.Data.Repository
             }
         }
 
-        
+
     }
 }

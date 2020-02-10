@@ -102,6 +102,13 @@
                                 <p>Quầy khách lẽ toàn hệ thống</p>
                             </a>
                         </li>
+                        
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="BaoCao" asp-action="KhachHuy" class="nav-link text-danger">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Thống kê huy đoàn</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
@@ -115,13 +122,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a asp-area="" asp-controller="ThietBis" asp-action="Index" class="nav-link">
+                            <a asp-area="" asp-controller="BaoCao" asp-action="KinhDoanhOnline" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Theo ngày bán</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a asp-area="" asp-controller="LoaiThietBis" asp-action="Index" class="nav-link">
+                            <a asp-area="" asp-controller="BaoCao" asp-action="KinhDoanhOnlineNgayDi" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Theo ngày đi</p>
                             </a>

@@ -44,6 +44,18 @@ namespace ThongKe.Data.Repository
 
         ////////////////////////////////////// Khach le he thong //////////////////////////////////////////
         IEnumerable<DoanhthuToanhethong> listKhachLeHeThong(string tungay, string denngay, string chinhanh, string khoi);
+
+        ////////////////////////////////////// Khach Huy //////////////////////////////////////////
+        IEnumerable<KhachHuy> listKhachHuy(string tungay, string denngay, string chinhanh, string khoi);
+
+        ////////////////////////////////////// Thong ke web //////////////////////////////////////////
+        IEnumerable<Thongkeweb> listThongKeWeb(string tungay, string denngay, string khoi);
+
+        IEnumerable<Thongkewebchitiet> ThongKeWebChiTietToExcel(string tungay, string denngay, string chinhanh, string khoi);
+
+        /////////////////////////////// Thong ke web ngay di //////////////////////////////////////////////////
+        IEnumerable<Thongkeweb> listThongKeWebNgayDi(string tungay, string denngay, string khoi);
+        IEnumerable<Thongkewebchitiet> ThongKeWebNgayDiToExcel(string tungay, string denngay, string chinhanh, string khoi);
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         List<TourBySGTCodeViewModel> getTourbySgtcode(string sgtcode, string khoi);
 
@@ -360,6 +372,108 @@ namespace ThongKe.Data.Repository
             var count = d.Count();
             return d;
         }
+
+        /////////////////////////////// Khach Huy /////////////////////
+        public IEnumerable<KhachHuy> listKhachHuy(string tungay, string denngay, string chinhanh, string khoi)
+        {
+            if (tungay == null)
+                return null;
+            var parameter = new SqlParameter[]
+              {
+                        new SqlParameter("@tungay", tungay),
+                        new SqlParameter("@denngay",denngay),
+                        new SqlParameter("@chinhanh", chinhanh),
+                        new SqlParameter("@khoi",khoi)
+              };
+            var d = _context.KhachHuys.FromSqlRaw("EXECUTE dbo.spThongKehuydoan @tungay, @denngay, @chinhanh, @khoi", parameter).ToList();
+            var count = d.Count();
+            return d;
+        }
+
+        /////////////////////////////// Thong ke web //////////////////////////////////////////////////
+        public IEnumerable<Thongkeweb> listThongKeWeb(string tungay, string denngay, string khoi)
+        {
+            if (tungay == null)
+                return null;
+            var parameter = new SqlParameter[]
+              {
+                        new SqlParameter("@tungay", Convert.ToDateTime(tungay)),
+                        new SqlParameter("@denngay",Convert.ToDateTime(denngay)),
+                        new SqlParameter("@khoi",khoi)
+              };
+            var d = _context.Thongkeweb.FromSqlRaw("EXECUTE dbo.spThongkeWeb @tungay, @denngay, @khoi", parameter).ToList();
+            var count = d.Count();
+            return d;
+        }
+
+
+        public IEnumerable<Thongkewebchitiet> ThongKeWebChiTietToExcel(string tungay, string denngay, string chinhanh, string khoi)
+        {
+            if (tungay == null)
+                return null;
+
+            IEnumerable<Thongkewebchitiet> d = null;
+            var parameter = new SqlParameter[]
+              {
+                        new SqlParameter("@tungay", Convert.ToDateTime(tungay)),
+                        new SqlParameter("@denngay",Convert.ToDateTime(denngay)),
+                        new SqlParameter("@chinhanh",chinhanh)
+              };
+            if(khoi == "OB")
+            {
+                d = _context.Thongkewebchitiet.FromSqlRaw("EXECUTE dbo.spThongkeWebchitietOB @tungay, @denngay, @chinhanh", parameter).ToList();
+            }
+            else
+            {
+                d = _context.Thongkewebchitiet.FromSqlRaw("EXECUTE dbo.spThongkeWebchitietND @tungay, @denngay, @chinhanh", parameter).ToList();
+            }
+            
+            var count = d.Count();
+            return d;
+        }
+
+        /////////////////////////////// Thong ke web ngay di //////////////////////////////////////////////////
+        public IEnumerable<Thongkeweb> listThongKeWebNgayDi(string tungay, string denngay, string khoi)
+        {
+            if (tungay == null)
+                return null;
+            var parameter = new SqlParameter[]
+              {
+                        new SqlParameter("@tungay", Convert.ToDateTime(tungay)),
+                        new SqlParameter("@denngay",Convert.ToDateTime(denngay)),
+                        new SqlParameter("@khoi",khoi)
+              };
+            var d = _context.Thongkeweb.FromSqlRaw("EXECUTE dbo.spThongkeWeb_ngaydi @tungay, @denngay, @khoi", parameter).ToList();
+            var count = d.Count();
+            return d;
+        }
+
+        public IEnumerable<Thongkewebchitiet> ThongKeWebNgayDiToExcel(string tungay, string denngay, string chinhanh, string khoi)
+        {
+            if (tungay == null)
+                return null;
+
+            IEnumerable<Thongkewebchitiet> d = null;
+            var parameter = new SqlParameter[]
+              {
+                        new SqlParameter("@tungay", Convert.ToDateTime(tungay)),
+                        new SqlParameter("@denngay",Convert.ToDateTime(denngay)),
+                        new SqlParameter("@chinhanh",chinhanh)
+              };
+            if (khoi == "OB")
+            {
+                d = _context.Thongkewebchitiet.FromSqlRaw("EXECUTE dbo.spThongkeWebchitiet_ngaydiOB @tungay, @denngay, @chinhanh", parameter).ToList();
+            }
+            else
+            {
+                d = _context.Thongkewebchitiet.FromSqlRaw("EXECUTE dbo.spThongkeWebchitiet_ngaydiND @tungay, @denngay, @chinhanh", parameter).ToList();
+            }
+
+            var count = d.Count();
+            return d;
+        }
+
+        /// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public List<TourBySGTCodeViewModel> getTourbySgtcode(string sgtcode, string khoi)
         {
             try
@@ -380,7 +494,6 @@ namespace ThongKe.Data.Repository
                 throw;
             }
         }
-
 
     }
 }

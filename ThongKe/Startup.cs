@@ -5,10 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using ThongKe.Data.Models;
 using ThongKe.Data.Repository;
@@ -29,13 +31,20 @@ namespace ThongKe
         {
             services.AddDbContext<thongkeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))/*.EnableSensitiveDataLogging()*/);
 
-            services.AddTransient<IAccountRepository, AccountRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IChiNhanhRepository, ChiNhanhRepository>();
             services.AddTransient<IDMDaiLyRepository, DMDaiLyRepository>();
             services.AddTransient<IChiNhanhRepository, ChiNhanhRepository>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+            });
+
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddControllersWithViews();
         }
 
@@ -64,6 +73,7 @@ namespace ThongKe
                 SupportedUICultures = supportedCultures
             });
 
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

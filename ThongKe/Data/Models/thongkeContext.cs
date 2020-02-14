@@ -16,7 +16,7 @@ namespace ThongKe.Data.Models
         {
         }
 
-        public virtual DbSet<Account> Account { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<Chinhanh> Chinhanh { get; set; }
         public virtual DbSet<Chitiettour> Chitiettour { get; set; }
         public virtual DbSet<Dmdaily> Dmdaily { get; set; }
@@ -39,6 +39,7 @@ namespace ThongKe.Data.Models
         public virtual DbSet<TourBySGTCodeViewModel> TourBySGTCodeViewModels { get; set; }
         public virtual DbSet<TuyentqChiTietViewModel> TuyentqChiTietViewModels { get; set; }
         public virtual DbSet<KhachHuy> KhachHuys { get; set; }
+        public virtual DbSet<LoginViewModel> LoginViewModels { get; set; }
 
 //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 //        {
@@ -51,11 +52,11 @@ namespace ThongKe.Data.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Account>(entity =>
+            modelBuilder.Entity<Users>(entity =>
             {
                 entity.HasKey(e => e.Username);
 
-                entity.ToTable("account");
+                entity.ToTable("Users");
 
                 entity.Property(e => e.Username)
                     .HasColumnName("username")

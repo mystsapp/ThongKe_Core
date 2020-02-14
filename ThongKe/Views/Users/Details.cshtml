@@ -1,0 +1,141 @@
+﻿@model UserViewModel
+
+@{
+    ViewData["Title"] = "Detail User";
+}
+
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Xem chi tiết</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-action="Index">Danh Sách User</a></li>
+                    <li class="breadcrumb-item active">Xem chi tiết</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-trash-alt text-info"></i> Xem chi tiết User - @Model.User.Username</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <form method="post">
+                <div class="p-4 border rounded">
+
+                    <div class="form-group row">
+                        <div class="col-2">
+                            <label asp-for="User.Username"></label>
+                        </div>
+                        <div class="col-4">
+                            <input asp-for="User.Username" class="form-control" readonly />
+                        </div>
+
+                        <div class="col-2">
+                            <label asp-for="User.Hoten"></label>
+                        </div>
+                        <div class="col-4">
+                            <input asp-for="User.Hoten" class="form-control" readonly />
+                        </div>
+
+
+                    </div>
+
+                    @*<div class="form-group row">
+
+                        </div>*@
+
+                    <div class="form-group row">
+                        <div class="col-2">
+                            <label asp-for="User.Daily"></label>
+                        </div>
+                        <div class="col-4">
+                            <input asp-for="User.Daily" class="form-control " readonly />
+                        </div>
+
+
+                        <div class="col-2">
+                            <label asp-for="User.Chinhanh"></label>
+                        </div>
+                        <div class="col-4">
+                            <textarea asp-for="User.Chinhanh" class="form-control" readonly></textarea>
+                        </div>
+
+                    </div>
+
+                    @*<div class="form-group row">
+
+                        </div>*@
+
+                    <div class="form-group row">
+
+                        <div class="col-2">
+                            <label asp-for="User.Trangthai"></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="checkbox" asp-for="User.Trangthai" disabled />
+                        </div>
+
+                        <div class="col-2">
+                            <label asp-for="User.Khoi"></label>
+                        </div>
+                        <div class="col-4">
+                            <input class="form-control" asp-for="User.Khoi" readonly />
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-2">
+                            <label asp-for="User.Nhom"></label>
+                        </div>
+                        <div class="col-4">
+                            <input class="form-control" asp-for="User.Nhom" disabled />
+                        </div>
+
+
+                    </div>
+
+                    @*<div class="form-group row">
+
+                        </div>*@
+
+                    <div class="form-group">
+                        <a class="btn btn-primary" asp-route-id="@Model.User.Username" asp-action="Edit"><i class="fas fa-edit"></i></a>
+                        <a class="btn btn-success" asp-action="Index"><i class="fas fa-backward"></i></a>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->

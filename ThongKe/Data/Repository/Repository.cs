@@ -84,6 +84,14 @@ namespace ThongKe.Data.Repository
             return await _context.Set<T>().Include(expression).ToListAsync();
         }
 
+        public T GetById(string id)
+        {
+            return _context.Set<T>().Find(id);
+        }
 
+        public async Task<T> GetByIdAsync(string id)
+        {
+            return await _context.Set<T>().FindAsync(id);
+        }
     }
 }

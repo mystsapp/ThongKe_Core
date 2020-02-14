@@ -1,0 +1,162 @@
+﻿@model UserViewModel
+
+@{
+    ViewData["Title"] = "Edit user";
+}
+
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Cập Nhật</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-action="Index">Danh Sách User</a></li>
+                    <li class="breadcrumb-item active">Cập Nhật User - @Model.User.Username</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-edit text-info"></i> Cập Nhật User - @Model.User.Username</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+
+            <form method="post" autocomplete="off" enctype="multipart/form-data">
+                <div class="p-4 border rounded">
+
+                    <input type="hidden" asp-for="OldPass" value="@Model.User.Password" />
+                    <input type="hidden" asp-for="User.Password" value="@Model.User.Password" />
+                    <input type="hidden" asp-for="User.Username" value="@Model.User.Username" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+                    <div class="form-group row">
+
+                        <div class="col-2">
+                            <label asp-for="User.Hoten"></label>
+                        </div>
+                        <div class="col-4">
+                            <input class="form-control" asp-for="User.Hoten" />
+                            <span class="text-danger" asp-validation-for="User.Hoten"></span>
+                        </div>
+
+                        <div class="col-2">
+                            <label asp-for="User.Password"></label>
+                        </div>
+                        <div class="col-4">
+                            <input class="form-control" asp-for="PassToEdit" />
+                            <span class="text-danger" asp-validation-for="PassToEdit"></span>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-group row">
+                        <div class="col-2">
+                            <label asp-for="User.Daily"></label>
+                        </div>
+                        <div class="col-4">
+                            <select asp-for="User.Daily" class="form-control border-input "
+                                    asp-items="@(new SelectList(Model.Dmdailies,"Daily","Daily"))">
+                            </select>
+                            <span class="text-danger" asp-validation-for="User.Daily"></span>
+                        </div>
+
+
+                        <div class="col-2">
+                            <label asp-for="User.Chinhanh"></label>
+                        </div>
+                        <div class="col-4">
+                            <select asp-for="User.Chinhanh" class="form-control border-input"
+                                    asp-items="@(new SelectList(Model.Chinhanhs,"Chinhanh1","Chinhanh1"))">
+                            </select>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="form-group row">
+                        <div class="col-2">
+                            <label asp-for="User.Trangthai"></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="checkbox" asp-for="User.Trangthai" />
+                        </div>
+
+
+                        <div class="col-2">
+                            <label asp-for="User.Khoi"></label>
+                        </div>
+                        <div class="col-4">
+                            <select asp-for="User.Khoi" class="form-control border-input "
+                                    asp-items="@(new SelectList(Model.KhoiViewModels,"Name","Name"))">
+                            </select>
+                            <span class="text-danger" asp-validation-for="User.Khoi"></span>
+                        </div>
+
+
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-2">
+                            <label asp-for="User.Nhom"></label>
+                        </div>
+                        <div class="col-4">
+                            <select asp-for="User.Nhom" class="form-control border-input "
+                                    asp-items="@(new SelectList(Model.RoleViewModels,"Id","Name"))">
+                            </select>
+                            <span class="text-danger" asp-validation-for="User.Nhom"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group ">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
+                        <a class="btn btn-success" asp-action="Index"><i class="fas fa-backward"></i></a>
+                    </div>
+
+                </div>
+            </form>
+
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+    }
+}
+

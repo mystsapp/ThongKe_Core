@@ -25,6 +25,10 @@
     {
       "library": "bootbox.js@5.4.0",
       "destination": "wwwroot/lib/bootbox.js/"
+    },
+    {
+      "library": "iCheck@1.0.2",
+      "destination": "wwwroot/iCheck/"
     }
   ]
 }

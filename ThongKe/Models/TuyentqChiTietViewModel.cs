@@ -18,6 +18,6 @@ namespace ThongKe.Models
             public DateTime ketthuc { get; set; }
             public string dailyxuatve { get; set; }
             public int sk { get; set; }
-            public decimal doanhthu { get; set; }
+            public decimal? doanhthu { get; set; }
     }
 }

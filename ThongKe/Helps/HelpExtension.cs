@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace ThongKe.Helps
@@ -29,5 +32,38 @@ namespace ThongKe.Helps
         //        action(item);
         //    }
         //}
+    }
+
+    public class MaHoaSHA1
+    {
+        public string EncodeSHA1(string pass)
+        {
+            SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider();
+            byte[] bs = System.Text.Encoding.UTF8.GetBytes(pass);
+            bs = sha1.ComputeHash(bs);
+            System.Text.StringBuilder s = new System.Text.StringBuilder();
+            foreach (byte b in bs)
+            {
+                s.Append(b.ToString("x1").ToUpper());
+            }
+            pass = s.ToString();
+            return pass;
+        }
+    }
+
+    public static class SessionExtensions
+    {
+        public static void Set<T>(this ISession session, string key, T value)
+        {
+            session.SetString(key, JsonConvert.SerializeObject(value));
+        }
+
+        public static T Get<T>(this ISession session, string key)
+        {
+            var value = session.GetString(key);
+
+            return value == null ? default(T) :
+                JsonConvert.DeserializeObject<T>(value);
+        }
     }
 }

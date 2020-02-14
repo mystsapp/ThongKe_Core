@@ -13,6 +13,7 @@ namespace ThongKe.Data.Interfaces
         Task<IEnumerable<T>> GetAllIncludeAsync(Expression<Func<T, object>> predicate, Expression<Func<T, object>> predicate2);
         IEnumerable<T> Find(Func<T, bool> predicate);
         T GetById(int id);
+        T GetById(string id);
         T GetSingleNoTracking(Func<T, bool> predicate);
         void Create(T entity);
         void Update(T entity);
@@ -22,6 +23,7 @@ namespace ThongKe.Data.Interfaces
         Task Save();
 
         Task<T> GetByIdAsync(int? id);
+        Task<T> GetByIdAsync(string id);
 
 
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);

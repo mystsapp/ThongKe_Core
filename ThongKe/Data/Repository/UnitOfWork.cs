@@ -8,7 +8,7 @@ namespace ThongKe.Data.Repository
 {
     public interface IUnitOfWork : IDisposable
     {
-        IAccountRepository accountRepository { get; }
+        IUserRepository userRepository { get; }
         IChiNhanhRepository chiNhanhRepository { get; }
         IDMDaiLyRepository dMDaiLyRepository { get; }
         IThongKeRepository thongKeRepository { get; }
@@ -22,13 +22,13 @@ namespace ThongKe.Data.Repository
         public UnitOfWork(thongkeContext context)
         {
             _context = context;
-            accountRepository = new AccountRepository(_context);
+            userRepository = new UserRepository(_context);
             chiNhanhRepository = new ChiNhanhRepository(_context);
             dMDaiLyRepository = new DMDaiLyRepository(_context); 
             thongKeRepository = new ThongKeRepository(_context);
         }
 
-        public IAccountRepository accountRepository { get; }
+        public IUserRepository userRepository { get; }
 
         public IChiNhanhRepository chiNhanhRepository { get; }
 

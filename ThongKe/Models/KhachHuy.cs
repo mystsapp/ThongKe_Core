@@ -16,7 +16,7 @@ namespace ThongKe.Models
         public string tuyentq { get; set; }
         public DateTime batdau { get; set; }
         public DateTime ketthuc { get; set; }
-        public decimal giatour { get; set; }
+        public decimal? giatour { get; set; }
         public string nguoihuyve { get; set; }
         public string dailyhuyve { get; set; }
         public string chinhanh { get; set; }

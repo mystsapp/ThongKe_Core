@@ -15,7 +15,7 @@ using ThongKe.Models;
 
 namespace ThongKe.Controllers
 {
-    public class BaoCaoController : Controller
+    public class BaoCaoController : BaseController
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -720,7 +720,7 @@ namespace ThongKe.Controllers
 
             dtSaleTuyenVM.khoiViewModels = khoiViewModels();
 
-            var tuyentqByKhois = _unitOfWork.accountRepository.GetAllTuyentqByKhoi(khoi);
+            var tuyentqByKhois = _unitOfWork.userRepository.GetAllTuyentqByKhoi(khoi);
 
             dtSaleTuyenVM.tuyenThamQuanViewModels = tuyentqByKhois;
             try
@@ -4029,7 +4029,7 @@ namespace ThongKe.Controllers
         [HttpGet]
         public JsonResult GetAllTuyentqByKhoi(string khoi)
         {
-            var model = _unitOfWork.accountRepository.GetAllTuyentqByKhoi(khoi);
+            var model = _unitOfWork.userRepository.GetAllTuyentqByKhoi(khoi);
             //var viewModel = Mapper.Map<IEnumerable<chinhanh>, IEnumerable<chinhanhViewModel>>(model);
             return Json(new
             {
@@ -4057,22 +4057,22 @@ namespace ThongKe.Controllers
             };
         }
 
-        protected void SetAlert(string message, string type)
-        {
-            TempData["AlertMessage"] = message;
-            if (type == "success")
-            {
-                TempData["AlertType"] = "alert-success";
-            }
-            else if (type == "warning")
-            {
-                TempData["AlertType"] = "alert-warning";
-            }
-            else if (type == "error")
-            {
-                TempData["AlertType"] = "alert-error";
-            }
-        }
+        //protected void SetAlert(string message, string type)
+        //{
+        //    TempData["AlertMessage"] = message;
+        //    if (type == "success")
+        //    {
+        //        TempData["AlertType"] = "alert-success";
+        //    }
+        //    else if (type == "warning")
+        //    {
+        //        TempData["AlertType"] = "alert-warning";
+        //    }
+        //    else if (type == "error")
+        //    {
+        //        TempData["AlertType"] = "alert-error";
+        //    }
+        //}
 
 
 

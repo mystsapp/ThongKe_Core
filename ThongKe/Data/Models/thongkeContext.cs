@@ -40,6 +40,8 @@ namespace ThongKe.Data.Models
         public virtual DbSet<TuyentqChiTietViewModel> TuyentqChiTietViewModels { get; set; }
         public virtual DbSet<KhachHuy> KhachHuys { get; set; }
         public virtual DbSet<LoginViewModel> LoginViewModels { get; set; }
+        public virtual DbSet<ThongKeKhachViewModel> ThongKeKhachViewModels { get; set; }
+        public virtual DbSet<ThongKeDoanhThuViewModel> ThongKeDoanhThuViewModels { get; set; }
 
 //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 //        {

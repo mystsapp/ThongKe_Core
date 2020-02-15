@@ -12,6 +12,7 @@ namespace ThongKe.Controllers
 {
     public class UsersController : BaseController
     {
+
         private readonly IUnitOfWork _unitOfWork;
 
         [BindProperty]
@@ -34,6 +35,11 @@ namespace ThongKe.Controllers
 
         public IActionResult Index()
         {
+            var user = HttpContext.Session.Get<Users>("loginUser");
+            if (user.Nhom != "Admins" && user.Nhom != "KDO")
+            {
+                return View("AccessDenied");
+            }
             var a = UserVM.Users.Count();
             return View(UserVM);
         }
@@ -41,7 +47,11 @@ namespace ThongKe.Controllers
         // Get Create method
         public IActionResult Create()
         {
-
+            var user = HttpContext.Session.Get<Users>("loginUser");
+            if (user.Nhom != "Admins" && user.Nhom != "KDO")
+            {
+                return View("AccessDenied");
+            }
             return View(UserVM);
         }
 
@@ -50,7 +60,7 @@ namespace ThongKe.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePOST()
         {
-
+            var user = HttpContext.Session.Get<Users>("loginUser");
             if (!ModelState.IsValid)
             {
                 return View(UserVM);
@@ -58,7 +68,7 @@ namespace ThongKe.Controllers
             }
 
             UserVM.User.Ngaytao = DateTime.Now;
-            UserVM.User.Nguoitao = "aaa";
+            UserVM.User.Nguoitao = user.Nguoitao;
             UserVM.User.Password = mh.EncodeSHA1(UserVM.User.Password);
 
             _unitOfWork.userRepository.Create(UserVM.User);
@@ -69,6 +79,12 @@ namespace ThongKe.Controllers
         // Get Edit method
         public IActionResult Edit(string id)
         {
+            var user = HttpContext.Session.Get<Users>("loginUser");
+            if (user.Nhom != "Admins" && user.Nhom != "KDO")
+            {
+                return View("AccessDenied");
+            }
+
             UserVM.User = _unitOfWork.userRepository.Find(x => x.Username.Equals(id)).FirstOrDefault();
             if (UserVM.User != null)
             {
@@ -86,6 +102,8 @@ namespace ThongKe.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPOST(string id)
         {
+            var user = HttpContext.Session.Get<Users>("loginUser");
+
             if (!UserVM.User.Username.Equals(id))
             {
                 ViewBag.ErrorMessage = "User is not found.";
@@ -107,7 +125,7 @@ namespace ThongKe.Controllers
 
             if (UserVM.PassToEdit != null) //password field is required
             {
-                var aa = mh.EncodeSHA1(UserVM.PassToEdit);
+                UserVM.User.Password = mh.EncodeSHA1(UserVM.PassToEdit);
                 UserVM.User.Ngaydoimk = DateTime.Now;
             }
             else
@@ -115,6 +133,7 @@ namespace ThongKe.Controllers
                 UserVM.User.Password = UserVM.OldPass;
             }
             UserVM.User.Ngaycapnhat = DateTime.Now;
+            UserVM.User.Nguoicapnhat = user.Nguoicapnhat;
             _unitOfWork.userRepository.Update(UserVM.User);
             await _unitOfWork.Complete();
             return RedirectToAction(nameof(Index));
@@ -122,6 +141,12 @@ namespace ThongKe.Controllers
 
         public IActionResult Details(string id)
         {
+            var user = HttpContext.Session.Get<Users>("loginUser");
+            if (user.Nhom != "Admins" && user.Nhom != "KDO")
+            {
+                return View("AccessDenied");
+            }
+
             UserVM.User = _unitOfWork.userRepository.Find(x => x.Username.Equals(id)).FirstOrDefault();
             if (UserVM.User != null)
             {
@@ -137,6 +162,12 @@ namespace ThongKe.Controllers
         // Get Delete method
         public IActionResult Delete(string id)
         {
+            var user = HttpContext.Session.Get<Users>("loginUser");
+            if (user.Nhom != "Admins" && user.Nhom != "KDO")
+            {
+                return View("AccessDenied");
+            }
+
             UserVM.User = _unitOfWork.userRepository.Find(x => x.Username.Equals(id)).FirstOrDefault();
             if (UserVM.User != null)
             {

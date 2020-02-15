@@ -29,6 +29,10 @@
     {
       "library": "iCheck@1.0.2",
       "destination": "wwwroot/iCheck/"
+    },
+    {
+      "library": "angular.js@1.7.8",
+      "destination": "wwwroot/lib/angular.js/"
     }
   ]
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ThongKe.Data.Repository;
 using ThongKe.Models;
 
 namespace ThongKe.Controllers
@@ -12,10 +13,12 @@ namespace ThongKe.Controllers
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
@@ -23,15 +26,56 @@ namespace ThongKe.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public JsonResult LoadDataThongKeSoKhachOB()
         {
-            return View();
+            string khoi = "OB";
+
+            var listOB = _unitOfWork.thongKeRepository.ThongKeSoKhachOB(khoi);//doanhthuKhachLeHeThongEntities
+
+            return Json(new
+            {
+                data = listOB,
+                status = true
+            });
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public JsonResult LoadDataThongKeSoKhachND()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            string khoi = "ND";
+
+            var listOB = _unitOfWork.thongKeRepository.ThongKeSoKhachOB(khoi);//doanhthuKhachLeHeThongEntities
+
+            return Json(new
+            {
+                data = listOB,
+                status = true
+            });
+        }
+
+        public JsonResult LoadDataThongKeDoanhThuOB()
+        {
+            string khoi = "OB";
+
+            var listOB = _unitOfWork.thongKeRepository.ThongKeDoanhThuOB(khoi);//doanhthuKhachLeHeThongEntities
+
+            return Json(new
+            {
+                data = listOB,
+                status = true
+            });
+        }
+
+        public JsonResult LoadDataThongKeDoanhThuND()
+        {
+            string khoi = "ND";
+
+            var listOB = _unitOfWork.thongKeRepository.ThongKeDoanhThuOB(khoi);//doanhthuKhachLeHeThongEntities
+
+            return Json(new
+            {
+                data = listOB,
+                status = true
+            });
         }
     }
 }

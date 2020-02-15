@@ -56,6 +56,11 @@ namespace ThongKe.Data.Repository
         /////////////////////////////// Thong ke web ngay di //////////////////////////////////////////////////
         IEnumerable<Thongkeweb> listThongKeWebNgayDi(string tungay, string denngay, string khoi);
         IEnumerable<Thongkewebchitiet> ThongKeWebNgayDiToExcel(string tungay, string denngay, string chinhanh, string khoi);
+
+        /// ///////////////////////////////////////Home Chart///////////////////////////////////////////////////////////////////////////////
+        IEnumerable<ThongKeKhachViewModel> ThongKeSoKhachOB(string khoi);
+
+        IEnumerable<ThongKeDoanhThuViewModel> ThongKeDoanhThuOB(string khoi);
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         List<TourBySGTCodeViewModel> getTourbySgtcode(string sgtcode, string khoi);
 
@@ -473,7 +478,30 @@ namespace ThongKe.Data.Repository
             return d;
         }
 
-        /// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        /// ///////////////////////////////////////Home Chart///////////////////////////////////////////////////////////////////////////////
+        public IEnumerable<ThongKeKhachViewModel> ThongKeSoKhachOB(string khoi)
+        {
+            var parameter = new SqlParameter[]
+              {
+                        
+                        new SqlParameter("@khoi",khoi)
+              };
+            var result = _context.ThongKeKhachViewModels.FromSqlRaw("EXECUTE dbo.spThongkeKhach @khoi", parameter).ToList();
+            return result;
+            
+        }
+
+        public IEnumerable<ThongKeDoanhThuViewModel> ThongKeDoanhThuOB(string khoi)
+        {
+            var parameter = new SqlParameter[]
+            {
+                new SqlParameter("@khoi",khoi)
+            };
+            var result = _context.ThongKeDoanhThuViewModels.FromSqlRaw("EXECUTE dbo.spThongKeDoanhthu @khoi", parameter).ToList();
+            return result;
+        }
+        /// /// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public List<TourBySGTCodeViewModel> getTourbySgtcode(string sgtcode, string khoi)
         {
             try

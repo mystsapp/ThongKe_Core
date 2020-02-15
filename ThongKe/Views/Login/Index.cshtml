@@ -4,81 +4,91 @@
     Layout = null;
 }
 
-
-
-
 <!DOCTYPE html>
+
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 3 | Log in</title>
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Font Awesome -->
-    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- icheck bootstrap -->
-    <link href="~/lib/plugins/icheck-bootstrap/icheck-bootstrap.min.css" rel="stylesheet" />
-    <!-- Theme style -->
-    <link href="~/lib/dist/css/adminlte.min.css" rel="stylesheet" />
-    <!-- Google Font: Source Sans Pro -->
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <meta name="viewport" content="width=device-width" />
+    <title>login</title>
+    <link href="~/AdminLTE/plugins/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <!-- Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link href="~/AdminLTE/plugins/ionicons/css/ionicons.css" rel="stylesheet" />
+    <link href="~/AdminLTE/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/AdminLTE/plugins/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/AdminLTE/dist/css/skins/_all-skins.css" rel="stylesheet" />
+    <link href="~/AdminLTE/dist/css/admin-lte.css" rel="stylesheet" />
+    <link href="~/Images/LogoLeft.ico" rel="shortcut icon" />
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<body class="hold-transition login-page bg-blue">
-    <div class="login-box">
-        <div class="login-logo">
-            <h1><img src="~/Images/LogoLogin.png" class="elevation-2 rounded border " alt="Saigontourist"></h1>
-        </div>
-        <!-- /.login-logo -->
-        <div class="card ">
-            <div class="card-body login-card-body " style="border-radius: 25px;">
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper" style="background-color:#ECF0F5">
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="#" class="logo">
+                <span class="logo-mini">
+                    <img src="~/Images/LogoLeft.ico" />
+                </span>
+                <span class="logo-lg">
+                    <img src="~/Images/logo1.png" class="mypicture" />
+                </span>
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                @*<a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                        <span class="sr-only">Toggle navigation</span>
+                    </a>*@
+            </nav>
+        </header>
+        <div class="content-wrapper" style="padding-top:100px;">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-3">
+                    <div class="box">
+                        <div class="login-panel panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title text-center text-uppercase">ĐĂNG NHẬP</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <form method="post">
+                                        <div asp-validation-summary="All" class="text-danger"></div>
+                                        <div class="form-group input-group">
+                                            <span class="input-group-addon"><i class="fa fa-user" style="color:black"></i></span>
+                                            <input asp-for="Username" class="form-control" autofocus />
 
-                <form method="post" autocomplete="off">
+                                        </div>
+                                        <div class="form-group input-group">
+                                            <span class="input-group-addon"><i class="fa fa-key "></i></span>
+                                            <input type="password" asp-for="Password" class="form-control" />
+                                        </div>
 
+                                        <button type="submit" class="btn btn-block btn-primary form-control">Đồng ý</button>
 
-                    <div asp-validation-summary="All" class="text-danger"></div>
-                    <div class="input-group mb-3">
-                        <input asp-for="Username" class="form-control" placeholder="Username" autofocus>
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="input-group mb-3">
-                        <input asp-for="Password" type="password" class="form-control" placeholder="Password">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-
-                        <!-- /.col -->
-                        <button type="submit" class="btn btn-primary btn-block">Let's me in</button>
-                        <!-- /.col -->
-                    </div>
-                </form>
-
+                </div>
             </div>
-            <!-- /.login-card-body -->
         </div>
     </div>
-    <!-- /.login-box -->
-    <!-- jQuery -->
-    <script src="~/lib/plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="~/lib/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="~/lib/dist/js/adminlte.min.js"></script>
+    <script src="~/AdminLTE/plugins/jquery/js/jQuery-2.1.4.min.js"></script>
+    <script src="~/AdminLTE/bootstrap/js/bootstrap.js"></script>
+
+    <script src="~/AdminLTE/plugins/jquery-ui/js/jquery-ui.js"></script>
+    <script src="~/AdminLTE/plugins/jquery-validate/js/jquery.validate.js"></script>
+    <script src="~/AdminLTE/plugins/jquery-validate/js/jquery.validate.unobtrusive.js"></script>
+    <script src="~/AdminLTE/plugins/select2/js/select2.full.js"></script>
+
+    <script src="~/AdminLTE/plugins/slimscroll/js/jquery.slimscroll.js"></script>
+    <script src="~/AdminLTE/plugins/fastclick/js/fastclick.js"></script>
+    <script src="~/Scripts/Shared/_Layout.js"></script>
+    <script src="~/AdminLTE/dist/js/app.js"></script>
+
+    @*<script src="~/js/site.js"></script>*@
 
 </body>
 </html>
-
-
-
 

@@ -45,6 +45,11 @@ namespace ThongKe
             });
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = new PathString("/Shared/AccessDenied"); // Change AccessDenied route
+            });
             services.AddControllersWithViews();
         }
 

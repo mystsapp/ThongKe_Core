@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
@@ -17,37 +18,57 @@ namespace ThongKe.Controllers
 {
     public class BaoCaoController : BaseController
     {
+        Users user;
         private readonly IUnitOfWork _unitOfWork;
 
         public BaoCaoController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-        }
 
+        }
+        
         public IActionResult Index()
         {
             return View();
         }
-        
+
         /////////////////////////////////////// Sale theo quay ///////////////////////////////////////////////////////////////////
         public IActionResult SaleTheoQuay(string tungay = null, string denngay = null, string chiNhanh = null, string khoi = null)
         {
+            user = HttpContext.Session.Get<Users>("loginUser");
             var dtSaleQuayVM = new DoanhthuSaleQuayViewModel();
-
-            var chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
-
-            for (int i = 0; i < chiNhanhs.Count(); i++)
+            string[] chiNhanhs = null;
+            if (user.Nhom != "Users")
             {
-                var cnToreturn = new ChiNhanhToReturnViewModel()
+                if (user.Nhom != "Admins")
                 {
-                    Stt = i,
-                    Name = chiNhanhs[i]
-                };
+                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Where(x => x.Nhom == user.Nhom).Select(x => x.Chinhanh1).Distinct().ToArray();
 
-                dtSaleQuayVM.chiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                else
+                {
+                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
+
+                }
+                for (int i = 0; i < chiNhanhs.Count(); i++)
+                {
+                    var cnToreturn = new ChiNhanhToReturnViewModel()
+                    {
+                        Stt = i,
+                        Name = chiNhanhs[i]
+                    };
+
+                    dtSaleQuayVM.chiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                dtSaleQuayVM.khoiViewModels = khoiViewModels();
+            }
+            else
+            {
+                dtSaleQuayVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
+                dtSaleQuayVM.khoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
+
             }
 
-            dtSaleQuayVM.khoiViewModels = khoiViewModels();
 
             try
             {
@@ -371,22 +392,48 @@ namespace ThongKe.Controllers
         /////////////////////////////////////// Sale Theo Ngay Di //////////////////////////////////////////////////////////////////
         public IActionResult SaleTheoNgayDi(string tungay = null, string denngay = null, string chiNhanh = null, string khoi = null)
         {
+            user = HttpContext.Session.Get<Users>("loginUser");
             var dtSaleQuayVM = new DoanhthuSaleQuayViewModel();
-
-            var chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
-
-            for (int i = 0; i < chiNhanhs.Count(); i++)
+            string[] chiNhanhs = null;
+            if (user.Nhom != "Users")
             {
-                var cnToreturn = new ChiNhanhToReturnViewModel()
+                if (user.Nhom != "Admins")
                 {
-                    Stt = i,
-                    Name = chiNhanhs[i]
-                };
+                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Where(x => x.Nhom == user.Nhom).Select(x => x.Chinhanh1).Distinct().ToArray();
 
-                dtSaleQuayVM.chiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                else
+                {
+                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
+
+                }
+                for (int i = 0; i < chiNhanhs.Count(); i++)
+                {
+                    var cnToreturn = new ChiNhanhToReturnViewModel()
+                    {
+                        Stt = i,
+                        Name = chiNhanhs[i]
+                    };
+
+                    dtSaleQuayVM.chiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                dtSaleQuayVM.khoiViewModels = khoiViewModels();
+            }
+            else
+            {
+                dtSaleQuayVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
+
             }
 
-            dtSaleQuayVM.khoiViewModels = khoiViewModels();
+
+            if (user.Khoi == null)
+            {
+                dtSaleQuayVM.khoiViewModels = khoiViewModels();
+            }
+            else
+            {
+                dtSaleQuayVM.khoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
+            }
 
             try
             {
@@ -714,15 +761,30 @@ namespace ThongKe.Controllers
             ViewBag.ttq = tuyentq;
             ViewBag.khoi = khoi;
 
+            //var dtSaleTuyenVM = new DoanhThuSaleTuyenViewModel();
+            //khoi = khoi ?? "OB";
+            //tuyentq = string.IsNullOrEmpty(tuyentq) ? "" : tuyentq.Trim();
+
+            //dtSaleTuyenVM.khoiViewModels = khoiViewModels();
+
+            //var tuyentqByKhois = _unitOfWork.userRepository.GetAllTuyentqByKhoi(khoi);
+
+            //dtSaleTuyenVM.tuyenThamQuanViewModels = tuyentqByKhois;
+            user = HttpContext.Session.Get<Users>("loginUser");
             var dtSaleTuyenVM = new DoanhThuSaleTuyenViewModel();
-            khoi = khoi ?? "OB";
             tuyentq = string.IsNullOrEmpty(tuyentq) ? "" : tuyentq.Trim();
 
-            dtSaleTuyenVM.khoiViewModels = khoiViewModels();
-
-            var tuyentqByKhois = _unitOfWork.userRepository.GetAllTuyentqByKhoi(khoi);
-
-            dtSaleTuyenVM.tuyenThamQuanViewModels = tuyentqByKhois;
+            if (user.Nhom != "Users")
+            {
+                dtSaleTuyenVM.khoiViewModels = khoiViewModels();
+                dtSaleTuyenVM.tuyenThamQuanViewModels = _unitOfWork.userRepository.GetAllTuyentqByKhoi("OB");
+            }
+           
+            else
+            {
+                dtSaleTuyenVM.khoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
+                dtSaleTuyenVM.tuyenThamQuanViewModels = _unitOfWork.userRepository.GetAllTuyentqByKhoi(user.Khoi);
+            }
             try
             {
                 if (tungay == null || denngay == null)
@@ -1050,21 +1112,55 @@ namespace ThongKe.Controllers
         ////////////////////////////////////// Quay Theo Ngay Ban ////////////////////////////////////////////////////////////////////////////
         public IActionResult QuayTheoNgayBan(string tungay = null, string denngay = null, string chiNhanh = null, string khoi = null)
         {
+            //var dtQuayTheoNgayBanVM = new DoanthuQuayNgayBanViewModel();
+
+            //var chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
+
+            //for (int i = 0; i < chiNhanhs.Count(); i++)
+            //{
+            //    var cnToreturn = new ChiNhanhToReturnViewModel()
+            //    {
+            //        Stt = i,
+            //        Name = chiNhanhs[i]
+            //    };
+
+            //    dtQuayTheoNgayBanVM.chiNhanhToReturnViewModels.Add(cnToreturn);
+            //}
+            //dtQuayTheoNgayBanVM.khoiViewModels = khoiViewModels();
+
+            user = HttpContext.Session.Get<Users>("loginUser");
             var dtQuayTheoNgayBanVM = new DoanthuQuayNgayBanViewModel();
-
-            var chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
-
-            for (int i = 0; i < chiNhanhs.Count(); i++)
+            string[] chiNhanhs = null;
+            if (user.Nhom != "Users")
             {
-                var cnToreturn = new ChiNhanhToReturnViewModel()
+                if (user.Nhom != "Admins")
                 {
-                    Stt = i,
-                    Name = chiNhanhs[i]
-                };
+                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Where(x => x.Nhom == user.Nhom).Select(x => x.Chinhanh1).Distinct().ToArray();
 
-                dtQuayTheoNgayBanVM.chiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                else
+                {
+                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
+
+                }
+                for (int i = 0; i < chiNhanhs.Count(); i++)
+                {
+                    var cnToreturn = new ChiNhanhToReturnViewModel()
+                    {
+                        Stt = i,
+                        Name = chiNhanhs[i]
+                    };
+
+                    dtQuayTheoNgayBanVM.chiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                dtQuayTheoNgayBanVM.khoiViewModels = khoiViewModels();
             }
-            dtQuayTheoNgayBanVM.khoiViewModels = khoiViewModels();
+            else
+            {
+                dtQuayTheoNgayBanVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
+                dtQuayTheoNgayBanVM.khoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
+
+            }
 
             try
             {
@@ -1407,22 +1503,56 @@ namespace ThongKe.Controllers
         /////////////////////////////////////// Quay Theo ngay di ///////////////////////////////////////////////////////////////////////////
         public IActionResult QuayTheoNgayDi(string tungay = null, string denngay = null, string chiNhanh = null, string khoi = null)
         {
+            //var dtQuayTheoNgayDiVM = new DoanthuQuayNgayBanViewModel();
+
+            //var chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
+
+            //for (int i = 0; i < chiNhanhs.Count(); i++)
+            //{
+            //    var cnToreturn = new ChiNhanhToReturnViewModel()
+            //    {
+            //        Stt = i,
+            //        Name = chiNhanhs[i]
+            //    };
+
+            //    dtQuayTheoNgayDiVM.chiNhanhToReturnViewModels.Add(cnToreturn);
+            //}
+
+            //dtQuayTheoNgayDiVM.khoiViewModels = khoiViewModels();
+
+            user = HttpContext.Session.Get<Users>("loginUser");
             var dtQuayTheoNgayDiVM = new DoanthuQuayNgayBanViewModel();
-
-            var chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
-
-            for (int i = 0; i < chiNhanhs.Count(); i++)
+            string[] chiNhanhs = null;
+            if (user.Nhom != "Users")
             {
-                var cnToreturn = new ChiNhanhToReturnViewModel()
+                if (user.Nhom != "Admins")
                 {
-                    Stt = i,
-                    Name = chiNhanhs[i]
-                };
+                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Where(x => x.Nhom == user.Nhom).Select(x => x.Chinhanh1).Distinct().ToArray();
 
-                dtQuayTheoNgayDiVM.chiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                else
+                {
+                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
+
+                }
+                for (int i = 0; i < chiNhanhs.Count(); i++)
+                {
+                    var cnToreturn = new ChiNhanhToReturnViewModel()
+                    {
+                        Stt = i,
+                        Name = chiNhanhs[i]
+                    };
+
+                    dtQuayTheoNgayDiVM.chiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                dtQuayTheoNgayDiVM.khoiViewModels = khoiViewModels();
             }
+            else
+            {
+                dtQuayTheoNgayDiVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
+                dtQuayTheoNgayDiVM.khoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
 
-            dtQuayTheoNgayDiVM.khoiViewModels = khoiViewModels();
+            }
 
             try
             {
@@ -1766,22 +1896,56 @@ namespace ThongKe.Controllers
         /////////////////////////////////////// Doan Theo ngay di ///////////////////////////////////////////////////////////////////////////
         public IActionResult DoanTheoNgayDi(string tungay = null, string denngay = null, string chiNhanh = null, string khoi = null)
         {
+            //var doanTheoNgayDiVM = new DoanTheoNgayDiViewModel();
+
+            //var chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
+
+            //for (int i = 0; i < chiNhanhs.Count(); i++)
+            //{
+            //    var cnToreturn = new ChiNhanhToReturnViewModel()
+            //    {
+            //        Stt = i,
+            //        Name = chiNhanhs[i]
+            //    };
+
+            //    doanTheoNgayDiVM.chiNhanhToReturnViewModels.Add(cnToreturn);
+            //}
+
+            //doanTheoNgayDiVM.khoiViewModels = khoiViewModels();
+
+            user = HttpContext.Session.Get<Users>("loginUser");
             var doanTheoNgayDiVM = new DoanTheoNgayDiViewModel();
-
-            var chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
-
-            for (int i = 0; i < chiNhanhs.Count(); i++)
+            string[] chiNhanhs = null;
+            if (user.Nhom != "Users")
             {
-                var cnToreturn = new ChiNhanhToReturnViewModel()
+                if (user.Nhom != "Admins")
                 {
-                    Stt = i,
-                    Name = chiNhanhs[i]
-                };
+                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Where(x => x.Nhom == user.Nhom).Select(x => x.Chinhanh1).Distinct().ToArray();
 
-                doanTheoNgayDiVM.chiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                else
+                {
+                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
+
+                }
+                for (int i = 0; i < chiNhanhs.Count(); i++)
+                {
+                    var cnToreturn = new ChiNhanhToReturnViewModel()
+                    {
+                        Stt = i,
+                        Name = chiNhanhs[i]
+                    };
+
+                    doanTheoNgayDiVM.chiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                doanTheoNgayDiVM.khoiViewModels = khoiViewModels();
             }
+            else
+            {
+                doanTheoNgayDiVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
+                doanTheoNgayDiVM.khoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
 
-            doanTheoNgayDiVM.khoiViewModels = khoiViewModels();
+            }
 
             try
             {
@@ -2178,22 +2342,57 @@ namespace ThongKe.Controllers
         /////////////////////////////////////// Tuyentq Theo ngay di ///////////////////////////////////////////////////////////////////////////
         public IActionResult TuyentqTheoNgayDi(string tungay = null, string denngay = null, string chiNhanh = null, string khoi = null)
         {
+            //var tuyentqTheoNgayDiVM = new TuyentqTheoNgayDiViewModel();
+
+            //var chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
+
+            //for (int i = 0; i < chiNhanhs.Count(); i++)
+            //{
+            //    var cnToreturn = new ChiNhanhToReturnViewModel()
+            //    {
+            //        Stt = i,
+            //        Name = chiNhanhs[i]
+            //    };
+
+            //    tuyentqTheoNgayDiVM.ChiNhanhToReturnViewModels.Add(cnToreturn);
+            //}
+
+            //tuyentqTheoNgayDiVM.KhoiViewModels = khoiViewModels();
+
+            user = HttpContext.Session.Get<Users>("loginUser");
             var tuyentqTheoNgayDiVM = new TuyentqTheoNgayDiViewModel();
-
-            var chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
-
-            for (int i = 0; i < chiNhanhs.Count(); i++)
+            string[] chiNhanhs = null;
+            if (user.Nhom != "Users")
             {
-                var cnToreturn = new ChiNhanhToReturnViewModel()
+                if (user.Nhom != "Admins")
                 {
-                    Stt = i,
-                    Name = chiNhanhs[i]
-                };
+                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Where(x => x.Nhom == user.Nhom).Select(x => x.Chinhanh1).Distinct().ToArray();
 
-                tuyentqTheoNgayDiVM.ChiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                else
+                {
+                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
+
+                }
+                for (int i = 0; i < chiNhanhs.Count(); i++)
+                {
+                    var cnToreturn = new ChiNhanhToReturnViewModel()
+                    {
+                        Stt = i,
+                        Name = chiNhanhs[i]
+                    };
+
+                    tuyentqTheoNgayDiVM.ChiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                tuyentqTheoNgayDiVM.KhoiViewModels = khoiViewModels();
+            }
+            else
+            {
+                tuyentqTheoNgayDiVM.ChiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
+                tuyentqTheoNgayDiVM.KhoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
+
             }
 
-            tuyentqTheoNgayDiVM.KhoiViewModels = khoiViewModels();
 
             try
             {
@@ -2619,24 +2818,59 @@ namespace ThongKe.Controllers
         /////////////////////////////////////// Tuyentq theo ngay quy///////////////////////////////////////////////////////////////////
         public IActionResult TuyentqTheoQuy()
         {
+            //var tuyentqTheoQuy = new TuyentqTheoQuyViewModel();
+
+            //var chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
+
+            //for (int i = 0; i < chiNhanhs.Count(); i++)
+            //{
+            //    var cnToreturn = new ChiNhanhToReturnViewModel()
+            //    {
+            //        Stt = i,
+            //        Name = chiNhanhs[i]
+            //    };
+
+            //    tuyentqTheoQuy.ChiNhanhToReturnViewModels.Add(cnToreturn);
+            //}
+
+            //tuyentqTheoQuy.KhoiViewModels = khoiViewModels();
+            //tuyentqTheoQuy.QuyViewModels = QuyViewModels();
+
+            user = HttpContext.Session.Get<Users>("loginUser");
             var tuyentqTheoQuy = new TuyentqTheoQuyViewModel();
-
-            var chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
-
-            for (int i = 0; i < chiNhanhs.Count(); i++)
+            string[] chiNhanhs = null;
+            if (user.Nhom != "Users")
             {
-                var cnToreturn = new ChiNhanhToReturnViewModel()
+                if (user.Nhom != "Admins")
                 {
-                    Stt = i,
-                    Name = chiNhanhs[i]
-                };
+                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Where(x => x.Nhom == user.Nhom).Select(x => x.Chinhanh1).Distinct().ToArray();
 
-                tuyentqTheoQuy.ChiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                else
+                {
+                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
+
+                }
+                for (int i = 0; i < chiNhanhs.Count(); i++)
+                {
+                    var cnToreturn = new ChiNhanhToReturnViewModel()
+                    {
+                        Stt = i,
+                        Name = chiNhanhs[i]
+                    };
+
+                    tuyentqTheoQuy.ChiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                tuyentqTheoQuy.KhoiViewModels = khoiViewModels();
+            }
+            else
+            {
+                tuyentqTheoQuy.ChiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
+                tuyentqTheoQuy.KhoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
+
             }
 
-            tuyentqTheoQuy.KhoiViewModels = khoiViewModels();
             tuyentqTheoQuy.QuyViewModels = QuyViewModels();
-
 
             //ViewBag.searchFromDate = tungay;
             //ViewBag.searchToDate = denngay;
@@ -2766,7 +3000,7 @@ namespace ThongKe.Controllers
 
             var d = _unitOfWork.thongKeRepository.TuyenTqTheoQuyToExcel(quy, nam, chinhanh, khoi).ToList();// Session["daily"].ToString(), Session["khoi"].ToString());
 
-            
+
             //du lieu
             int iRowIndex = 7;
             int idem = 1;
@@ -2802,31 +3036,31 @@ namespace ThongKe.Controllers
                     xlSheet.Cells[iRowIndex, 7].Value = vm.Sk2;
                     TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 7].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    
+
                     xlSheet.Cells[iRowIndex, 8].Value = vm.Doanhso2;
                     TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 8].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    
+
                     xlSheet.Cells[iRowIndex, 9].Value = vm.Sk21;
                     TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 9].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    
+
                     xlSheet.Cells[iRowIndex, 10].Value = vm.Doanhso21;
                     TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 10].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    
+
                     xlSheet.Cells[iRowIndex, 11].Value = vm.Sk3;
                     TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 11].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    
+
                     xlSheet.Cells[iRowIndex, 12].Value = vm.Doanhso3;
                     TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 12].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    
+
                     xlSheet.Cells[iRowIndex, 13].Value = vm.Sk31;
                     TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 13].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    
+
                     xlSheet.Cells[iRowIndex, 14].Value = vm.Doanhso31;
                     TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 14].Style.Border.Right.Style = ExcelBorderStyle.Thin;
@@ -2902,22 +3136,56 @@ namespace ThongKe.Controllers
         /////////////////////////////////////// Khach le he thong ///////////////////////////////////////////////////////////////////////////
         public IActionResult KhachLeHeThong(string tungay = null, string denngay = null, string chiNhanh = null, string khoi = null)
         {
+            //var khachLeHeThongVM = new KhachLeHeThongViewModel();
+
+            //var chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
+
+            //for (int i = 0; i < chiNhanhs.Count(); i++)
+            //{
+            //    var cnToreturn = new ChiNhanhToReturnViewModel()
+            //    {
+            //        Stt = i,
+            //        Name = chiNhanhs[i]
+            //    };
+
+            //    khachLeHeThongVM.ChiNhanhToReturnViewModels.Add(cnToreturn);
+            //}
+
+            //khachLeHeThongVM.KhoiViewModels = khoiViewModels();
+
+            user = HttpContext.Session.Get<Users>("loginUser");
             var khachLeHeThongVM = new KhachLeHeThongViewModel();
-
-            var chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
-
-            for (int i = 0; i < chiNhanhs.Count(); i++)
+            string[] chiNhanhs = null;
+            if (user.Nhom != "Users")
             {
-                var cnToreturn = new ChiNhanhToReturnViewModel()
+                if (user.Nhom != "Admins")
                 {
-                    Stt = i,
-                    Name = chiNhanhs[i]
-                };
+                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Where(x => x.Nhom == user.Nhom).Select(x => x.Chinhanh1).Distinct().ToArray();
 
-                khachLeHeThongVM.ChiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                else
+                {
+                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
+
+                }
+                for (int i = 0; i < chiNhanhs.Count(); i++)
+                {
+                    var cnToreturn = new ChiNhanhToReturnViewModel()
+                    {
+                        Stt = i,
+                        Name = chiNhanhs[i]
+                    };
+
+                    khachLeHeThongVM.ChiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                khachLeHeThongVM.KhoiViewModels = khoiViewModels();
             }
+            else
+            {
+                khachLeHeThongVM.ChiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
+                khachLeHeThongVM.KhoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
 
-            khachLeHeThongVM.KhoiViewModels = khoiViewModels();
+            }
 
             try
             {
@@ -3176,22 +3444,56 @@ namespace ThongKe.Controllers
         /////////////////////////////////////// Khach Huy ///////////////////////////////////////////////////////////////////
         public IActionResult KhachHuy(string tungay = null, string denngay = null, string chiNhanh = null, string khoi = null)
         {
+            //var khachHuyVM = new KhachHuyViewModel();
+
+            //var chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
+
+            //for (int i = 0; i < chiNhanhs.Count(); i++)
+            //{
+            //    var cnToreturn = new ChiNhanhToReturnViewModel()
+            //    {
+            //        Stt = i,
+            //        Name = chiNhanhs[i]
+            //    };
+
+            //    khachHuyVM.ChiNhanhToReturnViewModels.Add(cnToreturn);
+            //}
+
+            //khachHuyVM.KhoiViewModels = khoiViewModels();
+
+            user = HttpContext.Session.Get<Users>("loginUser");
             var khachHuyVM = new KhachHuyViewModel();
-
-            var chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
-
-            for (int i = 0; i < chiNhanhs.Count(); i++)
+            string[] chiNhanhs = null;
+            if (user.Nhom != "Users")
             {
-                var cnToreturn = new ChiNhanhToReturnViewModel()
+                if (user.Nhom != "Admins")
                 {
-                    Stt = i,
-                    Name = chiNhanhs[i]
-                };
+                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Where(x => x.Nhom == user.Nhom).Select(x => x.Chinhanh1).Distinct().ToArray();
 
-                khachHuyVM.ChiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                else
+                {
+                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
+
+                }
+                for (int i = 0; i < chiNhanhs.Count(); i++)
+                {
+                    var cnToreturn = new ChiNhanhToReturnViewModel()
+                    {
+                        Stt = i,
+                        Name = chiNhanhs[i]
+                    };
+
+                    khachHuyVM.ChiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                khachHuyVM.KhoiViewModels = khoiViewModels();
             }
+            else
+            {
+                khachHuyVM.ChiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
+                khachHuyVM.KhoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
 
-            khachHuyVM.KhoiViewModels = khoiViewModels();
+            }
 
             try
             {
@@ -3323,31 +3625,31 @@ namespace ThongKe.Controllers
                     xlSheet.Cells[iRowIndex, 5].Value = vm.tuyentq;
                     TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    
+
                     xlSheet.Cells[iRowIndex, 6].Value = vm.batdau;
                     TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    
+
                     xlSheet.Cells[iRowIndex, 7].Value = vm.ketthuc;
                     TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 7].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    
+
                     xlSheet.Cells[iRowIndex, 8].Value = vm.giatour;
                     TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 8].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    
+
                     xlSheet.Cells[iRowIndex, 9].Value = vm.nguoihuyve;
                     TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 9].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    
+
                     xlSheet.Cells[iRowIndex, 10].Value = vm.dailyhuyve;
                     TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 10].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    
+
                     xlSheet.Cells[iRowIndex, 11].Value = vm.chinhanh;
                     TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 11].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    
+
                     xlSheet.Cells[iRowIndex, 12].Value = vm.ngayhuyve;
                     TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 12].Style.Border.Right.Style = ExcelBorderStyle.Thin;
@@ -3422,6 +3724,11 @@ namespace ThongKe.Controllers
         /////////////////////////////////////// Kinh doanh online ///////////////////////////////////////////////////////////////////
         public IActionResult KinhDoanhOnline(string tungay = null, string denngay = null, string khoi = null)
         {
+            user = HttpContext.Session.Get<Users>("loginUser");
+            if(user.Nhom != "Admins" && user.Nhom != "KDO")
+            {
+                return View("AccessDenied");
+            }
             var thongKeWebVM = new ThongKeWebViewModel();
 
             thongKeWebVM.KhoiViewModels = khoiViewModels();
@@ -3558,15 +3865,15 @@ namespace ThongKe.Controllers
                         xlSheet.Cells[iRowIndex, 10].Value = vm.Doanhso;
                         TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                         xlSheet.Cells[iRowIndex, 10].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                        
+
                         xlSheet.Cells[iRowIndex, 11].Value = vm.Nguoixuatve;
                         TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                         xlSheet.Cells[iRowIndex, 11].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                        
+
                         xlSheet.Cells[iRowIndex, 12].Value = vm.Dailyxuatve;
                         TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                         xlSheet.Cells[iRowIndex, 12].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                        
+
                         xlSheet.Cells[iRowIndex, 13].Value = vm.Kenhgd;
                         TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                         xlSheet.Cells[iRowIndex, 13].Style.Border.Right.Style = ExcelBorderStyle.Thin;
@@ -3631,6 +3938,12 @@ namespace ThongKe.Controllers
         /////////////////////////////////////// Kinh doanh online Ngay Di ///////////////////////////////////////////////////////////////////
         public IActionResult KinhDoanhOnlineNgayDi(string tungay = null, string denngay = null, string khoi = null)
         {
+            user = HttpContext.Session.Get<Users>("loginUser");
+            if (user.Nhom != "Admins" && user.Nhom != "KDO")
+            {
+                return View("AccessDenied");
+            }
+
             var thongKeWebVM = new ThongKeWebViewModel();
 
             thongKeWebVM.KhoiViewModels = khoiViewModels();
@@ -3732,7 +4045,7 @@ namespace ThongKe.Controllers
             // do du lieu tu table
             int dong = 5;
 
-            var d = _unitOfWork.thongKeRepository.ThongKeWebNgayDiToExcel(tungay, denngay,"", khoi);// Session["daily"].ToString(), Session["khoi"].ToString());
+            var d = _unitOfWork.thongKeRepository.ThongKeWebNgayDiToExcel(tungay, denngay, "", khoi);// Session["daily"].ToString(), Session["khoi"].ToString());
 
             //du lieu
             int iRowIndex = 6;
@@ -3789,7 +4102,7 @@ namespace ThongKe.Controllers
                     xlSheet.Cells[iRowIndex, 12].Value = vm.Dailyxuatve;
                     TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 12].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    
+
                     xlSheet.Cells[iRowIndex, 13].Value = vm.Kenhgd;
                     TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 13].Style.Border.Right.Style = ExcelBorderStyle.Thin;

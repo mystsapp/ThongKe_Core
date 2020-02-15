@@ -53,7 +53,7 @@ namespace ThongKe.Controllers
                         var user = _unitOfWork.userRepository.GetById(LoginVM.Username);
                         HttpContext.Session.Set("loginUser", user);
                         
-                        //HttpContext.Session.SetString("username", model.Username);
+                        HttpContext.Session.SetString("username", user.Username);
                         //HttpContext.Session.SetString("password", model.Password);
                         //HttpContext.Session.SetString("hoten", result.Hoten);
                         //HttpContext.Session.SetString("phong", result.Maphong);

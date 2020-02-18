@@ -8,6 +8,10 @@ namespace ThongKe.Models
 {
     public class DoanTheoNgayDiViewModel
     {
+        public string TuNgay { get; set; }
+        public string DenNgay { get; set; }
+        public string Khoi { get; set; }
+
         public IEnumerable<DoanhthuDoanNgayDi> DoanhthuDoanNgayDis { get; set; }
         public List<ChiNhanhToReturnViewModel> chiNhanhToReturnViewModels { get; set; }
         public List<KhoiViewModel> khoiViewModels { get; set; }

@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>DOANH THU TUYẾN THAM QUAN THEO QUÝ</h1>
+                <h1>BÁO CÁO DOANH THU TUYẾN THAM QUAN THEO QUÝ</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -41,42 +41,35 @@
                 <div class="p-4 border rounded">
 
                     <div class="form-group row">
-                        <div class="col-1">
-                            <label>Quý</label>
-                        </div>
+                        
                         <div class="col-2">
+                            Quý
                             <select name="quy" class="form-control border-input " id="ddlQuy"
                                     asp-items="@(new SelectList(Model.QuyViewModels,"Id","Name", ViewBag.quy))">
                             </select>
                         </div>
 
-                        <div class="col-1">
-                            <label>Năm</label>
-                        </div>
                         <div class="col-2">
+                            Năm
                             <input type="number" value="@ViewBag.nam" name="nam" class="form-control" id="txtNam" placeholder="Type year..." />
                         </div>
 
-
-                        <div class="col-1">
-                            <label>Chi nhánh</label>
-                        </div>
                         <div class="col-2">
+                            Chi nhánh
                             <select name="chiNhanh" class="form-control border-input ddlChiNhanh" id="ddlChiNhanh"
                                     asp-items="@(new SelectList(Model.ChiNhanhToReturnViewModels,"Name","Name", ViewBag.chiNhanh))">
                             </select>
                         </div>
 
-                        <div class="col-1">
-                            <label>Khối</label>
-                        </div>
-                        <div class="col-1">
+                        <div class="col-2">
+                            Khối
                             <select class="form-control" id="ddlKhoi" name="khoi"
                                     asp-items="@(new SelectList(Model.KhoiViewModels, "Name", "Name", ViewBag.khoi))">
                             </select>
                         </div>
 
-                        <div class="col-1">
+                        <div class="col-2">
+                            <br />
                             <span class="btn-group">
                                 @*<button type="submit" id="btnSearch" class="btn btn-outline-primary" formaction="/BaoCao/SaleTheoQuay"><i class="fa fa-search"></i></button>*@
                                 <button type="submit" id="btnExportAll1" class="btn btn-outline-success" formmethod="post" formaction="/BaoCao/TuyentqTheoQuyPost"><i class="fas fa-file-export"></i></button>

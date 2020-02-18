@@ -8,6 +8,9 @@ namespace ThongKe.Models
 {
     public class DoanhthuSaleQuayViewModel
     {
+        public string TuNgay { get; set; }
+        public string DenNgay { get; set; }
+        public string Khoi { get; set; }
         public IEnumerable<DoanhthuSaleQuay> DoanhthuSaleQuays { get; set; }
         public List<ChiNhanhToReturnViewModel> chiNhanhToReturnViewModels { get; set; }
         public List<KhoiViewModel> khoiViewModels { get; set; }

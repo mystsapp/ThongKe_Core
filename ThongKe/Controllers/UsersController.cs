@@ -73,6 +73,7 @@ namespace ThongKe.Controllers
 
             _unitOfWork.userRepository.Create(UserVM.User);
             await _unitOfWork.Complete();
+            SetAlert("Thêm User thành cong.", "success");
             return RedirectToAction(nameof(Index));
         }
 
@@ -136,6 +137,7 @@ namespace ThongKe.Controllers
             UserVM.User.Nguoicapnhat = user.Nguoicapnhat;
             _unitOfWork.userRepository.Update(UserVM.User);
             await _unitOfWork.Complete();
+            SetAlert("Cập nhật User thành cong.", "success");
             return RedirectToAction(nameof(Index));
         }
 

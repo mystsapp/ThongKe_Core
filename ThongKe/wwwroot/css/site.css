@@ -1,75 +1,65 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+﻿/*.error {
+    color: red;
+}*/
+.error {
+    border: 1px solid #A94442;
+}
+.mypicture{
+    width:203px;
+    height:39px;
+}
+label.error {
+    background: url("/image/unchecked.gif") no-repeat;
+    padding-left: 16px;
+    margin-left: .3em;
 }
 
-.mypicture {
-    width: 203px;
-    height: 39px;
+label.valid {
+    background: url("/image/checked.gif") no-repeat;
+    display: block;
+    width: 16px;
+    height: 16px
 }
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.mytable {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    .mytable td, .mytable th {
+        border: 1px solid #D2D6DE;
+        padding: 8px;
+    }
+    .mytable th {
+        /*background-color: #CCCCCC;*/
+        background-color: #ECF0F5
+    }
+    .mytable tr:hover {
+        background-color: #ECF0F5;
+    }
+.table-striped tbody tr.highlight td {
+    background-color: #3E5C9A;
+    color: white;
+    /*background-color: #D6DBE9;
+    color:#00428B;*/
+}
+fieldset.groupbox-border {
+    /*border: 1px groove #D2D6DE !important;*/
+    border: 1px groove #F0F0F0 !important;
+    /*padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 1.2em 1.2em 1.2em 1.2em !important;*/
+    padding: 0 1.1em 1.1em 1.1em !important;
+    /*margin: 1.1em 1.1em 1.1em 1.1em !important;*/
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px 0px #000;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-}
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+legend.groupbox-border {
+    /*font-size: 1.2em !important;*/
+    font-size: 1.1em !important;
+    /*font-weight: bold !important;*/
+    text-align: left !important;
+    width: auto;
+    padding: 0px 10px 0px 10px;
+    border-bottom: none;
 }

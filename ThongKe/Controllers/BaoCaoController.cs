@@ -37,6 +37,11 @@ namespace ThongKe.Controllers
         {
             user = HttpContext.Session.Get<Users>("loginUser");
             var dtSaleQuayVM = new DoanhthuSaleQuayViewModel();
+
+            dtSaleQuayVM.TuNgay = tungay;
+            dtSaleQuayVM.DenNgay = denngay;
+            dtSaleQuayVM.Khoi = khoi;
+
             string[] chiNhanhs = null;
             if (user.Nhom != "Users")
             {
@@ -394,6 +399,9 @@ namespace ThongKe.Controllers
         {
             user = HttpContext.Session.Get<Users>("loginUser");
             var dtSaleQuayVM = new DoanhthuSaleQuayViewModel();
+            dtSaleQuayVM.TuNgay = tungay;
+            dtSaleQuayVM.DenNgay = denngay;
+            dtSaleQuayVM.Khoi = khoi;
             string[] chiNhanhs = null;
             if (user.Nhom != "Users")
             {
@@ -422,17 +430,8 @@ namespace ThongKe.Controllers
             else
             {
                 dtSaleQuayVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
-
-            }
-
-
-            if (user.Khoi == null)
-            {
-                dtSaleQuayVM.khoiViewModels = khoiViewModels();
-            }
-            else
-            {
                 dtSaleQuayVM.khoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
+
             }
 
             try
@@ -707,7 +706,7 @@ namespace ThongKe.Controllers
                 else
                 {
                     SetAlert("No sale.", "warning");
-                    return RedirectToAction(nameof(SaleTheoQuay));
+                    return RedirectToAction(nameof(SaleTheoNgayDi));
                 }
 
                 dong++;
@@ -749,7 +748,7 @@ namespace ThongKe.Controllers
             catch
             {
                 SetAlert("Lỗi định dạng ngày tháng", "error");
-                return RedirectToAction("SaleTheoQuay");
+                return RedirectToAction("SaleTheoNgayDi");
             }
         }
 
@@ -760,18 +759,12 @@ namespace ThongKe.Controllers
             ViewBag.searchToDate = denngay;
             ViewBag.ttq = tuyentq;
             ViewBag.khoi = khoi;
-
-            //var dtSaleTuyenVM = new DoanhThuSaleTuyenViewModel();
-            //khoi = khoi ?? "OB";
-            //tuyentq = string.IsNullOrEmpty(tuyentq) ? "" : tuyentq.Trim();
-
-            //dtSaleTuyenVM.khoiViewModels = khoiViewModels();
-
-            //var tuyentqByKhois = _unitOfWork.userRepository.GetAllTuyentqByKhoi(khoi);
-
-            //dtSaleTuyenVM.tuyenThamQuanViewModels = tuyentqByKhois;
+            
             user = HttpContext.Session.Get<Users>("loginUser");
             var dtSaleTuyenVM = new DoanhThuSaleTuyenViewModel();
+            dtSaleTuyenVM.TuNgay = tungay;
+            dtSaleTuyenVM.DenNgay = denngay;
+            dtSaleTuyenVM.Khoi = khoi;
             tuyentq = string.IsNullOrEmpty(tuyentq) ? "" : tuyentq.Trim();
 
             if (user.Nhom != "Users")
@@ -1130,6 +1123,9 @@ namespace ThongKe.Controllers
 
             user = HttpContext.Session.Get<Users>("loginUser");
             var dtQuayTheoNgayBanVM = new DoanthuQuayNgayBanViewModel();
+            dtQuayTheoNgayBanVM.TuNgay = tungay;
+            dtQuayTheoNgayBanVM.DenNgay = denngay;
+            dtQuayTheoNgayBanVM.Khoi = khoi;
             string[] chiNhanhs = null;
             if (user.Nhom != "Users")
             {
@@ -1522,6 +1518,9 @@ namespace ThongKe.Controllers
 
             user = HttpContext.Session.Get<Users>("loginUser");
             var dtQuayTheoNgayDiVM = new DoanthuQuayNgayBanViewModel();
+            dtQuayTheoNgayDiVM.TuNgay = tungay;
+            dtQuayTheoNgayDiVM.DenNgay = denngay;
+            dtQuayTheoNgayDiVM.Khoi = khoi;
             string[] chiNhanhs = null;
             if (user.Nhom != "Users")
             {
@@ -1915,6 +1914,9 @@ namespace ThongKe.Controllers
 
             user = HttpContext.Session.Get<Users>("loginUser");
             var doanTheoNgayDiVM = new DoanTheoNgayDiViewModel();
+            doanTheoNgayDiVM.TuNgay = tungay;
+            doanTheoNgayDiVM.DenNgay = denngay;
+            doanTheoNgayDiVM.Khoi = khoi;
             string[] chiNhanhs = null;
             if (user.Nhom != "Users")
             {
@@ -2361,6 +2363,9 @@ namespace ThongKe.Controllers
 
             user = HttpContext.Session.Get<Users>("loginUser");
             var tuyentqTheoNgayDiVM = new TuyentqTheoNgayDiViewModel();
+            tuyentqTheoNgayDiVM.TuNgay = tungay;
+            tuyentqTheoNgayDiVM.DenNgay = denngay;
+            tuyentqTheoNgayDiVM.Khoi = khoi;
             string[] chiNhanhs = null;
             if (user.Nhom != "Users")
             {

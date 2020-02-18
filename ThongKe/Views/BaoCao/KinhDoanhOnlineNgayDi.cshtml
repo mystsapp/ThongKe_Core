@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Doanh Thu Online Theo Ngày Đi Tour</h1>
+                <h1>BÁO CÁO DOANH THU ONLINE THEO NGÀY ĐI TOUR</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -41,30 +41,26 @@
                 <div class="p-4 border rounded">
 
                     <div class="form-group row">
-                        <div class="col-1">
-                            <label>Từ ngày</label>
-                        </div>
+                        
                         <div class="col-2">
+                            Từ ngày
                             <input value="@ViewBag.searchFromDate" name="tungay" class="form-control maskInput" id="txtTuNgay" />
                         </div>
 
-                        <div class="col-1">
-                            <label>Đến ngày</label>
-                        </div>
                         <div class="col-2">
+                            Đến ngày
                             <input value="@ViewBag.searchToDate" name="denngay" class="form-control maskInput" id="txtDenNgay" />
                         </div>
 
-                        <div class="col-1">
-                            <label>Khối</label>
-                        </div>
-                        <div class="col-1">
+                        <div class="col-2">
+                            Khối
                             <select class="form-control" id="ddlKhoi" name="khoi"
                                     asp-items="@(new SelectList(Model.KhoiViewModels, "Name", "Name", ViewBag.khoi))">
                             </select>
                         </div>
 
-                        <div class="col-1">
+                        <div class="col-2">
+                            <br />
                             <span class="btn-group">
                                 <button type="submit" id="btnSearch" class="btn btn-outline-primary" formaction="/BaoCao/KinhDoanhOnlineNgayDi"><i class="fa fa-search"></i></button>
                                 <button type="submit" id="btnSearch" class="btn btn-outline-success" formmethod="post" formaction="/BaoCao/KinhDoanhOnlineNgayDiPost"><i class="fas fa-file-export"></i></button>
@@ -104,8 +100,8 @@
             </div>
         </div>
         <div class="card-body">
-            <div>
-                <table class="table table-striped border" id="listAll">
+            <div style="overflow-x:auto;">
+                <table class="table mytable text-nowrap" id="listAll">
                     <thead>
                         <tr class="table-info">
                             <th>#</th>

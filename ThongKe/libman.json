@@ -33,6 +33,10 @@
     {
       "library": "angular.js@1.7.8",
       "destination": "wwwroot/lib/angular.js/"
+    },
+    {
+      "library": "Chart.js@2.9.4",
+      "destination": "wwwroot/lib/Chart.js/"
     }
   ]
 }

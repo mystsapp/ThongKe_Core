@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using ThongKe.Data.Repository;
 using ThongKe.Models;
 
@@ -31,7 +32,11 @@ namespace ThongKe.Controllers
             string khoi = "OB";
 
             var listOB = _unitOfWork.thongKeRepository.ThongKeSoKhachOB(khoi);//doanhthuKhachLeHeThongEntities
-
+            foreach(var item in listOB)
+            {
+                item.SoKhachHT = item.SoKhachHT == null ? 0 : item.SoKhachHT;
+                item.SoKhachTT = item.SoKhachTT == null ? 0 : item.SoKhachTT;
+            }
             return Json(new
             {
                 data = listOB,
@@ -44,20 +49,28 @@ namespace ThongKe.Controllers
             string khoi = "ND";
 
             var listOB = _unitOfWork.thongKeRepository.ThongKeSoKhachOB(khoi);//doanhthuKhachLeHeThongEntities
-
+            foreach (var item in listOB)
+            {
+                item.SoKhachHT = item.SoKhachHT == null ? 0 : item.SoKhachHT;
+                item.SoKhachTT = item.SoKhachTT == null ? 0 : item.SoKhachTT;
+            }
             return Json(new
             {
                 data = listOB,
                 status = true
             });
         }
-
+        
         public JsonResult LoadDataThongKeDoanhThuOB()
         {
             string khoi = "OB";
 
             var listOB = _unitOfWork.thongKeRepository.ThongKeDoanhThuOB(khoi);//doanhthuKhachLeHeThongEntities
-
+            foreach (var item in listOB)
+            {
+                item.DoanhThuHT = item.DoanhThuHT == null ? 0 : item.DoanhThuHT;
+                item.DoanhThuTT = item.DoanhThuTT == null ? 0 : item.DoanhThuTT;
+            }
             return Json(new
             {
                 data = listOB,
@@ -70,7 +83,11 @@ namespace ThongKe.Controllers
             string khoi = "ND";
 
             var listOB = _unitOfWork.thongKeRepository.ThongKeDoanhThuOB(khoi);//doanhthuKhachLeHeThongEntities
-
+            foreach (var item in listOB)
+            {
+                item.DoanhThuHT = item.DoanhThuHT == null ? 0 : item.DoanhThuHT;
+                item.DoanhThuTT = item.DoanhThuTT == null ? 0 : item.DoanhThuTT;
+            }
             return Json(new
             {
                 data = listOB,

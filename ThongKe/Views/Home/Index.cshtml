@@ -2,44 +2,91 @@
     ViewData["Title"] = "Home Page";
 }
 
-    <body ng-app="app">
+<body ng-app="app">
 
-        @* So khach OB *@
-        <section class="content">
+    @* So khach OB *@
+    <section class="content">
 
-            <!-- Default box -->
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-list-alt text-info"></i> THÔNG KÊ SỐ KHÁCH OB THEO NGÀY</h3>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-list-alt text-info"></i> THÔNG KÊ SỐ KHÁCH OB THEO NGÀY</h3>
 
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-                <div class="card-body" ng-controller="ChartController">
-
-                    <div>
-                        <canvas id="bar" class="chart chart-bar"
-                                chart-data="data" chart-labels="labels" chart-series="series" chart-colours></canvas>
-                    </div>
-
+            </div>
+            <div class="card-body">
+                <div class="chart">
+                    <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                    <canvas id="barChart_SKOB" class="chartjs-render-monitor"></canvas>
                 </div>
-                <!-- /.card-body -->
+            </div>
+
+        </div>
+
+    </section>
+
+    @*<section class="content">
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-list-alt text-info"></i> THÔNG KÊ SỐ KHÁCH OB THEO NGÀY</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body" ng-controller="ChartController">
+
+                <div>
+                    <canvas id="bar" class="chart chart-bar"
+                            chart-data="data" chart-labels="labels" chart-series="series" chart-colours></canvas>
+                </div>
 
             </div>
-            <!-- /.card -->
 
-        </section>
+        </div>
 
-        @* So khach ND *@
-        <section class="content">
+    </section>*@
 
-            <!-- Default box -->
+    @* So khach ND *@
+    <section class="content">
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-list-alt text-info"></i> THÔNG KÊ SỐ KHÁCH ND THEO NGÀY</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="chart">
+                    <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                    <canvas id="barChart_SKND" class="chartjs-render-monitor"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    @*<section class="content">
+
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title"><i class="fas fa-list-alt text-info"></i> THÔNG KÊ SỐ KHÁCH ND THEO NGÀY</h3>
@@ -61,17 +108,39 @@
                     </div>
 
                 </div>
-                <!-- /.card-body -->
-
             </div>
-            <!-- /.card -->
 
-        </section>
-    
+        </section>*@
+
     @* Doanh thu OB theo ngay *@
-        <section class="content">
+    <section class="content">
 
-            <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-list-alt text-info"></i> THÔNG KÊ DOANH THU OB THEO NGÀY</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="chart">
+                    <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                    <canvas id="barChart_DTOB" class="chartjs-render-monitor"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    @*<section class="content">
+
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title"><i class="fas fa-list-alt text-info"></i> THÔNG KÊ DOANH THU OB THEO NGÀY</h3>
@@ -93,17 +162,40 @@
                     </div>
 
                 </div>
-                <!-- /.card-body -->
 
             </div>
-            <!-- /.card -->
 
-        </section>
-    
+        </section>*@
+
     @* Doanh thu ND theo ngay *@
-        <section class="content">
+    <section class="content">
 
-            <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-list-alt text-info"></i> THÔNG KÊ DOANH THU ND THEO NGÀY</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="chart">
+                    <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                    <canvas id="barChart_DTND" class="chartjs-render-monitor"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    @*<section class="content">
+
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title"><i class="fas fa-list-alt text-info"></i> THÔNG KÊ DOANH THU ND THEO NGÀY</h3>
@@ -125,14 +217,12 @@
                     </div>
 
                 </div>
-                <!-- /.card-body -->
 
             </div>
-            <!-- /.card -->
 
-        </section>
+        </section>*@
 
-    </body>
+</body>
 
 @section Scripts{
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
@@ -144,4 +234,484 @@
     <script src="~/Admin/Home/homNdController.js"></script>
     <script src="~/Admin/Home/homDTOBController.js"></script>
     <script src="~/Admin/Home/homDTNDController.js"></script>
+
+    <!-- ChartJs -->
+    <link href="~/lib/Chart.js/Chart.css" rel="stylesheet" />
+    <!-- ChartJs -->
+    <script src="~/lib/Chart.js/Chart.js"></script>
+
+    <!-- THÔNG KÊ SỐ KHÁCH OB THEO NGÀY -->
+    <script>
+
+        var labels_SKOB = []; // daiLyXuatVe
+        var sokhachht_SKOB = [];
+        var sokhachtt_SKOB = [];
+
+        var lableString = '';
+
+        $.ajax({
+            url: '/Home/LoadDataThongKeSoKhachOB',
+            //data: {
+            //    maCT: id
+            //},
+            dataType: 'json',
+            type: 'GET',
+            success: function (response) {
+
+                $.each(response.data, function (i, item) {
+                    labels_SKOB.push(item.daiLyXuatVe);
+                    sokhachht_SKOB.push(item.soKhachHT);
+                    sokhachtt_SKOB.push(item.soKhachTT);
+                });
+
+
+                var areaChartData_SKOB = {
+                    labels: labels_SKOB,
+                    datasets: [
+                        {
+                            label: 'SK hiện tại',
+                            backgroundColor: 'rgba(60,141,188,0.9)',
+                            borderColor: 'rgba(60,141,188,0.8)',
+                            pointRadius: false,
+                            pointColor: '#3b8bba',
+                            pointStrokeColor: 'rgba(60,141,188,1)',
+                            pointHighlightFill: '#fff',
+                            pointHighlightStroke: 'rgba(60,141,188,1)',
+                            data: sokhachht_SKOB
+                        },
+                        {
+                            label: 'SK tháng trước',
+                            backgroundColor: 'rgba(210, 214, 222, 1)',
+                            borderColor: 'rgba(210, 214, 222, 1)',
+                            pointRadius: false,
+                            pointColor: 'rgba(210, 214, 222, 1)',
+                            pointStrokeColor: '#c1c7d1',
+                            pointHighlightFill: '#fff',
+                            pointHighlightStroke: 'rgba(220,220,220,1)',
+                            data: sokhachtt_SKOB
+                        },
+                    ]
+                }
+                var barChartCanvas_SKOB = $('#barChart_SKOB').get(0).getContext('2d')
+                var barChartData_SKOB = jQuery.extend(true, {}, areaChartData_SKOB)
+                var temp0_SKOB = areaChartData_SKOB.datasets[0]
+                var temp1_SKOB = areaChartData_SKOB.datasets[1]
+                barChartData_SKOB.datasets[0] = temp1_SKOB
+                barChartData_SKOB.datasets[1] = temp0_SKOB
+
+                var barChartOptions_SKOB = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    datasetFill: false
+                }
+
+                var barChart = new Chart(barChartCanvas_SKOB, {
+                    type: 'bar',
+                    data: barChartData_SKOB,
+                    options: {
+                        //legend: {
+                        //    display: false
+                        //},
+                        tooltips: {
+                            mode: 'label',
+                            label: 'mylabel',
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    return tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                },
+                            },
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    callback: function (label, index, labels) { return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); },
+                                    beginAtZero: true,
+                                    fontSize: 10,
+                                },
+                                gridLines: {
+                                    display: true
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    //labelString: '000\'s',
+                                    fontSize: 10,
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontSize: 10
+                                },
+                                gridLines: {
+                                    display: true
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    fontSize: 10,
+                                }
+                            }]
+                        }
+                    }
+                })
+            }
+        });
+
+    </script>
+    <!-- THÔNG KÊ SỐ KHÁCH OB THEO NGÀY -->
+    <!-- THÔNG KÊ SỐ KHÁCH ND THEO NGÀY -->
+    <script>
+
+        var labels = []; // daiLyXuatVe
+        var chartData = [];
+        var sokhachht = [];
+        var sokhachtt = [];
+
+        var lableString = '';
+
+        $.ajax({
+            url: '/Home/LoadDataThongKeSoKhachND',
+            //data: {
+            //    maCT: id
+            //},
+            dataType: 'json',
+            type: 'GET',
+            success: function (response) {
+
+                $.each(response.data, function (i, item) {
+                    labels.push(item.daiLyXuatVe);
+                    sokhachht.push(item.soKhachHT);
+                    sokhachtt.push(item.soKhachTT);
+                });
+
+
+                var areaChartData_SKND = {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'SK hiện tại',
+                            backgroundColor: 'rgba(60,141,188,0.9)',
+                            borderColor: 'rgba(60,141,188,0.8)',
+                            pointRadius: false,
+                            pointColor: '#3b8bba',
+                            pointStrokeColor: 'rgba(60,141,188,1)',
+                            pointHighlightFill: '#fff',
+                            pointHighlightStroke: 'rgba(60,141,188,1)',
+                            data: sokhachht
+                        },
+                        {
+                            label: 'SK tháng trước',
+                            backgroundColor: 'rgba(210, 214, 222, 1)',
+                            borderColor: 'rgba(210, 214, 222, 1)',
+                            pointRadius: false,
+                            pointColor: 'rgba(210, 214, 222, 1)',
+                            pointStrokeColor: '#c1c7d1',
+                            pointHighlightFill: '#fff',
+                            pointHighlightStroke: 'rgba(220,220,220,1)',
+                            data: sokhachtt
+                        },
+                    ]
+                }
+                var barChartCanvas_SKND = $('#barChart_SKND').get(0).getContext('2d')
+                var barChartData_SKND = jQuery.extend(true, {}, areaChartData_SKND)
+                var temp0 = areaChartData_SKND.datasets[0]
+                var temp1 = areaChartData_SKND.datasets[1]
+                barChartData_SKND.datasets[0] = temp1
+                barChartData_SKND.datasets[1] = temp0
+
+                var barChartOptions_SKND = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    datasetFill: false
+                }
+
+                var barChart = new Chart(barChartCanvas_SKND, {
+                    type: 'bar',
+                    data: barChartData_SKND,
+                    options: {
+                        //legend: {
+                        //    display: false
+                        //},
+                        tooltips: {
+                            mode: 'label',
+                            label: 'mylabel',
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    return tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                },
+                            },
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    callback: function (label, index, labels) { return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); },
+                                    beginAtZero: true,
+                                    fontSize: 10,
+                                },
+                                gridLines: {
+                                    display: true
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    //labelString: '000\'s',
+                                    fontSize: 10,
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontSize: 10
+                                },
+                                gridLines: {
+                                    display: true
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    fontSize: 10,
+                                }
+                            }]
+                        }
+                    }
+                })
+            }
+        });
+
+    </script>
+    <!-- THÔNG KÊ SỐ KHÁCH ND THEO NGÀY -->
+    <!-- THÔNG KÊ DOANH THU ND THEO NGÀY -->
+    <script>
+
+        var labels_DTND = []; // daiLyXuatVe
+        var chartData = [];
+        var doanhthuht = [];
+        var doanhthutt = [];
+
+        var lableString = '';
+
+        $.ajax({
+            url: '/Home/LoadDataThongKeDoanhThuND',
+            //data: {
+            //    maCT: id
+            //},
+            dataType: 'json',
+            type: 'GET',
+            success: function (response) {
+
+                $.each(response.data, function (i, item) {
+                    labels_DTND.push(item.daiLyXuatVe);
+                    doanhthuht.push(item.doanhThuHT);
+                    doanhthutt.push(item.doanhThuTT);
+                });
+
+
+                var areaChartData_DTND = {
+                    labels: labels_DTND,
+                    datasets: [
+                        {
+                            label: 'Doanh thu hiện tại',
+                            backgroundColor: 'rgba(60,141,188,0.9)',
+                            borderColor: 'rgba(60,141,188,0.8)',
+                            pointRadius: false,
+                            pointColor: '#3b8bba',
+                            pointStrokeColor: 'rgba(60,141,188,1)',
+                            pointHighlightFill: '#fff',
+                            pointHighlightStroke: 'rgba(60,141,188,1)',
+                            data: doanhthuht
+                        },
+                        {
+                            label: 'Doanh thu tháng trước',
+                            backgroundColor: 'rgba(210, 214, 222, 1)',
+                            borderColor: 'rgba(210, 214, 222, 1)',
+                            pointRadius: false,
+                            pointColor: 'rgba(210, 214, 222, 1)',
+                            pointStrokeColor: '#c1c7d1',
+                            pointHighlightFill: '#fff',
+                            pointHighlightStroke: 'rgba(220,220,220,1)',
+                            data: doanhthutt
+                        },
+                    ]
+                }
+                var barChartCanvas_DTND = $('#barChart_DTND').get(0).getContext('2d')
+                var barChartData_DTND = jQuery.extend(true, {}, areaChartData_DTND)
+                var temp0_DTND = areaChartData_DTND.datasets[0]
+                var temp1_DTND = areaChartData_DTND.datasets[1]
+                barChartData_DTND.datasets[0] = temp1_DTND
+                barChartData_DTND.datasets[1] = temp0_DTND
+
+                var barChartOptions_SKND = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    datasetFill: false
+                }
+
+                var barChart = new Chart(barChartCanvas_DTND, {
+                    type: 'bar',
+                    data: barChartData_DTND,
+                    options: {
+                        //legend: {
+                        //    display: false
+                        //},
+                        tooltips: {
+                            mode: 'label',
+                            label: 'mylabel',
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    return tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                },
+                            },
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    callback: function (label, index, labels) { return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); },
+                                    beginAtZero: true,
+                                    fontSize: 10,
+                                },
+                                gridLines: {
+                                    display: true
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    //labelString: '000\'s',
+                                    fontSize: 10,
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontSize: 10
+                                },
+                                gridLines: {
+                                    display: true
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    fontSize: 10,
+                                }
+                            }]
+                        }
+                    }
+                })
+            }
+        });
+
+    </script>
+    <!-- THÔNG KÊ DOANH THU ND THEO NGÀY -->
+    <!-- THÔNG KÊ DOANH THU OB THEO NGÀY -->
+    <script>
+
+        var labels_DTOB = []; // daiLyXuatVe
+        var doanhthuht_DTOB = [];
+        var doanhthutt_DTOB = [];
+
+        var lableString = '';
+
+        $.ajax({
+            url: '/Home/LoadDataThongKeDoanhThuOB',
+            //data: {
+            //    maCT: id
+            //},
+            dataType: 'json',
+            type: 'GET',
+            success: function (response) {
+
+                $.each(response.data, function (i, item) {
+                    labels_DTOB.push(item.daiLyXuatVe);
+                    doanhthuht_DTOB.push(item.doanhThuHT);
+                    doanhthutt_DTOB.push(item.doanhThuTT);
+                });
+
+
+                var areaChartData_DTOB = {
+                    labels: labels_DTOB,
+                    datasets: [
+                        {
+                            label: 'Doanh thu hiện tại',
+                            backgroundColor: 'rgba(60,141,188,0.9)',
+                            borderColor: 'rgba(60,141,188,0.8)',
+                            pointRadius: false,
+                            pointColor: '#3b8bba',
+                            pointStrokeColor: 'rgba(60,141,188,1)',
+                            pointHighlightFill: '#fff',
+                            pointHighlightStroke: 'rgba(60,141,188,1)',
+                            data: doanhthuht_DTOB
+                        },
+                        {
+                            label: 'Doanh thu tháng trước',
+                            backgroundColor: 'rgba(210, 214, 222, 1)',
+                            borderColor: 'rgba(210, 214, 222, 1)',
+                            pointRadius: false,
+                            pointColor: 'rgba(210, 214, 222, 1)',
+                            pointStrokeColor: '#c1c7d1',
+                            pointHighlightFill: '#fff',
+                            pointHighlightStroke: 'rgba(220,220,220,1)',
+                            data: doanhthutt_DTOB
+                        },
+                    ]
+                }
+                var barChartCanvas_DTOB = $('#barChart_DTOB').get(0).getContext('2d')
+                var barChartData_DTOB = jQuery.extend(true, {}, areaChartData_DTOB)
+                var temp0_DTOB = areaChartData_DTOB.datasets[0]
+                var temp1_DTOB = areaChartData_DTOB.datasets[1]
+                barChartData_DTOB.datasets[0] = temp1_DTOB
+                barChartData_DTOB.datasets[1] = temp0_DTOB
+
+                var barChartOptions_SKND = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    datasetFill: false
+                }
+
+                var barChart = new Chart(barChartCanvas_DTOB, {
+                    type: 'bar',
+                    data: barChartData_DTOB,
+                    options: {
+                        //legend: {
+                        //    display: false
+                        //},
+                        tooltips: {
+                            mode: 'label',
+                            label: 'mylabel',
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    return tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                },
+                            },
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    callback: function (label, index, labels) { return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); },
+                                    beginAtZero: true,
+                                    fontSize: 10,
+                                },
+                                gridLines: {
+                                    display: true
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    //labelString: '000\'s',
+                                    fontSize: 10,
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontSize: 10
+                                },
+                                gridLines: {
+                                    display: true
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    fontSize: 10,
+                                }
+                            }]
+                        }
+                    }
+                })
+            }
+        });
+
+    </script>
+    <!-- THÔNG KÊ DOANH THU OB THEO NGÀY -->
 }

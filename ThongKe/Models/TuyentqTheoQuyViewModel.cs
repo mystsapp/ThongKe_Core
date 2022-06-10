@@ -9,12 +9,12 @@ namespace ThongKe.Models
     {
         public List<QuyViewModel> QuyViewModels { get; set; }
         public List<ChiNhanhToReturnViewModel> ChiNhanhToReturnViewModels { get; set; }
-        public List<KhoiViewModel> KhoiViewModels { get; set; }
+        public List<KhoiViewModel> KhoiViewModels_KL { get; set; }
         public TuyentqTheoQuyViewModel()
         {
             QuyViewModels = new List<QuyViewModel>();
             ChiNhanhToReturnViewModels = new List<ChiNhanhToReturnViewModel>();
-            KhoiViewModels = new List<KhoiViewModel>();
+            KhoiViewModels_KL = new List<KhoiViewModel>();
         }
     }
 }

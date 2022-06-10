@@ -13,11 +13,11 @@ namespace ThongKe.Models
         public string Khoi { get; set; }
         public IEnumerable<DoanhthuSaleQuay> DoanhthuSaleQuays { get; set; }
         public List<ChiNhanhToReturnViewModel> chiNhanhToReturnViewModels { get; set; }
-        public List<KhoiViewModel> khoiViewModels { get; set; }
+        public List<KhoiViewModel> KhoiViewModels_KL { get; set; }
         public DoanhthuSaleQuayViewModel()
         {
             chiNhanhToReturnViewModels = new List<ChiNhanhToReturnViewModel>();
-            khoiViewModels = new List<KhoiViewModel>();
+            KhoiViewModels_KL = new List<KhoiViewModel>();
         }
     }
 }

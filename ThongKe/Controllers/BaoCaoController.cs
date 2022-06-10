@@ -71,12 +71,12 @@ namespace ThongKe.Controllers
 
                     dtSaleQuayVM.chiNhanhToReturnViewModels.Add(cnToreturn);
                 }
-                dtSaleQuayVM.khoiViewModels = khoiViewModels();
+                dtSaleQuayVM.KhoiViewModels_KL = KhoiViewModels_KL();
             }
             else
             {
                 dtSaleQuayVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
-                dtSaleQuayVM.khoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
+                dtSaleQuayVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
 
             }
 
@@ -431,12 +431,12 @@ namespace ThongKe.Controllers
 
                     dtSaleQuayVM.chiNhanhToReturnViewModels.Add(cnToreturn);
                 }
-                dtSaleQuayVM.khoiViewModels = khoiViewModels();
+                dtSaleQuayVM.KhoiViewModels_KL = KhoiViewModels_KL();
             }
             else
             {
                 dtSaleQuayVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
-                dtSaleQuayVM.khoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
+                dtSaleQuayVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
 
             }
 
@@ -775,13 +775,13 @@ namespace ThongKe.Controllers
 
             if (user.Nhom != "Users")
             {
-                dtSaleTuyenVM.khoiViewModels = khoiViewModels();
+                dtSaleTuyenVM.KhoiViewModels_KL = KhoiViewModels_KL();
                 dtSaleTuyenVM.tuyenThamQuanViewModels = _unitOfWork.userRepository.GetAllTuyentqByKhoi("OB");
             }
            
             else
             {
-                dtSaleTuyenVM.khoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
+                dtSaleTuyenVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
                 dtSaleTuyenVM.tuyenThamQuanViewModels = _unitOfWork.userRepository.GetAllTuyentqByKhoi(user.Khoi);
             }
             try
@@ -1125,7 +1125,7 @@ namespace ThongKe.Controllers
 
             //    dtQuayTheoNgayBanVM.chiNhanhToReturnViewModels.Add(cnToreturn);
             //}
-            //dtQuayTheoNgayBanVM.khoiViewModels = khoiViewModels();
+            //dtQuayTheoNgayBanVM.KhoiViewModels_KL = KhoiViewModels_KL();
 
             user = HttpContext.Session.Get<Users>("loginUser");
             var dtQuayTheoNgayBanVM = new DoanthuQuayNgayBanViewModel();
@@ -1155,12 +1155,12 @@ namespace ThongKe.Controllers
 
                     dtQuayTheoNgayBanVM.chiNhanhToReturnViewModels.Add(cnToreturn);
                 }
-                dtQuayTheoNgayBanVM.khoiViewModels = khoiViewModels();
+                dtQuayTheoNgayBanVM.KhoiViewModels_KL = KhoiViewModels_KL();
             }
             else
             {
                 dtQuayTheoNgayBanVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
-                dtQuayTheoNgayBanVM.khoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
+                dtQuayTheoNgayBanVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
 
             }
 
@@ -1520,7 +1520,7 @@ namespace ThongKe.Controllers
             //    dtQuayTheoNgayDiVM.chiNhanhToReturnViewModels.Add(cnToreturn);
             //}
 
-            //dtQuayTheoNgayDiVM.khoiViewModels = khoiViewModels();
+            //dtQuayTheoNgayDiVM.KhoiViewModels_KL = KhoiViewModels_KL();
 
             user = HttpContext.Session.Get<Users>("loginUser");
             var dtQuayTheoNgayDiVM = new DoanthuQuayNgayBanViewModel();
@@ -1550,12 +1550,12 @@ namespace ThongKe.Controllers
 
                     dtQuayTheoNgayDiVM.chiNhanhToReturnViewModels.Add(cnToreturn);
                 }
-                dtQuayTheoNgayDiVM.khoiViewModels = khoiViewModels();
+                dtQuayTheoNgayDiVM.KhoiViewModels_KL = KhoiViewModels_KL();
             }
             else
             {
                 dtQuayTheoNgayDiVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
-                dtQuayTheoNgayDiVM.khoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
+                dtQuayTheoNgayDiVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
 
             }
 
@@ -1916,7 +1916,7 @@ namespace ThongKe.Controllers
             //    doanTheoNgayDiVM.chiNhanhToReturnViewModels.Add(cnToreturn);
             //}
 
-            //doanTheoNgayDiVM.khoiViewModels = khoiViewModels();
+            //doanTheoNgayDiVM.KhoiViewModels_KL = KhoiViewModels_KL();
 
             user = HttpContext.Session.Get<Users>("loginUser");
             var doanTheoNgayDiVM = new DoanTheoNgayDiViewModel();
@@ -1946,12 +1946,12 @@ namespace ThongKe.Controllers
 
                     doanTheoNgayDiVM.chiNhanhToReturnViewModels.Add(cnToreturn);
                 }
-                doanTheoNgayDiVM.khoiViewModels = khoiViewModels();
+                doanTheoNgayDiVM.KhoiViewModels_KL = KhoiViewModels_KL();
             }
             else
             {
                 doanTheoNgayDiVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
-                doanTheoNgayDiVM.khoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
+                doanTheoNgayDiVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
 
             }
 
@@ -2365,7 +2365,7 @@ namespace ThongKe.Controllers
             //    tuyentqTheoNgayDiVM.ChiNhanhToReturnViewModels.Add(cnToreturn);
             //}
 
-            //tuyentqTheoNgayDiVM.KhoiViewModels = khoiViewModels();
+            //tuyentqTheoNgayDiVM.KhoiViewModels_KL = KhoiViewModels_KL();
 
             user = HttpContext.Session.Get<Users>("loginUser");
             var tuyentqTheoNgayDiVM = new TuyentqTheoNgayDiViewModel();
@@ -2395,12 +2395,12 @@ namespace ThongKe.Controllers
 
                     tuyentqTheoNgayDiVM.ChiNhanhToReturnViewModels.Add(cnToreturn);
                 }
-                tuyentqTheoNgayDiVM.KhoiViewModels = khoiViewModels();
+                tuyentqTheoNgayDiVM.KhoiViewModels_KL = KhoiViewModels_KL();
             }
             else
             {
                 tuyentqTheoNgayDiVM.ChiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
-                tuyentqTheoNgayDiVM.KhoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
+                tuyentqTheoNgayDiVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
 
             }
 
@@ -2844,7 +2844,7 @@ namespace ThongKe.Controllers
             //    tuyentqTheoQuy.ChiNhanhToReturnViewModels.Add(cnToreturn);
             //}
 
-            //tuyentqTheoQuy.KhoiViewModels = khoiViewModels();
+            //tuyentqTheoQuy.KhoiViewModels_KL = KhoiViewModels_KL();
             //tuyentqTheoQuy.QuyViewModels = QuyViewModels();
 
             user = HttpContext.Session.Get<Users>("loginUser");
@@ -2872,12 +2872,12 @@ namespace ThongKe.Controllers
 
                     tuyentqTheoQuy.ChiNhanhToReturnViewModels.Add(cnToreturn);
                 }
-                tuyentqTheoQuy.KhoiViewModels = khoiViewModels();
+                tuyentqTheoQuy.KhoiViewModels_KL = KhoiViewModels_KL();
             }
             else
             {
                 tuyentqTheoQuy.ChiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
-                tuyentqTheoQuy.KhoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
+                tuyentqTheoQuy.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
 
             }
 
@@ -3162,7 +3162,7 @@ namespace ThongKe.Controllers
             //    khachLeHeThongVM.ChiNhanhToReturnViewModels.Add(cnToreturn);
             //}
 
-            //khachLeHeThongVM.KhoiViewModels = khoiViewModels();
+            //khachLeHeThongVM.KhoiViewModels_KL = KhoiViewModels_KL();
 
             user = HttpContext.Session.Get<Users>("loginUser");
             var khachLeHeThongVM = new KhachLeHeThongViewModel();
@@ -3189,12 +3189,12 @@ namespace ThongKe.Controllers
 
                     khachLeHeThongVM.ChiNhanhToReturnViewModels.Add(cnToreturn);
                 }
-                khachLeHeThongVM.KhoiViewModels = khoiViewModels();
+                khachLeHeThongVM.KhoiViewModels_KL = KhoiViewModels_KL();
             }
             else
             {
                 khachLeHeThongVM.ChiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
-                khachLeHeThongVM.KhoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
+                khachLeHeThongVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
 
             }
 
@@ -3470,7 +3470,7 @@ namespace ThongKe.Controllers
             //    khachHuyVM.ChiNhanhToReturnViewModels.Add(cnToreturn);
             //}
 
-            //khachHuyVM.KhoiViewModels = khoiViewModels();
+            //khachHuyVM.KhoiViewModels_KL = KhoiViewModels_KL();
 
             user = HttpContext.Session.Get<Users>("loginUser");
             var khachHuyVM = new KhachHuyViewModel();
@@ -3497,12 +3497,12 @@ namespace ThongKe.Controllers
 
                     khachHuyVM.ChiNhanhToReturnViewModels.Add(cnToreturn);
                 }
-                khachHuyVM.KhoiViewModels = khoiViewModels();
+                khachHuyVM.KhoiViewModels_KL = KhoiViewModels_KL();
             }
             else
             {
                 khachHuyVM.ChiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
-                khachHuyVM.KhoiViewModels = khoiViewModels().Where(x => x.Name.Equals(user.Khoi)).ToList();
+                khachHuyVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
 
             }
 
@@ -3742,7 +3742,7 @@ namespace ThongKe.Controllers
             }
             var thongKeWebVM = new ThongKeWebViewModel();
 
-            thongKeWebVM.KhoiViewModels = khoiViewModels();
+            thongKeWebVM.KhoiViewModels_KL = KhoiViewModels_KL();
 
             try
             {
@@ -3957,7 +3957,7 @@ namespace ThongKe.Controllers
 
             var thongKeWebVM = new ThongKeWebViewModel();
 
-            thongKeWebVM.KhoiViewModels = khoiViewModels();
+            thongKeWebVM.KhoiViewModels_KL= KhoiViewModels_KL();
 
             try
             {
@@ -4361,7 +4361,7 @@ namespace ThongKe.Controllers
             });
         }
 
-        public List<KhoiViewModel> khoiViewModels()
+        public List<KhoiViewModel> KhoiViewModels_KL()
         {
             return new List<KhoiViewModel>()
             {

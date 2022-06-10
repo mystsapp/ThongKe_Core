@@ -9,10 +9,10 @@ namespace ThongKe.Models
     public class ThongKeWebViewModel
     {
         public IEnumerable<Thongkeweb> Thongkewebs { get; set; }
-        public List<KhoiViewModel> KhoiViewModels { get; set; }
+        public List<KhoiViewModel> KhoiViewModels_KL { get; set; }
         public ThongKeWebViewModel()
         {
-            KhoiViewModels = new List<KhoiViewModel>();
+            KhoiViewModels_KL = new List<KhoiViewModel>();
         }
     }
 }

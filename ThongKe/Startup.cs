@@ -13,7 +13,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using ThongKe.Data.Models;
+using ThongKe.Data.Models_KDIB;
+using ThongKe.Data.Models_KDND;
+using ThongKe.Data.Models_KDOB;
 using ThongKe.Data.Repository;
+using ThongKe.Services;
 
 namespace ThongKe
 {
@@ -30,6 +34,9 @@ namespace ThongKe
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<thongkeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))/*.EnableSensitiveDataLogging()*/);
+            services.AddDbContext<qlkdtrContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultKDOB"))/*.EnableSensitiveDataLogging()*/);
+            services.AddDbContext<qlkdtrnoidiaContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultKDND"))/*.EnableSensitiveDataLogging()*/);
+            services.AddDbContext<SaleDoanIBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultKDIB"))/*.EnableSensitiveDataLogging()*/);
 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IChiNhanhRepository, ChiNhanhRepository>();
@@ -37,6 +44,9 @@ namespace ThongKe
             services.AddTransient<IChiNhanhRepository, ChiNhanhRepository>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+            // services
+            services.AddTransient<IThongKeService, ThongKeService>();
 
             services.AddSession(options =>
             {

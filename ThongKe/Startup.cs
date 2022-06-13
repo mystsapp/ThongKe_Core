@@ -16,7 +16,9 @@ using ThongKe.Data.Models;
 using ThongKe.Data.Models_KDIB;
 using ThongKe.Data.Models_KDND;
 using ThongKe.Data.Models_KDOB;
+using ThongKe.Data.Models_QLTour;
 using ThongKe.Data.Repository;
+using ThongKe.Data.Repository.QLTour;
 using ThongKe.Services;
 
 namespace ThongKe
@@ -37,11 +39,15 @@ namespace ThongKe
             services.AddDbContext<qlkdtrContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultKDOB"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<qlkdtrnoidiaContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultKDND"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<SaleDoanIBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultKDIB"))/*.EnableSensitiveDataLogging()*/);
+            services.AddDbContext<qltourContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultQLTour"))/*.EnableSensitiveDataLogging()*/);
 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IChiNhanhRepository, ChiNhanhRepository>();
             services.AddTransient<IDMDaiLyRepository, DMDaiLyRepository>();
             services.AddTransient<IChiNhanhRepository, ChiNhanhRepository>();
+
+            // qltour
+            services.AddTransient<IPhongBanRepository, PhongBanRepository>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 

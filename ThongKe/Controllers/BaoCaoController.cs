@@ -4386,119 +4386,119 @@ namespace ThongKe.Controllers
         #region Doanh so theo sale
         public async Task<IActionResult> DoanhSoTheoSale(string searchFromDate = null, string searchToDate = null, string Macn = null)
         {
-            // from session
-            user = HttpContext.Session.Get<Users>("loginUser");
+            //// from session
+            //user = HttpContext.Session.Get<Users>("loginUser");
 
-            //// moi load vao
-            if (string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate))
-            {
-                var currentTime = DateTime.Now;
-                string TuNgayDenNgayString = LoadTuNgayDenNgay(currentTime.Month.ToString(), currentTime.Month.ToString(), currentTime.Year.ToString());
-                searchFromDate = TuNgayDenNgayString.Split('-')[0];
-                searchToDate = TuNgayDenNgayString.Split('-')[1];
-            }
-            else // da chon ngay thang - // check date correct
-            {
-                try
-                {
-                    Convert.ToDateTime(searchFromDate);
-                    Convert.ToDateTime(searchToDate);
-                }
-                catch (Exception)
-                {
-                    //BaoCaoVM = new BaoCaoViewModel()
-                    //{
-                    //    Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
-                    //    Tourkinds = _unitOfWork.tourKindRepository.GetAll(),
-                    //    TourBaoCaoDtosTheoNgay = new TourBaoCaoDtosTheoNgay()
-                    //};
+            ////// moi load vao
+            //if (string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate))
+            //{
+            //    var currentTime = DateTime.Now;
+            //    string TuNgayDenNgayString = LoadTuNgayDenNgay(currentTime.Month.ToString(), currentTime.Month.ToString(), currentTime.Year.ToString());
+            //    searchFromDate = TuNgayDenNgayString.Split('-')[0];
+            //    searchToDate = TuNgayDenNgayString.Split('-')[1];
+            //}
+            //else // da chon ngay thang - // check date correct
+            //{
+            //    try
+            //    {
+            //        Convert.ToDateTime(searchFromDate);
+            //        Convert.ToDateTime(searchToDate);
+            //    }
+            //    catch (Exception)
+            //    {
+            //        //BaoCaoVM = new BaoCaoViewModel()
+            //        //{
+            //        //    Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
+            //        //    Tourkinds = _unitOfWork.tourKindRepository.GetAll(),
+            //        //    TourBaoCaoDtosTheoNgay = new TourBaoCaoDtosTheoNgay()
+            //        //};
 
-                    ViewBag.Macn = Macn;
-                    ViewBag.searchFromDate = searchFromDate;
-                    ViewBag.searchToDate = searchToDate;
+            //        ViewBag.Macn = Macn;
+            //        ViewBag.searchFromDate = searchFromDate;
+            //        ViewBag.searchToDate = searchToDate;
 
-                    ModelState.AddModelError("", "Lỗi định dạng ngày tháng.");
-                    return View(BaoCaoVM);
-                }
-            }
+            //        ModelState.AddModelError("", "Lỗi định dạng ngày tháng.");
+            //        return View(BaoCaoVM);
+            //    }
+            //}
 
-            ViewBag.Macn = Macn;
-            ViewBag.searchFromDate = searchFromDate;
-            ViewBag.searchToDate = searchToDate;
+            //ViewBag.Macn = Macn;
+            //ViewBag.searchFromDate = searchFromDate;
+            //ViewBag.searchToDate = searchToDate;
 
-            List<string> maCns = new List<string>();
-            if (user.Role.RoleName != "Admins")
-            {
-                if (user.Role.RoleName == "Users")
-                {
-                    //BaoCaoVM.Dmchinhanhs = new List<Dmchinhanh>() { new Dmchinhanh() { Macn = user.MaCN } };
-                    //BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
-                    //BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.NguoiTao == user.Username);
+            //List<string> maCns = new List<string>();
+            //if (user.Role != "admin")
+            //{
+            //    if (user.Role == "user")
+            //    {
+            //        //BaoCaoVM.Dmchinhanhs = new List<Dmchinhanh>() { new Dmchinhanh() { Macn = user.MaCN } };
+            //        //BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+            //        //BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.NguoiTao == user.Username);
 
-                    if (!string.IsNullOrEmpty(user.PhongBans)) // co ql phongban khac'
-                    {
-                        var phongBans = user.PhongBans.Split(',').ToList();//BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, phongBans);
-                        BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoThiTruong(searchFromDate, searchToDate, phongBans);
-                        //var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
-                        //foreach (var item in phanKhuCNs)
-                        //{
-                        //    maCns.AddRange(item.ChiNhanhs.Split(',').ToList());
-                        //}
-                        //BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => maCns.Any(item2 => item1.Macn == item2));
-                        BaoCaoVM.Dmchinhanhs = new List<Dmchinhanh>() { new Dmchinhanh() { Macn = user.MaCN } };
-                    }
-                    else
-                    {
-                        BaoCaoVM.Dmchinhanhs = new List<Dmchinhanh>() { new Dmchinhanh() { Macn = user.MaCN } };
-                        BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
-                        BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.NguoiTao == user.Username);
+            //        if (!string.IsNullOrEmpty(user.PhongBans)) // co ql phongban khac'
+            //        {
+            //            var phongBans = user.PhongBans.Split(',').ToList();//BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, phongBans);
+            //            BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoThiTruong(searchFromDate, searchToDate, phongBans);
+            //            //var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
+            //            //foreach (var item in phanKhuCNs)
+            //            //{
+            //            //    maCns.AddRange(item.ChiNhanhs.Split(',').ToList());
+            //            //}
+            //            //BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => maCns.Any(item2 => item1.Macn == item2));
+            //            BaoCaoVM.Dmchinhanhs = new List<Dmchinhanh>() { new Dmchinhanh() { Macn = user.MaCN } };
+            //        }
+            //        else
+            //        {
+            //            BaoCaoVM.Dmchinhanhs = new List<Dmchinhanh>() { new Dmchinhanh() { Macn = user.MaCN } };
+            //            BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+            //            BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.NguoiTao == user.Username);
 
-                    }
+            //        }
 
-                    DoanhSoTheoSaleGroupbyNguoiTao();
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(Macn)) // moi load vao
-                    {
-                        var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
-                        foreach (var item in phanKhuCNs)
-                        {
-                            maCns.AddRange(item.ChiNhanhs.Split(',').ToList());
-                        }
-                        BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => maCns.Any(item2 => item1.Macn == item2));
-                        BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
-                        DoanhSoTheoSaleGroupbyNguoiTao();
-                    }
-                    else // co' chon chinhanh
-                    {
-                        maCns = new List<string>() { Macn };
-                        BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, maCns);
-                        DoanhSoTheoSaleGroupbyNguoiTao();
+            //        DoanhSoTheoSaleGroupbyNguoiTao();
+            //    }
+            //    else
+            //    {
+            //        if (string.IsNullOrEmpty(Macn)) // moi load vao
+            //        {
+            //            var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
+            //            foreach (var item in phanKhuCNs)
+            //            {
+            //                maCns.AddRange(item.ChiNhanhs.Split(',').ToList());
+            //            }
+            //            BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => maCns.Any(item2 => item1.Macn == item2));
+            //            BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+            //            DoanhSoTheoSaleGroupbyNguoiTao();
+            //        }
+            //        else // co' chon chinhanh
+            //        {
+            //            maCns = new List<string>() { Macn };
+            //            BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, maCns);
+            //            DoanhSoTheoSaleGroupbyNguoiTao();
 
-                        var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
-                        foreach (var item in phanKhuCNs)
-                        {
-                            maCns.AddRange(item.ChiNhanhs.Split(',').ToList());
-                        }
-                        BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => maCns.Any(item2 => item1.Macn == item2));
-                    }
-                }
-            }
-            else
-            {
-                if (string.IsNullOrEmpty(Macn))
-                {
-                    BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
-                    DoanhSoTheoSaleGroupbyNguoiTao();
-                }
-                else // co' chon chinhanh
-                {
-                    maCns = new List<string>() { Macn };
-                    BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, maCns);
-                    DoanhSoTheoSaleGroupbyNguoiTao();
-                }
-            }
+            //            var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
+            //            foreach (var item in phanKhuCNs)
+            //            {
+            //                maCns.AddRange(item.ChiNhanhs.Split(',').ToList());
+            //            }
+            //            BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => maCns.Any(item2 => item1.Macn == item2));
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    if (string.IsNullOrEmpty(Macn))
+            //    {
+            //        BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+            //        DoanhSoTheoSaleGroupbyNguoiTao();
+            //    }
+            //    else // co' chon chinhanh
+            //    {
+            //        maCns = new List<string>() { Macn };
+            //        BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, maCns);
+            //        DoanhSoTheoSaleGroupbyNguoiTao();
+            //    }
+            //}
 
             return View(BaoCaoVM);
         }

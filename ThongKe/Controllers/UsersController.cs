@@ -52,6 +52,9 @@ namespace ThongKe.Controllers
             {
                 return View("AccessDenied");
             }
+            UserVM.PhongBans = PhongBans();
+            UserVM.Dmdailies = _unitOfWork.dMDaiLyRepository.GetAll();
+
             return View(UserVM);
         }
 
@@ -223,21 +226,16 @@ namespace ThongKe.Controllers
             };
         }
 
-        //protected void SetAlert(string message, string type)
-        //{
-        //    TempData["AlertMessage"] = message;
-        //    if (type == "success")
-        //    {
-        //        TempData["AlertType"] = "alert-success";
-        //    }
-        //    else if (type == "warning")
-        //    {
-        //        TempData["AlertType"] = "alert-warning";
-        //    }
-        //    else if (type == "error")
-        //    {
-        //        TempData["AlertType"] = "alert-error";
-        //    }
-        //}
+        private List<Data.Models_QLTour.Phongban> PhongBans()
+        {
+            //return _unitOfWork.phongBanRepository.GetAll()
+            //                                     .Where(x => !string.IsNullOrEmpty(x.Macode))
+            //                                     .ToList();
+            var phongbans = _unitOfWork.phongBanRepository.GetAll().Where(x => !string.IsNullOrEmpty(x.Macode)).ToList();
+            var phongban = _unitOfWork.phongBanRepository.Find(x => x.Maphong == "KT").FirstOrDefault();
+            phongbans.Add(phongban);
+            return phongbans;
+        }
+
     }
 }

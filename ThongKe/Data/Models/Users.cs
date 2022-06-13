@@ -19,7 +19,7 @@ namespace ThongKe.Data.Models
 
         public string Daily { get; set; }
         public string Chinhanh { get; set; }
-        public string Role { get; set; }
+        public string Role { get; set; } // thua
         public bool Doimatkhau { get; set; }
         public DateTime? Ngaydoimk { get; set; }
         public bool Trangthai { get; set; }
@@ -28,6 +28,9 @@ namespace ThongKe.Data.Models
         public DateTime? Ngaytao { get; set; }
         public string Nguoicapnhat { get; set; }
         public DateTime? Ngaycapnhat { get; set; }
-        public string Nhom { get; set; }
+        public string Nhom { get; set; } // roles
+
+        public string PhongBanQL { get; set; } // danh cho IB
+        public string DaiLyQL { get; set; } // danh cho doan ND, OB
     }
 }

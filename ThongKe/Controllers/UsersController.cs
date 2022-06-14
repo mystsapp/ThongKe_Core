@@ -92,6 +92,8 @@ namespace ThongKe.Controllers
             UserVM.User = _unitOfWork.userRepository.Find(x => x.Username.Equals(id)).FirstOrDefault();
             if (UserVM.User != null)
             {
+                UserVM.PhongBans = PhongBans();
+                UserVM.Dmdailies = _unitOfWork.dMDaiLyRepository.GetAll();
                 return View(UserVM);
             }
             else

@@ -53,6 +53,7 @@ namespace ThongKe
 
             // services
             services.AddTransient<IThongKeService, ThongKeService>();
+            services.AddTransient<IBaoCaoService, BaoCaoService>();
 
             services.AddSession(options =>
             {

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ThongKe.Data.Models;
+using ThongKe.Data.Models_KDIB;
 using ThongKe.Data.Models_QLTour;
+using ThongKe.Data.Repository.KDIB;
 using ThongKe.Data.Repository.QLTour;
 
 namespace ThongKe.Data.Repository
@@ -17,6 +19,14 @@ namespace ThongKe.Data.Repository
 
         // qltour
         IPhongBanRepository phongBanRepository { get; }
+        IDmChiNhanhRepository dmChiNhanhRepository { get; }
+        ITourKindRepository tourKindRepository { get; }
+        ICompanyRepository companyRepository { get; }
+
+        // KDIB
+        ICacNoiDungHuyTourRepository cacNoiDungHuyTourRepository { get; }
+        ITourKDIBRepository tourKDIBRepository { get; }
+        IPhanKhuCNRepository phanKhuCNRepository { get; }
 
         Task<int> Complete();
     }
@@ -25,11 +35,13 @@ namespace ThongKe.Data.Repository
     {
         private readonly thongkeContext _context;
         private readonly qltourContext _qltourContext;
+        private readonly SaleDoanIBContext _saleDoanIBContext;
 
-        public UnitOfWork(thongkeContext context, qltourContext qltourContext)
+        public UnitOfWork(thongkeContext context, qltourContext qltourContext, SaleDoanIBContext saleDoanIBContext)
         {
             _context = context;
             _qltourContext = qltourContext;
+            _saleDoanIBContext = saleDoanIBContext;
 
             userRepository = new UserRepository(_context);
             chiNhanhRepository = new ChiNhanhRepository(_context);
@@ -38,6 +50,14 @@ namespace ThongKe.Data.Repository
 
             // qltour
             phongBanRepository = new PhongBanRepository(_qltourContext);
+            dmChiNhanhRepository = new DmChiNhanhRepository(_qltourContext);
+            tourKindRepository = new TourKindRepository(_qltourContext);
+            companyRepository = new CompanyRepository(_qltourContext);
+
+            // KDIB
+            cacNoiDungHuyTourRepository = new CacNoiDungHuyTourRepository(_saleDoanIBContext);
+            tourKDIBRepository = new TourKDIBRepository(_saleDoanIBContext);
+            phanKhuCNRepository = new PhanKhuCNRepository(_saleDoanIBContext);
         }
 
         public IUserRepository userRepository { get; }
@@ -49,6 +69,18 @@ namespace ThongKe.Data.Repository
         public IThongKeRepository thongKeRepository { get; }
 
         public IPhongBanRepository phongBanRepository { get; }
+
+        public IDmChiNhanhRepository dmChiNhanhRepository { get; }
+
+        public ITourKindRepository tourKindRepository { get; }
+
+        public ICacNoiDungHuyTourRepository cacNoiDungHuyTourRepository { get; }
+
+        public ITourKDIBRepository tourKDIBRepository { get; }
+
+        public ICompanyRepository companyRepository { get; }
+
+        public IPhanKhuCNRepository phanKhuCNRepository { get; }
 
         public async Task<int> Complete()
         {

@@ -11,6 +11,10 @@
     <Compile Remove="Migrations\20200211040254_changeAccountName.Designer.cs" />
     <Compile Remove="Migrations\20200211062220_changeAccountName.cs" />
     <Compile Remove="Migrations\20200211062220_changeAccountName.Designer.cs" />
+    <Compile Remove="Migrations\20220616094216_addRoleTbl.cs" />
+    <Compile Remove="Migrations\20220616094216_addRoleTbl.Designer.cs" />
+    <Compile Remove="Migrations\20220616095348_fixRoleUser.cs" />
+    <Compile Remove="Migrations\20220616095348_fixRoleUser.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

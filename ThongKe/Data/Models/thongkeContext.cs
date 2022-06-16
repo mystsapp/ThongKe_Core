@@ -17,6 +17,8 @@ namespace ThongKe.Data.Models
         }
 
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+
         public virtual DbSet<Chinhanh> Chinhanh { get; set; }
         public virtual DbSet<Chitiettour> Chitiettour { get; set; }
         public virtual DbSet<Dmdaily> Dmdaily { get; set; }
@@ -117,10 +119,10 @@ namespace ThongKe.Data.Models
                     .HasColumnName("password")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Role)
-                    .HasColumnName("role")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                //entity.Property(e => e.Role)
+                //    .HasColumnName("role")
+                //    .HasMaxLength(50)
+                //    .IsUnicode(false);
 
                 entity.Property(e => e.Trangthai)
                     .IsRequired()

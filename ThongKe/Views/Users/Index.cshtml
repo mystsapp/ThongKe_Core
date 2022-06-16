@@ -48,7 +48,7 @@
                         <tr class="table-info">
                             <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().Username)</th>
                             <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().Hoten)</th>
-                            <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().Role)</th>
+                            @*<th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().Role)</th>*@
                             <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().Daily)</th>
                             <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().Chinhanh)</th>
                             <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().Trangthai)</th>
@@ -65,7 +65,7 @@
                                     <td>@Html.DisplayFor(m => item.Username)</td>
                                     <td>@Html.DisplayFor(m => item.Hoten)</td>
                                     @*<td>@string.Format("{0:0,0}", item.Gia) VNĐ</td>*@
-                                    <td>@Html.DisplayFor(m => item.Role)</td>
+                                    @*<td>@Html.DisplayFor(m => item.Role)</td>*@
                                     <td>@Html.DisplayFor(m => item.Daily)</td>
                                     <td>@Html.DisplayFor(m => item.Chinhanh)</td>
                                     <td>@Html.DisplayFor(m => item.Trangthai)</td>

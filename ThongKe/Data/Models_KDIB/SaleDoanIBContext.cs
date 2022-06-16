@@ -15,6 +15,9 @@ namespace ThongKe.Data.Models_KDIB
         {
         }
 
+        public virtual DbSet<CacNoiDungHuyTours> CacNoiDungHuyTours { get; set; }
+        public virtual DbSet<PhanKhuCns> PhanKhuCns { get; set; }
+        public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<Tours> Tours { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -28,6 +31,59 @@ namespace ThongKe.Data.Models_KDIB
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<CacNoiDungHuyTours>(entity =>
+            {
+                entity.Property(e => e.NguoiSua)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NguoiTao)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NguoiXoa)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NoiDung)
+                    .IsRequired()
+                    .HasMaxLength(250);
+            });
+
+            modelBuilder.Entity<PhanKhuCns>(entity =>
+            {
+                entity.HasKey(e => e.RoleId);
+
+                entity.ToTable("PhanKhuCNs");
+
+                entity.Property(e => e.RoleId).ValueGeneratedNever();
+
+                entity.Property(e => e.ChiNhanhs)
+                    .IsRequired()
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.NguoiSua)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NguoiTao)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Role)
+                    .WithOne(p => p.PhanKhuCns)
+                    .HasForeignKey<PhanKhuCns>(d => d.RoleId);
+            });
+
+            modelBuilder.Entity<Roles>(entity =>
+            {
+                entity.Property(e => e.Description).HasMaxLength(250);
+
+                entity.Property(e => e.RoleName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+            });
+
             modelBuilder.Entity<Tours>(entity =>
             {
                 entity.Property(e => e.ChiNhanhDhid).HasColumnName("ChiNhanhDHId");

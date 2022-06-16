@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ThongKe.Data.Models
 {
@@ -19,7 +21,7 @@ namespace ThongKe.Data.Models
 
         public string Daily { get; set; }
         public string Chinhanh { get; set; }
-        public string Role { get; set; } // thua
+        //public string Role { get; set; } // thua
         public bool Doimatkhau { get; set; }
         public DateTime? Ngaydoimk { get; set; }
         public bool Trangthai { get; set; }
@@ -32,5 +34,13 @@ namespace ThongKe.Data.Models
 
         public string PhongBanQL { get; set; } // danh cho IB
         public string DaiLyQL { get; set; } // danh cho doan ND, OB
+
+        [DisplayName("Phòng ban")]
+        [MaxLength(50), Column(TypeName = "nvarchar(50)")]
+        public string PhongBanId { get; set; } // in qltour
+
+        [DisplayName("Role")]
+        public int RoleId { get; set; }
+        //public virtual Role Role { get; set; }
     }
 }

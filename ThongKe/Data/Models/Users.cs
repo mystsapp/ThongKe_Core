@@ -21,7 +21,7 @@ namespace ThongKe.Data.Models
 
         public string Daily { get; set; }
         public string Chinhanh { get; set; }
-        //public string Role { get; set; } // thua
+        public string Role { get; set; } // thua
         public bool Doimatkhau { get; set; }
         public DateTime? Ngaydoimk { get; set; }
         public bool Trangthai { get; set; }

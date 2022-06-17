@@ -42,10 +42,12 @@ namespace ThongKe
             services.AddDbContext<SaleDoanIBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultKDIB"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<qltourContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultQLTour"))/*.EnableSensitiveDataLogging()*/);
 
+            // thongke
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IChiNhanhRepository, ChiNhanhRepository>();
             services.AddTransient<IDMDaiLyRepository, DMDaiLyRepository>();
             services.AddTransient<IChiNhanhRepository, ChiNhanhRepository>();
+            services.AddTransient<IRoleRepository, RoleRepository>();
 
             // qltour
             services.AddTransient<IPhongBanRepository, PhongBanRepository>();

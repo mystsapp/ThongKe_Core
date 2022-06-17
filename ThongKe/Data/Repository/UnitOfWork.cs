@@ -12,10 +12,12 @@ namespace ThongKe.Data.Repository
 {
     public interface IUnitOfWork : IDisposable
     {
+        // thongke
         IUserRepository userRepository { get; }
         IChiNhanhRepository chiNhanhRepository { get; }
         IDMDaiLyRepository dMDaiLyRepository { get; }
         IThongKeRepository thongKeRepository { get; }
+        IRoleRepository roleRepository { get; }
 
         // qltour
         IPhongBanRepository phongBanRepository { get; }
@@ -47,6 +49,7 @@ namespace ThongKe.Data.Repository
             chiNhanhRepository = new ChiNhanhRepository(_context);
             dMDaiLyRepository = new DMDaiLyRepository(_context); 
             thongKeRepository = new ThongKeRepository(_context);
+            roleRepository = new RoleRepository(_context);
 
             // qltour
             phongBanRepository = new PhongBanRepository(_qltourContext);
@@ -81,6 +84,8 @@ namespace ThongKe.Data.Repository
         public ICompanyRepository companyRepository { get; }
 
         public IPhanKhuCNRepository phanKhuCNRepository { get; }
+
+        public IRoleRepository roleRepository { get; }
 
         public async Task<int> Complete()
         {

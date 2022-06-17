@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ThongKe.Data.Models;
 
 namespace ThongKe.Migrations
 {
     [DbContext(typeof(thongkeContext))]
-    partial class thongkeContextModelSnapshot : ModelSnapshot
+    [Migration("20220617033301_addRole")]
+    partial class addRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -597,7 +599,8 @@ namespace ThongKe.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ChiNhanhQL")
+                    b.Property<string>("ChiNhanhs")
+                        .IsRequired()
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
@@ -605,10 +608,10 @@ namespace ThongKe.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
-                    b.Property<DateTime?>("NgaySua")
+                    b.Property<DateTime>("NgaySua")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("NgayTao")
+                    b.Property<DateTime>("NgayTao")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NguoiSua")

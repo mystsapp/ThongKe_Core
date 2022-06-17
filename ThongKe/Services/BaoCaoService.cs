@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ThongKe.Data.DTOs;
+using ThongKe.Data.Models;
+using ThongKe.Data.Models_QLTour;
 using ThongKe.Data.Repository;
 
 namespace ThongKe.Services
@@ -10,6 +13,9 @@ namespace ThongKe.Services
     {
         IEnumerable<TourIBDTO> DoanhSoTheoThiTruong(string searchFromDate, string searchToDate, List<string> thiTruongs);
         IEnumerable<TourIBDTO> DoanhSoTheoSale(string searchFromDate, string searchToDate, List<string> MaCNs);
+        Task<IEnumerable<Role>> GetRoles();
+        Task<Role> GetRoleById(int id);
+        IEnumerable<Dmchinhanh> GetAllChiNhanh();
     }
     public class BaoCaoService : IBaoCaoService
     {
@@ -394,5 +400,19 @@ namespace ThongKe.Services
 
         }
 
+        public IEnumerable<Dmchinhanh> GetAllChiNhanh()
+        {
+            return _unitOfWork.dmChiNhanhRepository.GetAll();
+        }
+
+        public async Task<Role> GetRoleById(int id)
+        {
+            return await _unitOfWork.roleRepository.GetRoleById(id);
+        }
+
+        public async Task<IEnumerable<Role>> GetRoles()
+        {
+            return await _unitOfWork.roleRepository.GetRoles();
+        }
     }
 }

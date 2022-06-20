@@ -4400,16 +4400,24 @@ namespace ThongKe.Controllers
         public async Task<IActionResult> DoanhSoTheoSale(string searchFromDate = null, string searchToDate = null,
             string Macn = null, string khoi = null)
         {
+
+            DateTime now = DateTime.Now;
+            var startDate = new DateTime(now.Year, now.Month, 1);
+            var endDate = startDate.AddMonths(1).AddDays(-1);
+
             // from session
             var user = HttpContext.Session.Get<Users>("loginUser");
 
             //// moi load vao
             if (string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate))
             {
-                var currentTime = DateTime.Now;
-                string TuNgayDenNgayString = LoadTuNgayDenNgay(currentTime.Month.ToString(), currentTime.Month.ToString(), currentTime.Year.ToString());
-                searchFromDate = TuNgayDenNgayString.Split('-')[0];
-                searchToDate = TuNgayDenNgayString.Split('-')[1];
+                //var currentTime = DateTime.Now;
+                //string TuNgayDenNgayString = LoadTuNgayDenNgay(currentTime.Month.ToString(), currentTime.Month.ToString(), currentTime.Year.ToString());
+                //searchFromDate = TuNgayDenNgayString.Split('-')[0];
+                //searchToDate = TuNgayDenNgayString.Split('-')[1];
+
+                searchFromDate = DateTime.Now.ToShortDateString();
+                searchToDate = (new DateTime(DateTime.Now.Year, DateTime.Now.Month + 1, 1).AddDays(-1)).ToString();
             }
             else // da chon ngay thang - // check date correct
             {
@@ -4437,6 +4445,7 @@ namespace ThongKe.Controllers
             }
 
             ViewBag.Macn = Macn;
+            ViewBag.khoi = khoi;
             ViewBag.searchFromDate = searchFromDate;
             ViewBag.searchToDate = searchToDate;
 
@@ -4594,10 +4603,12 @@ namespace ThongKe.Controllers
                     switch (khoi)
                     {
                         case "IB":
-
-                            maCns = new List<string>() { Macn };
+                            
+                            maCns = string.IsNullOrEmpty(Macn) ? BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList() 
+                                : new List<string>() { Macn };
                             BaoCaoVM.TourIBDTOs = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, maCns);
-                            // DoanhSoTheoSaleGroupbyNguoiTao();
+                            
+                            DoanhSoTheoSaleGroupbyNguoiTao();
 
                             //var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
                             //foreach (var item in phanKhuCNs)
@@ -5340,6 +5351,90 @@ namespace ThongKe.Controllers
 
             return searchFromDate + "-" + searchToDate;
         }
+
+
+        private void DoanhSoTheoSaleGroupbyNguoiTao()
+        {
+            ///////////////////////////////// group by ////////////////////////////////////////////
+
+            //With Query Syntax
+            var results1 = (
+                from p in BaoCaoVM.TourIBDTOs
+                group p by p.NguoiTao into g
+                select new TourIBDtosGroupByNguoiTaoViewModel()
+                {
+                    NguoiTao = g.Key,
+                    TourIBDTOs = g.ToList()
+                }
+                ).ToList();
+            BaoCaoVM.TourIBDtosGroupByNguoiTaos = results1;
+            ////////////// tinh TC /////////////////////
+
+            foreach (var item in results1)
+            {
+                ////decimal? tongCong = 0;
+                //// chua thanh ly hop dong
+                //var chuaThanhLyHopDong = item.TourBaoCaoDtos.Where(x => string.IsNullOrEmpty(x.NgayThanhLyHD.ToString())).Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+                //// da thanh ly hop dong
+                //var daThanhLyHopDong = item.TourBaoCaoDtos.Where(x => !string.IsNullOrEmpty(x.NgayThanhLyHD.ToString())).Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+                //// tong cong theo tung sale
+                //var tongCongTheoTungSale = chuaThanhLyHopDong + daThanhLyHopDong;
+                // sokhach
+                var soKhach = item.TourIBDTOs.Sum(x => (x.SoKhachTT == 0) ? x.SoKhachDK : x.SoKhachTT);
+
+                decimal chuaThanhLyHopDong = 0, daThanhLyHopDong = 0;
+                foreach (var itemDto in item.TourIBDTOs)
+                {
+                    var ngayThanhLyHD = itemDto.NgayThanhLyHD.ToString("dd/MM/yyyy");
+                    if (ngayThanhLyHD == "01/01/0001")
+                    {
+                        chuaThanhLyHopDong += (itemDto.DoanhThuTT == 0) ? itemDto.DoanhThuDK : itemDto.DoanhThuTT;
+                    }
+                    else
+                    {
+                        daThanhLyHopDong += (itemDto.DoanhThuTT == 0) ? itemDto.DoanhThuDK : itemDto.DoanhThuTT;
+                    }
+                }
+
+                foreach (var item1 in item.TourIBDTOs)
+                {
+                    item1.ChuaThanhLyHopDong = chuaThanhLyHopDong;
+                    item1.DaThanhLyHopDong = daThanhLyHopDong;
+                    item1.TongCongTheoTungSale = chuaThanhLyHopDong + daThanhLyHopDong;
+                    item1.TongSoKhachTheoSale = soKhach;
+                }
+
+                //foreach (var item1 in item.ChiTietHdViewModels)
+                //{
+                //    item1.TC = tongCong;
+                //}
+            }
+
+            decimal? tongCong = 0;
+            int tongCongSK = 0;
+            foreach (var item in results1)
+            {
+                tongCong += item.TourIBDTOs.FirstOrDefault().ChuaThanhLyHopDong + item.TourIBDTOs.FirstOrDefault().DaThanhLyHopDong;
+                tongCongSK += item.TourIBDTOs.FirstOrDefault().TongSoKhachTheoSale;
+            }
+            BaoCaoVM.TongCong = tongCong;
+            BaoCaoVM.TongSK = tongCongSK;
+            ////////////// tinh TC /////////////////////
+
+            //foreach (var item in results1)
+            //{
+            //    System.Diagnostics.Debug.WriteLine(item.NoiLamViec);
+            //    foreach (var car in item.ChiTietHdViewModels)
+            //    {
+            //        System.Diagnostics.Debug.WriteLine(car.TenMon);
+            //    }
+            //}
+
+            //System.Diagnostics.Debug.WriteLine("-----------");
+
+            //////////////////////////// group by/////////////////////////////////////////////////
+        }
+
 
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

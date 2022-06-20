@@ -104,7 +104,7 @@
                         </div>
                         <div class="col-4">
                             <select asp-for="User.Chinhanh" class="form-control border-input"
-                                    asp-items="@(new SelectList(Model.Chinhanhs,"Chinhanh1","Chinhanh1"))">
+                                    asp-items="@(new SelectList(Model.Dmchinhanhs,"Macn","Macn"))">
                             </select>
                         </div>
 
@@ -130,6 +130,16 @@
                         </div>
 
                         <div class="col-2">
+                            <label asp-for="User.RoleId"></label>
+                        </div>
+                        <div class="col-4">
+                            <select asp-for="User.RoleId" class="form-control border-input "
+                                    asp-items="@(new SelectList(Model.Roles,"Id","RoleName"))">
+                            </select>
+                            <span class="text-danger" asp-validation-for="User.RoleId"></span>
+                        </div>
+                        @*
+                        <div class="col-2">
                             <label asp-for="User.Nhom"></label>
                         </div>
                         <div class="col-4">
@@ -138,7 +148,7 @@
                             </select>
                             <span class="text-danger" asp-validation-for="User.Nhom"></span>
                         </div>
-
+*@
                     </div>
 
                     <div class="form-group row">
@@ -163,6 +173,20 @@
                                     asp-items="@(new SelectList(Model.Dmdailies, "Id", "Daily"))" id="ddlDaiLyQL">
                             </select>
                             <span class="text-danger" asp-validation-for="User.DaiLyQL"></span>
+                        </div>
+
+                    </div>
+                    
+                    <div class="form-group row">
+
+                        <div class="col-2">
+                            <label asp-for="User.PhongBanId"></label>
+                        </div>
+                        <div class="col-4">
+                            <select asp-for="User.PhongBanId" class=" form-control"
+                                    asp-items="@(new SelectList(Model.PhongBans, "Maphong", "Tenphong"))" id="ddlPhongBanId">
+                            </select>
+                            <span class="text-danger" asp-validation-for="User.PhongBanId"></span>
                         </div>
 
                     </div>

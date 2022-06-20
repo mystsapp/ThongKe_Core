@@ -48,12 +48,21 @@
                 <div class="p-4 border rounded">
 
                     <input type="hidden" asp-for="OldPass" value="@Model.User.Password" />
-                    <input type="hidden" asp-for="User.Password" value="@Model.User.Password" />
-                    <input type="hidden" asp-for="User.Username" value="@Model.User.Username" />
+                    <input type="hidden" asp-for="User.Password" />
+                    <input type="hidden" asp-for="User.Username" />
+                    <input type="hidden" asp-for="User.Nhom" />
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
 
                     <div class="form-group row">
+                        
+                        <div class="col-2">
+                            <label asp-for="User.Username"></label>
+                        </div>
+                        <div class="col-4">
+                            <input class="form-control" asp-for="User.Username" readonly/>
+                            <span class="text-danger" asp-validation-for="User.Username"></span>
+                        </div>
 
                         <div class="col-2">
                             <label asp-for="User.Hoten"></label>
@@ -63,6 +72,10 @@
                             <span class="text-danger" asp-validation-for="User.Hoten"></span>
                         </div>
 
+                    </div>
+
+                    <div class="form-group row">
+
                         <div class="col-2">
                             <label asp-for="User.Password"></label>
                         </div>
@@ -71,11 +84,6 @@
                             <span class="text-danger" asp-validation-for="PassToEdit"></span>
                         </div>
 
-                    </div>
-
-
-
-                    <div class="form-group row">
                         <div class="col-2">
                             <label asp-for="User.Daily"></label>
                         </div>
@@ -86,21 +94,21 @@
                             <span class="text-danger" asp-validation-for="User.Daily"></span>
                         </div>
 
+                    </div>
+
+
+
+                    <div class="form-group row">
 
                         <div class="col-2">
                             <label asp-for="User.Chinhanh"></label>
                         </div>
                         <div class="col-4">
                             <select asp-for="User.Chinhanh" class="form-control border-input"
-                                    asp-items="@(new SelectList(Model.Chinhanhs,"Chinhanh1","Chinhanh1"))">
+                                    asp-items="@(new SelectList(Model.Dmchinhanhs,"Macn","Macn"))">
                             </select>
                         </div>
 
-
-                    </div>
-
-
-                    <div class="form-group row">
                         <div class="col-2">
                             <label asp-for="User.Trangthai"></label>
                         </div>
@@ -108,6 +116,11 @@
                             <input type="checkbox" asp-for="User.Trangthai" />
                         </div>
 
+
+
+                    </div>
+
+                    <div class="form-group row">
 
                         <div class="col-2">
                             <label asp-for="User.Khoi"></label>
@@ -119,20 +132,31 @@
                             <span class="text-danger" asp-validation-for="User.Khoi"></span>
                         </div>
 
+                        <div class="col-2">
+                            <label asp-for="User.RoleId"></label>
+                        </div>
+                        <div class="col-4">
+                            <select asp-for="User.RoleId" class="form-control border-input "
+                                    asp-items="@(new SelectList(Model.Roles,"Id","RoleName"))">
+                            </select>
+                            <span class="text-danger" asp-validation-for="User.RoleId"></span>
+                        </div>
 
                     </div>
 
                     <div class="form-group row">
+
                         <div class="col-2">
-                            <label asp-for="User.Nhom"></label>
+                            <label asp-for="User.PhongBanQL"></label>
                         </div>
                         <div class="col-4">
-                            <select asp-for="User.Nhom" class="form-control border-input "
-                                    asp-items="@(new SelectList(Model.RoleViewModels,"Id","Name"))">
+                            <input type="hidden" asp-for="User.PhongBanQL" id="hidDdlPhongBanQL" />
+                            <select class="phongBans select2-hidden-accessible" multiple="" data-placeholder="Chọn phòng ban" style="width: 100%;" data-select2-id="24" tabindex="-1" aria-hidden="true"
+                                    asp-items="@(new SelectList(Model.PhongBans, "Maphong", "Maphong"))" id="ddlPhongBanQL">
                             </select>
-                            <span class="text-danger" asp-validation-for="User.Nhom"></span>
+                            <span class="text-danger" asp-validation-for="User.PhongBanQL"></span>
                         </div>
-                        
+
                         <div class="col-2">
                             <label asp-for="User.DaiLyQL"></label>
                         </div>
@@ -145,18 +169,17 @@
                         </div>
 
                     </div>
-                    
+
                     <div class="form-group row">
 
                         <div class="col-2">
-                            <label asp-for="User.PhongBanQL"></label>
+                            <label asp-for="User.PhongBanId"></label>
                         </div>
                         <div class="col-4">
-                            <input type="hidden" asp-for="User.PhongBanQL" id="hidDdlPhongBanQL" />
-                            <select class="phongBans select2-hidden-accessible" multiple="" data-placeholder="Chọn phòng ban" style="width: 100%;" data-select2-id="24" tabindex="-1" aria-hidden="true"
-                                    asp-items="@(new SelectList(Model.PhongBans, "Maphong", "Maphong"))" id="ddlPhongBanQL">
+                            <select asp-for="User.PhongBanId" class=" form-control"
+                                    asp-items="@(new SelectList(Model.PhongBans, "Maphong", "Tenphong"))" id="ddlPhongBanId">
                             </select>
-                            <span class="text-danger" asp-validation-for="User.PhongBanQL"></span>
+                            <span class="text-danger" asp-validation-for="User.PhongBanId"></span>
                         </div>
 
                     </div>
@@ -178,26 +201,25 @@
 
 </section>
 <!-- /.content -->
-
-
 @section Scripts{
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
 
     }
 
     <script>
         // for phongBanQL edit
-        var selectedValues = new Array();        
+        var selectedValues = new Array();
         var phongBanQL = $('#hidDdlPhongBanQL').val();
         selectedValues = phongBanQL.split(',');
-        $('#ddlPhongBanQL').val(selectedValues);        
+        $('#ddlPhongBanQL').val(selectedValues);
         // for phongBanQL edit
         debugger
         // for daiLyQL edit
-        var selectedValuesDaiLy = new Array();        
+        var selectedValuesDaiLy = new Array();
         var daiLyQL = $('#hidDdlDaiLyQL').val();
         selectedValuesDaiLy = daiLyQL.split(',');
-        $('#ddlDaiLyQL').val(selectedValuesDaiLy);        
+        $('#ddlDaiLyQL').val(selectedValuesDaiLy);
         // for phongBanQL edit
 
 
@@ -208,7 +230,7 @@
         });
 
         // gan'  qua hidden field / phongBanQL
-        $('.phongBans').on('change', function () {
+        $('.phongBans').on('change', function() {
             phongBan = $(this).val();
 
             $('#hidDdlPhongBanQL').val(phongBan);
@@ -216,13 +238,13 @@
         });
 
         // ddlDaiLyQL
-         $('#ddlDaiLyQL').select2({
+        $('#ddlDaiLyQL').select2({
 
             theme: 'bootstrap4'
         });
 
         // gan'  qua hidden field
-        $('.daiLyQL').on('change', function () {
+        $('.daiLyQL').on('change', function() {
             daiLy = $(this).val();
 
             $('#hidDdlDaiLyQL').val(daiLy);

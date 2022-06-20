@@ -9,9 +9,10 @@ namespace ThongKe.Models
     {
         public IEnumerable<Users> Users { get; set; }
         public Users User { get; set; }
-        public IEnumerable<Chinhanh> Chinhanhs { get; set; }
+        public IEnumerable<Dmchinhanh> Dmchinhanhs { get; set; }
         public IEnumerable<Dmdaily> Dmdailies { get; set; }
         public IEnumerable<Phongban> PhongBans { get; set; }
+        public IEnumerable<Role> Roles { get; set; }
         public IEnumerable<KhoiViewModel> KhoiViewModels { get; set; }
         public IEnumerable<RoleViewModel> RoleViewModels { get; set; }
         public string OldPass { get; set; }

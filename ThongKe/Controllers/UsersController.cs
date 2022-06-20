@@ -24,7 +24,7 @@ namespace ThongKe.Controllers
             UserVM = new UserViewModel()
             {
                 Users = _unitOfWork.userRepository.GetAll(),
-                Chinhanhs = _unitOfWork.chiNhanhRepository.GetAll(),
+                Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),// _unitOfWork.chiNhanhRepository.GetAll(),
                 Dmdailies = _unitOfWork.dMDaiLyRepository.GetAll(),
                 KhoiViewModels = khoiViewModels(),
                 RoleViewModels = RoleViewModels(),
@@ -45,7 +45,7 @@ namespace ThongKe.Controllers
         }
 
         // Get Create method
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             var user = HttpContext.Session.Get<Users>("loginUser");
             if (user.Nhom != "Admins" && user.Nhom != "KDO")
@@ -54,6 +54,7 @@ namespace ThongKe.Controllers
             }
             UserVM.PhongBans = PhongBans();
             UserVM.Dmdailies = _unitOfWork.dMDaiLyRepository.GetAll();
+            UserVM.Roles = await _unitOfWork.roleRepository.GetRoles();
 
             return View(UserVM);
         }
@@ -81,7 +82,7 @@ namespace ThongKe.Controllers
         }
 
         // Get Edit method
-        public IActionResult Edit(string id)
+        public async Task<IActionResult> Edit(string id)
         {
             var user = HttpContext.Session.Get<Users>("loginUser");
             if (user.Nhom != "Admins" && user.Nhom != "KDO")
@@ -94,6 +95,7 @@ namespace ThongKe.Controllers
             {
                 UserVM.PhongBans = PhongBans();
                 UserVM.Dmdailies = _unitOfWork.dMDaiLyRepository.GetAll();
+                UserVM.Roles = await _unitOfWork.roleRepository.GetRoles();
                 return View(UserVM);
             }
             else
@@ -120,7 +122,7 @@ namespace ThongKe.Controllers
                 UserVM = new UserViewModel()
                 {
                     Users = _unitOfWork.userRepository.GetAll(),
-                    Chinhanhs = _unitOfWork.chiNhanhRepository.GetAll(),
+                    Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
                     Dmdailies = _unitOfWork.dMDaiLyRepository.GetAll(),
                     KhoiViewModels = khoiViewModels(),
                     RoleViewModels = RoleViewModels(),
@@ -210,7 +212,8 @@ namespace ThongKe.Controllers
             return new List<KhoiViewModel>()
             {
                 new KhoiViewModel() { Id = 1, Name = "OB" },
-                new KhoiViewModel() { Id = 2, Name = "ND" }
+                new KhoiViewModel() { Id = 2, Name = "ND" },
+                new KhoiViewModel() { Id = 3, Name = "IB" }
             };
         }
 

@@ -59,6 +59,7 @@ namespace ThongKe
             services.AddTransient<ICacNoiDungHuyTourRepository, CacNoiDungHuyTourRepository>();
             services.AddTransient<ITourKDIBRepository, TourKDIBRepository>();
             services.AddTransient<IPhanKhuCNRepository, PhanKhuCNRepository>();
+            services.AddTransient<IUserIBRepository, UserIBRepository>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 

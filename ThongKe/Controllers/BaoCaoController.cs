@@ -4484,7 +4484,17 @@ namespace ThongKe.Controllers
                             }
                             else
                             {
-                                BaoCaoVM.TourIBDTOs = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());//.Where(x => x == user.Chinhanh).ToList());
+                                BaoCaoVM.TourIBDTOs = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Where(x => x.Macn == user.Chinhanh).Select(x => x.Macn).ToList());
+                                BaoCaoVM.TourIBDTOs = BaoCaoVM.TourIBDTOs.Where(x => x.NguoiTao == user.Username);
+                            }
+                            DoanhSoTheoSaleGroupbyNguoiTao();
+                            break;
+
+                        case "ND":
+                            if (!string.IsNullOrEmpty(user.DaiLyQL)) // co ql vanphong khac' --> IB
+                            {
+                                var daiLyQL = user.DaiLyQL.Split(',').ToList();
+                                BaoCaoVM.TourNDDTOs = _baoCaoService.DoanhSoTheoDaiLy(searchFromDate, searchToDate, daiLyQL);
                             }
                             break;
 
@@ -4603,11 +4613,11 @@ namespace ThongKe.Controllers
                     switch (khoi)
                     {
                         case "IB":
-                            
-                            maCns = string.IsNullOrEmpty(Macn) ? BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList() 
+
+                            maCns = string.IsNullOrEmpty(Macn) ? BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList()
                                 : new List<string>() { Macn };
                             BaoCaoVM.TourIBDTOs = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, maCns);
-                            
+
                             DoanhSoTheoSaleGroupbyNguoiTao();
 
                             //var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
@@ -4622,7 +4632,7 @@ namespace ThongKe.Controllers
                     }
 
                 }
-                
+
                 //if (string.IsNullOrEmpty(Macn))
                 //{
                 //    BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());

@@ -19,6 +19,7 @@ namespace ThongKe.Data.Models_KDIB
         public virtual DbSet<PhanKhuCns> PhanKhuCns { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<Tours> Tours { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -229,6 +230,68 @@ namespace ThongKe.Data.Models_KDIB
                     .HasMaxLength(250);
 
                 entity.Property(e => e.TyGia).HasColumnType("decimal(18, 2)");
+            });
+
+            modelBuilder.Entity<Users>(entity =>
+            {
+                entity.HasIndex(e => e.RoleId);
+
+                entity.Property(e => e.AdminKd).HasColumnName("AdminKD");
+
+                entity.Property(e => e.AdminKl).HasColumnName("AdminKL");
+
+                entity.Property(e => e.DaiLy).HasMaxLength(100);
+
+                entity.Property(e => e.DcdanhMuc).HasColumnName("DCDanhMuc");
+
+                entity.Property(e => e.DienThoai)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DoiMk).HasColumnName("DoiMK");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.EmailCc)
+                    .HasColumnName("EmailCC")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.HoTen).HasMaxLength(50);
+
+                entity.Property(e => e.MaCn)
+                    .HasColumnName("MaCN")
+                    .HasMaxLength(5)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NgayDoiMk).HasColumnName("NgayDoiMK");
+
+                entity.Property(e => e.NguoiCapNhat)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NguoiTao)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Password)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PhongBanId).HasMaxLength(50);
+
+                entity.Property(e => e.PhongBans).HasMaxLength(250);
+
+                entity.Property(e => e.Username)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.RoleId);
             });
 
             //OnModelCreatingPartial(modelBuilder);

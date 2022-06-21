@@ -16,6 +16,7 @@ namespace ThongKe.Services
         Task<IEnumerable<Role>> GetRoles();
         Task<Role> GetRoleById(int id);
         IEnumerable<Dmchinhanh> GetAllChiNhanh();
+        IEnumerable<TourNDDTO> DoanhSoTheoDaiLy(string searchFromDate, string searchToDate, List<string> daiLyQL);
     }
     public class BaoCaoService : IBaoCaoService
     {
@@ -24,6 +25,165 @@ namespace ThongKe.Services
         public BaoCaoService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+        }
+
+        public IEnumerable<TourNDDTO> DoanhSoTheoDaiLy(string searchFromDate, string searchToDate, List<string> daiLyQL)
+        {
+            var list = new List<TourNDDTO>();
+            var tours = new List<Data.Models_KDND.Tour>();
+            //var companies = _unitOfWork.companyRepository.GetAll();
+            var chiNhanhs = _unitOfWork.dmChiNhanhRepository.GetAll();
+            var loaiTours = _unitOfWork.tourKindRepository.GetAll();
+            var cacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll();
+
+            // search date
+            DateTime fromDate, toDate;
+            if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
+            {
+
+                try
+                {
+                    fromDate = DateTime.Parse(searchFromDate);
+                    toDate = DateTime.Parse(searchToDate);
+
+                    if (fromDate > toDate)
+                    {
+                        return null;
+                    }
+                    tours = _unitOfWork.tourKDNDRepository.Find(x => x.Batdau >= fromDate &&
+                                       x.Ketthuc < toDate.AddDays(1)).ToList();
+                }
+                catch (Exception)
+                {
+
+                    return null;
+                }
+
+
+                //list.Where(x => x.NgayTao >= fromDate && x.NgayTao < (toDate.AddDays(1))/*.ToPagedList(page, pageSize)*/;
+
+
+
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchFromDate))
+                {
+                    try
+                    {
+                        fromDate = DateTime.Parse(searchFromDate);
+                        tours = _unitOfWork.tourKDNDRepository.Find(x => x.Batdau >= fromDate).ToList();
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+
+                }
+                if (!string.IsNullOrEmpty(searchToDate))
+                {
+                    try
+                    {
+                        toDate = DateTime.Parse(searchToDate);
+                        tours = _unitOfWork.tourKDNDRepository.Find(x => x.Ketthuc < toDate.AddDays(1)).ToList();
+
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+
+                }
+            }
+            // search date
+
+            if (tours == null)
+            {
+                return null;
+            }
+            foreach (var item in tours)
+            {
+                var tourDto = new TourNDDTO();
+
+                tourDto.Idtour = item.Idtour;
+                tourDto.Sgtcode = item.Sgtcode;
+                tourDto.Chudetour = item.Chudetour;
+                tourDto.Ngaytao = item.Ngaytao;
+                tourDto.Nguoitao = item.Nguoitao;
+                tourDto.Batdau = item.Batdau;
+                tourDto.Ketthuc = item.Ketthuc;
+                tourDto.Tuyentq = item.Tuyentq;
+                tourDto.Diemtq = item.Diemtq;
+                tourDto.Sokhachdk = item.Sokhachdk;
+                tourDto.Sokhachtt = item.Sokhachtt;
+                tourDto.Doanhthudk = item.Doanhthudk;
+                tourDto.Doanhthutt = item.Doanhthutt;
+                tourDto.Makh = item.Makh;
+                tourDto.Tenkh = item.Tenkh;
+                tourDto.Diachi = item.Diachi;
+                tourDto.Dienthoai = item.Dienthoai;
+                tourDto.Fax = item.Fax;
+                tourDto.Email = item.Email;
+
+                if (item.Ngaydamphan.HasValue)
+                {
+                    tourDto.Ngaydamphan = item.Ngaydamphan.Value;
+                }
+
+                tourDto.Hinhthucgiaodich = item.Hinhthucgiaodich;
+                if (item.Ngaykyhopdong.HasValue)
+                {
+                    tourDto.Ngaykyhopdong = item.Ngaykyhopdong.Value;
+                }
+
+                tourDto.Nguoikyhopdong = item.Nguoikyhopdong;
+                if (item.Hanxuatvmb.HasValue)
+                {
+                    tourDto.Hanxuatvmb = item.Hanxuatvmb.Value;
+                }
+                if (item.Ngaythanhlyhd.HasValue)
+                {
+                    tourDto.Ngaythanhlyhd = item.Ngaythanhlyhd.Value;
+                }
+                tourDto.Noidungthanhlyhd = item.Noidungthanhlyhd;
+                tourDto.Dichvu = item.Dichvu;
+                tourDto.Loaitourid = item.Loaitourid;
+                tourDto.Trangthai = item.Trangthai;
+                tourDto.Ngaysua = item.Ngaysua;
+                tourDto.Nguoisua = item.Nguoisua;
+                tourDto.Chinhanh = item.Chinhanh;
+                tourDto.ChiNhanhDh = item.ChiNhanhDh;
+                if (item.Ngaynhandutien.HasValue)
+                {
+                    tourDto.Ngaynhandutien = item.Ngaynhandutien.Value;
+                }
+                tourDto.Lidonhandu = item.Lidonhandu;
+                tourDto.Sohopdong = item.Sohopdong;
+                tourDto.Laichuave = item.Laichuave;
+                tourDto.Laigomve = item.Laigomve;
+                tourDto.Laithuctegomve = item.Laithuctegomve;
+                tourDto.Nguyennhanhuythau = item.Nguyennhanhuythau;
+                tourDto.Nguontour = item.Nguontour;
+                tourDto.Filekhachditour = item.Filekhachditour;
+                tourDto.Filevemaybay = item.Filevemaybay;
+                tourDto.Filebiennhan = item.Filebiennhan;
+                tourDto.Nguoidaidien = item.Nguoidaidien;
+                tourDto.Doitacnuocngoai = item.Doitacnuocngoai;
+                tourDto.Ngayhuytour = item.Ngayhuytour;
+                tourDto.LogFile = item.LogFile;
+
+                list.Add(tourDto);
+            }
+
+            if (daiLyQL.Count > 0)
+            {
+                //list = list.Where(x => x.MaCNTao == macn).ToList();
+                list = list.Where(item1 => daiLyQL.Any(item2 => item1.Daily == item2)).ToList();
+            }
+            list = list.Where(x => !string.IsNullOrEmpty(x.Nguyennhanhuythau)).OrderByDescending(x => x.Batdau).ToList();
+            var count = list.Count();
+
+            return list;
         }
 
         public IEnumerable<TourIBDTO> DoanhSoTheoSale(string searchFromDate, string searchToDate, List<string> MaCNs)
@@ -205,7 +365,7 @@ namespace ThongKe.Services
             //var tours = _unitOfWork.tourRepository.GetAll();
             var tours = new List<Data.Models_KDIB.Tours>();
             //var companies = _unitOfWork.khachHangRepository.GetAll();
-            var chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll();
+            var chiNhanhs = _unitOfWork.dmChiNhanhRepository.GetAll();
             var loaiTours = _unitOfWork.tourKindRepository.GetAll();
             var cacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll();
 
@@ -291,8 +451,8 @@ namespace ThongKe.Services
                 //    thiTruongList.Add(thiTruong);
                 //}
 
-                var usernames = _unitOfWork.userRepository.Find(x => thiTruongs.Any(y => y == x.PhongBanId)); // tat ca user trong thitruong
-                tours = _unitOfWork.tourKDIBRepository.Find(item1 => usernames.Any(item2 => item1.NguoiTao == item2.Username)).ToList();
+                IEnumerable<Data.Models_KDIB.Users> usernames = _unitOfWork.userIBRepository.Find(x => thiTruongs.Any(y => y == x.PhongBanId)); // tat ca user trong thitruong
+                tours = tours.Where(item1 => usernames.Any(item2 => item1.NguoiTao == item2.Username)).ToList();
             }
             foreach (var item in tours)
             {
@@ -363,7 +523,7 @@ namespace ThongKe.Services
                 tourDto.FileBienNhan = item.FileBienNhan;
                 tourDto.NguoiDaiDien = item.NguoiDaiDien;
                 tourDto.DoiTacNuocNgoai = item.DoiTacNuocNgoai;
-                tourDto.MaCNDH = chiNhanhs.Where(x => x.Id == item.ChiNhanhDhid).FirstOrDefault().Chinhanh1;
+                tourDto.MaCNDH = chiNhanhs.Where(x => x.Id == item.ChiNhanhDhid).FirstOrDefault().Macn;
                 if (item.NgayHuyTour.HasValue)
                 {
                     tourDto.NgayHuyTour = item.NgayHuyTour.Value;
@@ -375,7 +535,7 @@ namespace ThongKe.Services
                 tourDto.TyGia = item.TyGia;
                 tourDto.LogFile = item.LogFile;
 
-                tourDto.ThiTruongByNguoiTao = _unitOfWork.userRepository.Find(x => x.Username == item.NguoiTao).FirstOrDefault().PhongBanId;
+                tourDto.ThiTruongByNguoiTao = _unitOfWork.userIBRepository.Find(x => x.Username == item.NguoiTao).FirstOrDefault().PhongBanId;
 
                 list.Add(tourDto);
             }

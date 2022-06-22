@@ -33,7 +33,7 @@ namespace ThongKe.Controllers
             };
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var user = HttpContext.Session.Get<Users>("loginUser");
             if (user.Nhom != "Admins" && user.Nhom != "KDO")
@@ -41,6 +41,7 @@ namespace ThongKe.Controllers
                 return View("AccessDenied");
             }
             var a = UserVM.Users.Count();
+            UserVM.Roles = await _unitOfWork.roleRepository.GetRoles();
             return View(UserVM);
         }
 

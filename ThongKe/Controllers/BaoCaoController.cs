@@ -4491,11 +4491,15 @@ namespace ThongKe.Controllers
                             break;
 
                         case "ND":
-                            if (!string.IsNullOrEmpty(user.DaiLyQL)) // co ql vanphong khac' --> IB
-                            {
-                                var daiLyQL = user.DaiLyQL.Split(',').ToList();
-                                BaoCaoVM.TourNDDTOs = _baoCaoService.DoanhSoTheoDaiLy(searchFromDate, searchToDate, daiLyQL);
-                            }
+                            //if (!string.IsNullOrEmpty(user.DaiLyQL)) // co ql vanphong khac' --> IB
+                            //{
+                            //    var daiLyQL = user.DaiLyQL.Split(',').ToList();
+                            //    BaoCaoVM.TourNDDTOs = _baoCaoService.DoanhSoTheoDaiLy(searchFromDate, searchToDate, daiLyQL);
+                            //}
+
+                            // do ko tournd ko co daily -> lay theo chinhanh
+                            BaoCaoVM.TourNDDTOs = _baoCaoService.DoanhSoTheoChiNhanh(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+                            DoanhSoTheoSaleGroupbyNguoiTao_ND();
                             break;
 
                     }
@@ -5444,7 +5448,87 @@ namespace ThongKe.Controllers
 
             //////////////////////////// group by/////////////////////////////////////////////////
         }
+        private void DoanhSoTheoSaleGroupbyNguoiTao_ND()
+        {
+            ///////////////////////////////// group by ////////////////////////////////////////////
 
+            //With Query Syntax
+            var results1 = (
+                from p in BaoCaoVM.TourNDDTOs
+                group p by p.Nguoitao into g
+                select new TourNDDtosGroupByNguoiTaoViewModel()
+                {
+                    NguoiTao = g.Key,
+                    TourNDDTOs = g.ToList()
+                }
+                ).ToList();
+            BaoCaoVM.TourNDDtosGroupByNguoiTaos = results1;
+            ////////////// tinh TC /////////////////////
+
+            foreach (var item in results1)
+            {
+                ////decimal? tongCong = 0;
+                //// chua thanh ly hop dong
+                //var chuaThanhLyHopDong = item.TourBaoCaoDtos.Where(x => string.IsNullOrEmpty(x.NgayThanhLyHD.ToString())).Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+                //// da thanh ly hop dong
+                //var daThanhLyHopDong = item.TourBaoCaoDtos.Where(x => !string.IsNullOrEmpty(x.NgayThanhLyHD.ToString())).Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+                //// tong cong theo tung sale
+                //var tongCongTheoTungSale = chuaThanhLyHopDong + daThanhLyHopDong;
+                // sokhach
+                var soKhach = item.TourNDDTOs.Sum(x => (x.Sokhachtt == 0) ? x.Sokhachdk : x.Sokhachtt);
+
+                decimal chuaThanhLyHopDong = 0, daThanhLyHopDong = 0;
+                foreach (var itemDto in item.TourNDDTOs)
+                {
+                    var ngayThanhLyHD = itemDto.Ngaythanhlyhd.Value.ToString("dd/MM/yyyy");
+                    if (ngayThanhLyHD == "01/01/0001")
+                    {
+                        chuaThanhLyHopDong += (itemDto.DoanhThuTT == 0) ? itemDto.DoanhThuDK : itemDto.DoanhThuTT;
+                    }
+                    else
+                    {
+                        daThanhLyHopDong += (itemDto.DoanhThuTT == 0) ? itemDto.DoanhThuDK : itemDto.DoanhThuTT;
+                    }
+                }
+
+                foreach (var item1 in item.TourNDDTOs)
+                {
+                    item1.ChuaThanhLyHopDong = chuaThanhLyHopDong;
+                    item1.DaThanhLyHopDong = daThanhLyHopDong;
+                    item1.TongCongTheoTungSale = chuaThanhLyHopDong + daThanhLyHopDong;
+                    item1.TongSoKhachTheoSale = soKhach;
+                }
+
+                //foreach (var item1 in item.ChiTietHdViewModels)
+                //{
+                //    item1.TC = tongCong;
+                //}
+            }
+
+            decimal? tongCong = 0;
+            int tongCongSK = 0;
+            foreach (var item in results1)
+            {
+                tongCong += item.TourNDDTOs.FirstOrDefault().ChuaThanhLyHopDong + item.TourNDDTOs.FirstOrDefault().DaThanhLyHopDong;
+                tongCongSK += item.TourNDDTOs.FirstOrDefault().TongSoKhachTheoSale;
+            }
+            BaoCaoVM.TongCong = tongCong;
+            BaoCaoVM.TongSK = tongCongSK;
+            ////////////// tinh TC /////////////////////
+
+            //foreach (var item in results1)
+            //{
+            //    System.Diagnostics.Debug.WriteLine(item.NoiLamViec);
+            //    foreach (var car in item.ChiTietHdViewModels)
+            //    {
+            //        System.Diagnostics.Debug.WriteLine(car.TenMon);
+            //    }
+            //}
+
+            //System.Diagnostics.Debug.WriteLine("-----------");
+
+            //////////////////////////// group by/////////////////////////////////////////////////
+        }
 
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

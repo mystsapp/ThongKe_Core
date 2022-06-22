@@ -51,6 +51,7 @@
                             @*<th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().Role)</th>*@
                             <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().Daily)</th>
                             <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().Chinhanh)</th>
+                            <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().RoleId)</th>
                             <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().Trangthai)</th>
                             <th></th>
 
@@ -68,6 +69,11 @@
                                     @*<td>@Html.DisplayFor(m => item.Role)</td>*@
                                     <td>@Html.DisplayFor(m => item.Daily)</td>
                                     <td>@Html.DisplayFor(m => item.Chinhanh)</td>
+                                    <td>
+                                        <select class="form-control form-control-sm border-input "
+                                        asp-items="@(new SelectList(Model.Roles,"Id","RoleName", item.RoleId))">
+                                        </select>
+                                    </td>
                                     <td>@Html.DisplayFor(m => item.Trangthai)</td>
 
                                     <td style="width:150px;">
@@ -101,7 +107,6 @@
 
 </section>
 <!-- /.content -->
-
 @section Scripts{
     <script>
 

@@ -19,6 +19,7 @@ using ThongKe.Data.Models_KDOB;
 using ThongKe.Data.Models_QLTour;
 using ThongKe.Data.Repository;
 using ThongKe.Data.Repository.KDIB;
+using ThongKe.Data.Repository.KDOB;
 using ThongKe.Data.Repository.QLTour;
 using ThongKe.Services;
 
@@ -60,7 +61,10 @@ namespace ThongKe
             services.AddTransient<ITourKDIBRepository, TourKDIBRepository>();
             services.AddTransient<IPhanKhuCNRepository, PhanKhuCNRepository>();
             services.AddTransient<IUserIBRepository, UserIBRepository>();
-
+            
+            // KDOB
+            services.AddTransient<ITourKDOBRepository, TourKDOBRepository>();
+            
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             // services

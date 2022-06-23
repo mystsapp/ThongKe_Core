@@ -2,7 +2,7 @@
 
 namespace ThongKe.Data.DTOs
 {
-    public class TourNDDTO
+    public class TourOBDTO
     {
         public decimal Idtour { get; set; }
         public string Sgtcode { get; set; }
@@ -39,6 +39,7 @@ namespace ThongKe.Data.DTOs
         public string Nguoisua { get; set; }
         public string Chinhanh { get; set; }
         public string ChiNhanhDh { get; set; }
+        public string PhongDh { get; set; }
         public DateTime? Ngaynhandutien { get; set; }
         public string Lidonhandu { get; set; }
         public string Sohopdong { get; set; }
@@ -53,7 +54,7 @@ namespace ThongKe.Data.DTOs
         public string Nguoidaidien { get; set; }
         public string Doitacnuocngoai { get; set; }
         public DateTime? Ngayhuytour { get; set; }
-        public string LogFile { get; set; }
+
 
         // cơm thêm
         public decimal? ChuaThanhLyHopDong { get; set; }

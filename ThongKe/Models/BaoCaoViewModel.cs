@@ -11,9 +11,12 @@ namespace ThongKe.Models
         public IEnumerable<KhoiViewModel> Khois_KD { get; set; }
         public IEnumerable<TourIBDTO> TourIBDTOs { get; internal set; }
         public IEnumerable<TourNDDTO> TourNDDTOs { get; internal set; }
+        public IEnumerable<TourOBDTO> TourOBDTOs { get; internal set; }
         public IEnumerable<TourIBDtosGroupByNguoiTaoViewModel> TourIBDtosGroupByNguoiTaos { get; set; }
         public IEnumerable<TourNDDtosGroupByNguoiTaoViewModel> TourNDDtosGroupByNguoiTaos { get; set; }
         public decimal? TongCong { get; set; }
-        public int TongSK { get; set; }
+        public int? TongSK { get; set; }
+        public string Khoi { get; set; }
+        
     }
 }

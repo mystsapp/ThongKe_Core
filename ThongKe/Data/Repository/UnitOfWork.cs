@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ThongKe.Data.Models;
 using ThongKe.Data.Models_KDIB;
 using ThongKe.Data.Models_KDND;
+using ThongKe.Data.Models_KDOB;
 using ThongKe.Data.Models_QLTour;
 using ThongKe.Data.Repository.KDIB;
 using ThongKe.Data.Repository.KDND;
@@ -36,6 +37,9 @@ namespace ThongKe.Data.Repository
         // KDND
         ITourKDNDRepository tourKDNDRepository { get; }
 
+        // KDND
+        ITourKDOBRepository tourKDOBRepository { get; }
+
         Task<int> Complete();
     }
 
@@ -45,14 +49,16 @@ namespace ThongKe.Data.Repository
         private readonly qltourContext _qltourContext;
         private readonly SaleDoanIBContext _saleDoanIBContext;
         private readonly qlkdtrnoidiaContext _qlkdtrnoidiaContext;
+        private readonly qlkdtrContext _qlkdtrContext;
 
         public UnitOfWork(thongkeContext context, qltourContext qltourContext, SaleDoanIBContext saleDoanIBContext,
-            qlkdtrnoidiaContext qlkdtrnoidiaContext)
+            qlkdtrnoidiaContext qlkdtrnoidiaContext, qlkdtrContext qlkdtrContext)
         {
             _context = context;
             _qltourContext = qltourContext;
             _saleDoanIBContext = saleDoanIBContext;
             _qlkdtrnoidiaContext = qlkdtrnoidiaContext;
+            _qlkdtrContext = qlkdtrContext;
 
             userRepository = new UserRepository(_context);
             chiNhanhRepository = new ChiNhanhRepository(_context);
@@ -74,6 +80,9 @@ namespace ThongKe.Data.Repository
 
             // KDND
             tourKDNDRepository = new TourKDNDRepository(_qlkdtrnoidiaContext);
+
+            // KDOB
+            tourKDOBRepository = new TourKDOBRepository(_qlkdtrContext);
         }
 
         public IUserRepository userRepository { get; }
@@ -103,6 +112,8 @@ namespace ThongKe.Data.Repository
         public ITourKDNDRepository tourKDNDRepository { get; }
 
         public IUserIBRepository userIBRepository {get;}
+
+        public ITourKDOBRepository tourKDOBRepository { get; }
 
         public async Task<int> Complete()
         {

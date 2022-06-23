@@ -50,7 +50,7 @@
                                         asp-items="@(new SelectList(Model.Dmchinhanhs, "Macn", "Macn", ViewBag.Macn))">
                                 </select>
                             </div>
-                            
+
                             <div class="col-md-2">
                                 Khối
                                 @*<input class="form-control" name="searchString" value="@ViewBag.searchString" />*@
@@ -72,111 +72,131 @@
                 </div>
             </form>
             <br />
-            <div style="overflow-x:auto;">
-                <table class="table mytable text-nowrap tblTour" id="listDoanhSoTheoSale">
-                    <thead>
-                        <tr class="table-info">
-                            @*<th>#</th>*@
-                            @*<th>#</th>*@
-                            <th>STT</th>
-                            <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().Sgtcode)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().CompanyName)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().NgayDen)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().NgayDi)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().ChuDeTour)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().TuyenTQ)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().SoKhachDK)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().DoanhThuDK)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().SoKhachTT)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().DoanhThuTT)</th>
-                            <th>Sales</th>
-                            <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().NgayTao)</th>
+            <div style="overflow-x:auto;height: 600px;">
+                <!-- KDIB-->
+                @if (@Model.Khoi == "IB")
+                {
+                    <table class="table mytable text-nowrap tblTour" id="listDoanhSoTheoSale">
+                        <thead>
+                            <tr class="table-info">
+                                @*<th>#</th>*@
+                                @*<th>#</th>*@
+                                <th>STT</th>
+                                <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().Sgtcode)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().CompanyName)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().NgayDen)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().NgayDi)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().ChuDeTour)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().TuyenTQ)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().SoKhachDK)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().DoanhThuDK)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().SoKhachTT)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().DoanhThuTT)</th>
+                                <th>Sales</th>
+                                <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().NgayTao)</th>
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.TourIBDtosGroupByNguoiTaos != null)
-                        {
-                            @foreach (var vm in Model.TourIBDtosGroupByNguoiTaos)
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.TourIBDtosGroupByNguoiTaos != null)
                             {
-                                foreach (var item in vm.TourIBDTOs)
+                                @foreach (var vm in Model.TourIBDtosGroupByNguoiTaos)
                                 {
+                                    foreach (var item in vm.TourIBDTOs)
+                                    {
 
-                                    <tr class="cursor-pointer ">
-                                        <td>@i</td>
-                                        @switch (item.TrangThai)
-                                        {
+                                        <tr class="cursor-pointer ">
+                                            <td>@i</td>
+                                            @switch (item.TrangThai)
+                                            {
 
-                                            case "0":
-                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                                break;
-                                            case "1":
-                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                                break;
-                                            case "2":
-                                                <td class="tdVal bg-yellow" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                                break;
-                                            case "3":
-                                                <td class="tdVal " style="background-color: chartreuse" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                                break;
-                                            case "4":
-                                                <td class="tdVal bg-red" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                                break;
-                                        }
-                                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.CompanyName)</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ChuDeTour)</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TuyenTQ)</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoKhachDK.ToString("N0"))</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.DoanhThuDK.ToString("N0"))</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoKhachTT.ToString("N0"))</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.DoanhThuTT.ToString("N0"))</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
+                                                case "0":
+                                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                    break;
+                                                case "1":
+                                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                    break;
+                                                case "2":
+                                                    <td class="tdVal bg-yellow" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                    break;
+                                                case "3":
+                                                    <td class="tdVal " style="background-color: chartreuse" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                    break;
+                                                case "4":
+                                                    <td class="tdVal bg-red" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                    break;
+                                            }
+                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.CompanyName)</td>
+                                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
+                                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
+                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ChuDeTour)</td>
+                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TuyenTQ)</td>
+                                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoKhachDK.ToString("N0"))</td>
+                                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.DoanhThuDK.ToString("N0"))</td>
+                                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoKhachTT.ToString("N0"))</td>
+                                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.DoanhThuTT.ToString("N0"))</td>
+                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
+                                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
 
+                                        </tr>
+
+                                        i++;
+
+                                    }
+                                    <tr class="cursor-pointer text-bold">
+                                        <td></td>
+                                        <td>Tổng Cộng:</td>
+                                        <td>CHƯA THANH LÝ HỢP ĐỒNG:</td>
+                                        <td>@Html.Raw(vm.TourIBDTOs.FirstOrDefault().ChuaThanhLyHopDong.ToString("N0"))</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
-
-                                    i++;
+                                    <tr class="cursor-pointer text-bold">
+                                        <td></td>
+                                        <td></td>
+                                        <td>ĐÃ THANH LÝ HỢP ĐỒNG:</td>
+                                        <td>@Html.Raw(vm.TourIBDTOs.FirstOrDefault().DaThanhLyHopDong.ToString("N0"))</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="cursor-pointer text-bold">
+                                        <td></td>
+                                        <td></td>
+                                        <td>TỔNG CỘNG THEO TỪNG SALE:</td>
+                                        <td>@Html.Raw(vm.TourIBDTOs.FirstOrDefault().TongSoKhachTheoSale.ToString("N0"))</td>
+                                        <td>@Html.Raw(vm.TourIBDTOs.FirstOrDefault().TongCongTheoTungSale.ToString("N0"))</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
 
                                 }
                                 <tr class="cursor-pointer text-bold">
                                     <td></td>
                                     <td>Tổng Cộng:</td>
-                                    <td>CHƯA THANH LÝ HỢP ĐỒNG:</td>
-                                    <td>@Html.Raw(vm.TourIBDTOs.FirstOrDefault().ChuaThanhLyHopDong.ToString("N0"))</td>
                                     <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr class="cursor-pointer text-bold">
-                                    <td></td>
-                                    <td></td>
-                                    <td>ĐÃ THANH LÝ HỢP ĐỒNG:</td>
-                                    <td>@Html.Raw(vm.TourIBDTOs.FirstOrDefault().DaThanhLyHopDong.ToString("N0"))</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr class="cursor-pointer text-bold">
-                                    <td></td>
-                                    <td></td>
-                                    <td>TỔNG CỘNG THEO TỪNG SALE:</td>
-                                    <td>@Html.Raw(vm.TourIBDTOs.FirstOrDefault().TongSoKhachTheoSale.ToString("N0"))</td>
-                                    <td>@Html.Raw(vm.TourIBDTOs.FirstOrDefault().TongCongTheoTungSale.ToString("N0"))</td>
-                                    <td></td>
+                                    <td>@Html.Raw(Model.TongSK.Value.ToString("N0"))</td>
+                                    <td>@Html.Raw(Model.TongCong.Value.ToString("N0"))</td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -188,27 +208,334 @@
                                 </tr>
 
                             }
-                            <tr class="cursor-pointer text-bold">
-                                <td></td>
-                                <td>Tổng Cộng:</td>
-                                <td></td>
-                                <td>@Html.Raw(Model.TongSK.ToString("N0"))</td>
-                                <td>@Html.Raw(Model.TongCong.Value.ToString("N0"))</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+
+                        </tbody>
+
+                    </table>
+                }
+                <!-- KDIB-->
+
+                <!-- KDND-->
+                @if (@Model.Khoi == "ND")
+                {
+                    <table class="table mytable text-nowrap tblTour " id="listDoanhSoTheoSale">
+                        <thead>
+                            <tr class="table-info">
+                                @*<th>#</th>*@
+                                @*<th>#</th>*@
+                                <th>STT</th>
+                                <th>@Html.DisplayNameFor(m => m.TourNDDTOs.FirstOrDefault().Sgtcode)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourNDDTOs.FirstOrDefault().Tenkh)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourNDDTOs.FirstOrDefault().Batdau)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourNDDTOs.FirstOrDefault().Ketthuc)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourNDDTOs.FirstOrDefault().Chudetour)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourNDDTOs.FirstOrDefault().Tuyentq)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourNDDTOs.FirstOrDefault().Sokhachdk)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourNDDTOs.FirstOrDefault().Doanhthudk)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourNDDTOs.FirstOrDefault().Sokhachtt)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourNDDTOs.FirstOrDefault().Doanhthutt)</th>
+                                <th>Sales</th>
+                                <th>@Html.DisplayNameFor(m => m.TourNDDTOs.FirstOrDefault().Ngaytao)</th>
+
                             </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.TourNDDtosGroupByNguoiTaos != null)
+                            {
+                                @foreach (var vm in Model.TourNDDtosGroupByNguoiTaos)
+                                {
+                                    foreach (var item in vm.TourNDDTOs)
+                                    {
 
-                        }
+                                        <tr class="cursor-pointer ">
+                                            <td>@i</td>
+                                            @switch (item.Trangthai)
+                                            {
 
-                    </tbody>
+                                                case "0":
+                                                    <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                    break;
+                                                case "1":
+                                                    <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                    break;
+                                                case "2":
+                                                    <td class="tdVal bg-yellow" data-id="@item.Idtour">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                    break;
+                                                case "3":
+                                                    <td class="tdVal " style="background-color: chartreuse" data-id="@item.Idtour">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                    break;
+                                                case "4":
+                                                    <td class="tdVal bg-red" data-id="@item.Idtour">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                    break;
+                                                default:
+                                                    <td class="tdVal" data-id="@item.Idtour"></td>
+                                                    break;
 
-                </table>
+                                            }
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Tenkh)</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Batdau.Value.ToString("dd/MM/yyyy"))</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Ketthuc.Value.ToString("dd/MM/yyyy"))</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Chudetour)</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Tuyentq)</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Sokhachdk.Value.ToString("N0"))</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Doanhthudk.Value.ToString("N0"))</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Sokhachtt == null ? "0" : item.Sokhachtt.Value.ToString("N0"))</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Doanhthutt == null ? "0" : item.Doanhthutt.Value.ToString("N0"))</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Nguoitao)</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Ngaytao.Value.ToString("dd/MM/yyyy"))</td>
+
+                                        </tr>
+
+                                        i++;
+
+                                    }
+                                    <tr class="cursor-pointer text-bold">
+                                        <td></td>
+                                        <td>Tổng Cộng:</td>
+                                        <td>CHƯA THANH LÝ HỢP ĐỒNG:</td>
+                                        <td>
+                                            @{
+                                                vm.TourNDDTOs.FirstOrDefault().ChuaThanhLyHopDong ??= 0;
+                                            }
+                                            @Html.Raw(vm.TourNDDTOs.FirstOrDefault().ChuaThanhLyHopDong.Value.ToString("N0"))
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="cursor-pointer text-bold">
+                                        <td></td>
+                                        <td></td>
+                                        <td>ĐÃ THANH LÝ HỢP ĐỒNG:</td>
+                                        <td>@Html.Raw(vm.TourNDDTOs.FirstOrDefault().DaThanhLyHopDong.Value.ToString("N0"))</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="cursor-pointer text-bold">
+                                        <td></td>
+                                        <td></td>
+                                        <td>TỔNG CỘNG THEO TỪNG SALE:</td>
+                                        <td>@Html.Raw(vm.TourNDDTOs.FirstOrDefault().TongSoKhachTheoSale.Value.ToString("N0"))</td>
+                                        <td>
+                                            @{
+                                                vm.TourNDDTOs.FirstOrDefault().TongCongTheoTungSale ??= 0;
+                                            }
+                                            @Html.Raw(vm.TourNDDTOs.FirstOrDefault().TongCongTheoTungSale.Value.ToString("N0"))
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+
+                                }
+                                <tr class="cursor-pointer text-bold">
+                                    <td></td>
+                                    <td>Tổng Cộng:</td>
+                                    <td></td>
+                                    <td>@Html.Raw(Model.TongSK.Value.ToString("N0"))</td>
+                                    <td>
+                                        @{
+                                            Model.TongCong ??= 0;
+                                        }
+                                        @Html.Raw(Model.TongCong.Value.ToString("N0"))
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+
+                            }
+
+                        </tbody>
+
+                    </table>
+                }
+                <!-- KDND-->
+
+                <!-- KDOB-->
+                @if (@Model.Khoi == "OB")
+                {
+                    <table class="table mytable text-nowrap tblTour " id="listDoanhSoTheoSale">
+                        <thead>
+                            <tr class="table-info">
+                                @*<th>#</th>*@
+                                @*<th>#</th>*@
+                                <th>STT</th>
+                                <th>@Html.DisplayNameFor(m => m.TourOBDTOs.FirstOrDefault().Sgtcode)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourOBDTOs.FirstOrDefault().Tenkh)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourOBDTOs.FirstOrDefault().Batdau)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourOBDTOs.FirstOrDefault().Ketthuc)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourOBDTOs.FirstOrDefault().Chudetour)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourOBDTOs.FirstOrDefault().Tuyentq)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourOBDTOs.FirstOrDefault().Sokhachdk)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourOBDTOs.FirstOrDefault().Doanhthudk)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourOBDTOs.FirstOrDefault().Sokhachtt)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourOBDTOs.FirstOrDefault().Doanhthutt)</th>
+                                <th>Sales</th>
+                                <th>@Html.DisplayNameFor(m => m.TourOBDTOs.FirstOrDefault().Ngaytao)</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.TourOBDTOsGroupByNguoiTaos != null)
+                            {
+                                @foreach (var vm in Model.TourOBDTOsGroupByNguoiTaos)
+                                {
+                                    foreach (var item in vm.TourOBDTOs)
+                                    {
+
+                                        <tr class="cursor-pointer ">
+                                            <td>@i</td>
+                                            @switch (item.Trangthai)
+                                            {
+
+                                                case "0":
+                                                    <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                    break;
+                                                case "1":
+                                                    <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                    break;
+                                                case "2":
+                                                    <td class="tdVal bg-yellow" data-id="@item.Idtour">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                    break;
+                                                case "3":
+                                                    <td class="tdVal " style="background-color: chartreuse" data-id="@item.Idtour">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                    break;
+                                                case "4":
+                                                    <td class="tdVal bg-red" data-id="@item.Idtour">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                    break;
+                                                default:
+                                                    <td class="tdVal" data-id="@item.Idtour"></td>
+                                                    break;
+
+                                            }
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Tenkh)</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Batdau.Value.ToString("dd/MM/yyyy"))</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Ketthuc.Value.ToString("dd/MM/yyyy"))</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Chudetour)</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Tuyentq)</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Sokhachdk.Value.ToString("N0"))</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Doanhthudk.Value.ToString("N0"))</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Sokhachtt == null ? "0" : item.Sokhachtt.Value.ToString("N0"))</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Doanhthutt == null ? "0" : item.Doanhthutt.Value.ToString("N0"))</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Nguoitao)</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Ngaytao.Value.ToString("dd/MM/yyyy"))</td>
+
+                                        </tr>
+
+                                        i++;
+
+                                    }
+                                    <tr class="cursor-pointer text-bold">
+                                        <td></td>
+                                        <td>Tổng Cộng:</td>
+                                        <td>CHƯA THANH LÝ HỢP ĐỒNG:</td>
+                                        <td>
+                                            @{
+                                                vm.TourOBDTOs.FirstOrDefault().ChuaThanhLyHopDong ??= 0;
+                                            }
+                                            @Html.Raw(vm.TourOBDTOs.FirstOrDefault().ChuaThanhLyHopDong.Value.ToString("N0"))
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="cursor-pointer text-bold">
+                                        <td></td>
+                                        <td></td>
+                                        <td>ĐÃ THANH LÝ HỢP ĐỒNG:</td>
+                                        <td>@Html.Raw(vm.TourOBDTOs.FirstOrDefault().DaThanhLyHopDong.Value.ToString("N0"))</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="cursor-pointer text-bold">
+                                        <td></td>
+                                        <td></td>
+                                        <td>TỔNG CỘNG THEO TỪNG SALE:</td>
+                                        <td>@Html.Raw(vm.TourOBDTOs.FirstOrDefault().TongSoKhachTheoSale.Value.ToString("N0"))</td>
+                                        <td>
+                                            @{
+                                                vm.TourOBDTOs.FirstOrDefault().TongCongTheoTungSale ??= 0;
+                                            }
+                                            @Html.Raw(vm.TourOBDTOs.FirstOrDefault().TongCongTheoTungSale.Value.ToString("N0"))
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+
+                                }
+                                <tr class="cursor-pointer text-bold">
+                                    <td></td>
+                                    <td>Tổng Cộng:</td>
+                                    <td></td>
+                                    <td>@Html.Raw(Model.TongSK.Value.ToString("N0"))</td>
+                                    <td>
+                                        @{
+                                            Model.TongCong ??= 0;
+                                        }
+                                        @Html.Raw(Model.TongCong.Value.ToString("N0"))
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+
+                            }
+
+                        </tbody>
+
+                    </table>
+                }
+                <!-- KDOB-->
             </div>
 
         </div>
@@ -219,7 +546,6 @@
 
 </section>
 <!-- /.content -->
-
 @section Scripts{
     <script>
 
@@ -263,16 +589,16 @@
             //    chuDetour1: "Please enter value"
             //},
             errorElement: 'span',
-            errorPlacement: function (error, element) {
+            errorPlacement: function(error, element) {
                 // add error text
 
                 //error.addClass('invalid-feedback').removeClass('error');
                 //element.closest('#txtSearchFromDate').append(error);
             },
-            highlight: function (element, errorClass, validClass) {
+            highlight: function(element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function (element, errorClass, validClass) {
+            unhighlight: function(element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             }
         });
@@ -287,7 +613,7 @@
         $('#txtSearchToDate').rules('add', {
             dateITA: true,
             messages: {
-                
+
                 //dateITA: "Không đúng định dạng."
             }
         });
@@ -297,21 +623,21 @@
 
     <style>
         /*#listDoanhSoTheoSale {
-            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        }*/
+                                    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                                }*/
 
         #search {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
         /*.tblTour .cursor-pointer:hover {
-            background-color: #3E5C9A;
-            cursor: pointer;
-        }*/
+                                    background-color: #3E5C9A;
+                                    cursor: pointer;
+                                }*/
 
         /*.hoverClass {
-            background-color: #3E5C9A;
-        }*/
+                                    background-color: #3E5C9A;
+                                }*/
     </style>
 }
 

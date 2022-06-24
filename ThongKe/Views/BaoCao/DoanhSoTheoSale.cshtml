@@ -48,6 +48,7 @@
                                 @*<input class="form-control" name="searchString" value="@ViewBag.searchString" />*@
                                 <select class="form-control form-control-sm" name="Macn"
                                         asp-items="@(new SelectList(Model.Dmchinhanhs, "Macn", "Macn", ViewBag.Macn))">
+                                        <option value="">-- All --</option>
                                 </select>
                             </div>
 
@@ -401,9 +402,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (Model.TourOBDTOsGroupByNguoiTaos != null)
+                            @if (Model.TourOBDtosGroupByNguoiTaos != null)
                             {
-                                @foreach (var vm in Model.TourOBDTOsGroupByNguoiTaos)
+                                @foreach (var vm in Model.TourOBDtosGroupByNguoiTaos)
                                 {
                                     foreach (var item in vm.TourOBDTOs)
                                     {

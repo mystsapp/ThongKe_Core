@@ -9,6 +9,7 @@ using ThongKe.Data.Models_KDOB;
 using ThongKe.Data.Models_QLTour;
 using ThongKe.Data.Repository.KDIB;
 using ThongKe.Data.Repository.KDND;
+using ThongKe.Data.Repository.KDOB;
 using ThongKe.Data.Repository.QLTour;
 
 namespace ThongKe.Data.Repository

@@ -48,7 +48,7 @@
                                 @*<input class="form-control" name="searchString" value="@ViewBag.searchString" />*@
                                 <select class="form-control form-control-sm" name="Macn"
                                         asp-items="@(new SelectList(Model.Dmchinhanhs, "Macn", "Macn", ViewBag.Macn))">
-                                        <option value="">-- All --</option>
+                                    <option value="">-- All --</option>
                                 </select>
                             </div>
 
@@ -95,6 +95,7 @@
                                 <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().DoanhThuTT)</th>
                                 <th>Sales</th>
                                 <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().NgayTao)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().TrangThai)</th>
 
                             </tr>
                         </thead>
@@ -138,7 +139,27 @@
                                             <td class="tdVal" data-id="@item.Id">@Html.Raw(item.DoanhThuTT.ToString("N0"))</td>
                                             <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
                                             <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
+                                            <td class="tdVal" data-id="@item.Id">
+                                                @switch (item.TrangThai)
+                                                {
 
+                                                    case "0":
+                                                        <span>Mới tạo</span>
+                                                        break;
+                                                    case "1":
+                                                        <span>Mới đàm phán</span>
+                                                        break;
+                                                    case "2":
+                                                        <span>Đã ký hợp đồng</span>
+                                                        break;
+                                                    case "3":
+                                                        <span> Đã thanh lý hợp đồng</span>
+                                                        break;
+                                                    case "4":
+                                                        <span>Giao dịch chưa thành công</span>
+                                                        break;
+                                                }
+                                            </td>
                                         </tr>
 
                                         i++;
@@ -215,7 +236,6 @@
                     </table>
                 }
                 <!-- KDIB-->
-
                 <!-- KDND-->
                 @if (@Model.Khoi == "ND")
                 {
@@ -237,6 +257,7 @@
                                 <th>@Html.DisplayNameFor(m => m.TourNDDTOs.FirstOrDefault().Doanhthutt)</th>
                                 <th>Sales</th>
                                 <th>@Html.DisplayNameFor(m => m.TourNDDTOs.FirstOrDefault().Ngaytao)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourNDDTOs.FirstOrDefault().Trangthai)</th>
 
                             </tr>
                         </thead>
@@ -284,7 +305,27 @@
                                             <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Doanhthutt == null ? "0" : item.Doanhthutt.Value.ToString("N0"))</td>
                                             <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Nguoitao)</td>
                                             <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Ngaytao.Value.ToString("dd/MM/yyyy"))</td>
+                                            <td class="tdVal" data-id="@item.Idtour">
+                                                @switch (item.Trangthai)
+                                                {
 
+                                                    case "0":
+                                                        <span>Mới tạo</span>
+                                                        break;
+                                                    case "1":
+                                                        <span>Mới đàm phán</span>
+                                                        break;
+                                                    case "2":
+                                                        <span>Đã ký hợp đồng</span>
+                                                        break;
+                                                    case "3":
+                                                        <span> Đã thanh lý hợp đồng</span>
+                                                        break;
+                                                    case "4":
+                                                        <span>Giao dịch chưa thành công</span>
+                                                        break;
+                                                }
+                                            </td>
                                         </tr>
 
                                         i++;
@@ -376,7 +417,6 @@
                     </table>
                 }
                 <!-- KDND-->
-
                 <!-- KDOB-->
                 @if (@Model.Khoi == "OB")
                 {
@@ -398,6 +438,7 @@
                                 <th>@Html.DisplayNameFor(m => m.TourOBDTOs.FirstOrDefault().Doanhthutt)</th>
                                 <th>Sales</th>
                                 <th>@Html.DisplayNameFor(m => m.TourOBDTOs.FirstOrDefault().Ngaytao)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourOBDTOs.FirstOrDefault().Trangthai)</th>
 
                             </tr>
                         </thead>
@@ -445,7 +486,27 @@
                                             <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Doanhthutt == null ? "0" : item.Doanhthutt.Value.ToString("N0"))</td>
                                             <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Nguoitao)</td>
                                             <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Ngaytao.Value.ToString("dd/MM/yyyy"))</td>
+                                            <td class="tdVal" data-id="@item.Idtour">
+                                                @switch (item.Trangthai)
+                                                {
 
+                                                    case "0":
+                                                        <span>Mới tạo</span>
+                                                        break;
+                                                    case "1":
+                                                        <span>Mới đàm phán</span>
+                                                        break;
+                                                    case "2":
+                                                        <span>Đã ký hợp đồng</span>
+                                                        break;
+                                                    case "3":
+                                                        <span> Đã thanh lý hợp đồng</span>
+                                                        break;
+                                                    case "4":
+                                                        <span>Giao dịch chưa thành công</span>
+                                                        break;
+                                                }
+                                            </td>
                                         </tr>
 
                                         i++;
@@ -624,21 +685,21 @@
 
     <style>
         /*#listDoanhSoTheoSale {
-                                    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-                                }*/
+                                                            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                                                        }*/
 
         #search {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
         /*.tblTour .cursor-pointer:hover {
-                                    background-color: #3E5C9A;
-                                    cursor: pointer;
-                                }*/
+                                                            background-color: #3E5C9A;
+                                                            cursor: pointer;
+                                                        }*/
 
         /*.hoverClass {
-                                    background-color: #3E5C9A;
-                                }*/
+                                                            background-color: #3E5C9A;
+                                                        }*/
     </style>
 }
 

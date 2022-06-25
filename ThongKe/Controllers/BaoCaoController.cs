@@ -4541,7 +4541,7 @@ namespace ThongKe.Controllers
                                 break;
 
                             case "ND":
-                                // do tourOB ko co daily -> lay theo chinhanh
+                                // do tournd ko co daily -> lay theo chinhanh
                                 if (string.IsNullOrEmpty(Macn)) // ko chon cn => lay het cn dang co'
                                 {
                                     BaoCaoVM.TourNDDTOs = _baoCaoService.DoanhSoTheoChiNhanh_ND(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
@@ -4584,30 +4584,6 @@ namespace ThongKe.Controllers
                         //BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => maCns.Any(item2 => item1.Macn == item2));
                     }
 
-                    ////if (string.IsNullOrEmpty(Macn)) // moi load vao
-                    ////{
-                    ////    var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
-                    ////    foreach (var item in phanKhuCNs)
-                    ////    {
-                    ////        maCns.AddRange(item.ChiNhanhs.Split(',').ToList());
-                    ////    }
-                    ////    BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => maCns.Any(item2 => item1.Macn == item2));
-                    ////    BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
-                    ////    DoanhSoTheoSaleGroupbyNguoiTao();
-                    ////}
-                    ////else // co' chon chinhanh
-                    ////{
-                    ////    maCns = new List<string>() { Macn };
-                    ////    BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, maCns);
-                    ////    DoanhSoTheoSaleGroupbyNguoiTao();
-
-                    ////    var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
-                    ////    foreach (var item in phanKhuCNs)
-                    ////    {
-                    ////        maCns.AddRange(item.ChiNhanhs.Split(',').ToList());
-                    ////    }
-                    ////    BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => maCns.Any(item2 => item1.Macn == item2));
-                    ////}
                 }
             }
             else // admin tong
@@ -4632,6 +4608,22 @@ namespace ThongKe.Controllers
                             //}
                             //BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => maCns.Any(item2 => item1.Macn == item2));
 
+                            break;
+
+                        case "ND":
+                            // do tournd ko co daily -> lay theo chinhanh
+                            if (string.IsNullOrEmpty(Macn)) // ko chon cn => lay het cn dang co'
+                            {
+                                BaoCaoVM.TourNDDTOs = _baoCaoService.DoanhSoTheoChiNhanh_ND(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+                            }
+                            else // co' chon chinhanh
+                            {
+                                maCns = new List<string>() { Macn };
+                                BaoCaoVM.TourNDDTOs = _baoCaoService.DoanhSoTheoChiNhanh_ND(searchFromDate, searchToDate, maCns);
+                            }
+
+                            //BaoCaoVM.TourNDDTOs = BaoCaoVM.TourNDDTOs.Where(x => x.Nguoitao == user.Username);
+                            DoanhSoTheoSaleGroupbyNguoiTao_ND();
                             break;
 
                     }
@@ -5482,7 +5474,7 @@ namespace ThongKe.Controllers
                 foreach (var itemDto in item.TourNDDTOs)
                 {
                     var ngayThanhLyHD = itemDto.Ngaythanhlyhd == null ? "" : itemDto.Ngaythanhlyhd.Value.ToString("dd/MM/yyyy");
-                    if (ngayThanhLyHD == "01/01/0001" || ngayThanhLyHD == "")
+                    if (ngayThanhLyHD == "01/01/0001")
                     {
                         chuaThanhLyHopDong += (itemDto.Doanhthutt == 0) ? itemDto.Doanhthudk : itemDto.Doanhthutt;
                     }

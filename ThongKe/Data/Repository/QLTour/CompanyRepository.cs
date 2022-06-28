@@ -14,6 +14,7 @@ namespace ThongKe.Data.Repository.QLTour
         //IPagedList<Company> ListKhachHang(string searchName, int? page);
         Company GetCompanyByCode(string loaikhach, string makh);
         IEnumerable<Company> Find(Func<Company, bool> value);
+        IEnumerable<Company> GetAll();
     }
     public class CompanyRepository : ICompanyRepository
     {
@@ -27,6 +28,11 @@ namespace ThongKe.Data.Repository.QLTour
         public IEnumerable<Company> Find(Func<Company, bool> value)
         {
             return _context.Company.Where(value);
+        }
+
+        public IEnumerable<Company> GetAll()
+        {
+            return _context.Company;
         }
 
         //public IPagedList<Company> ListKhachHang(string searchName, int? page)

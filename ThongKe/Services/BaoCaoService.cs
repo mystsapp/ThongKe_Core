@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ThongKe.Data.DTOs;
 using ThongKe.Data.Models;
+using ThongKe.Data.Models_KDIB;
 using ThongKe.Data.Models_QLTour;
 using ThongKe.Data.Repository;
 
@@ -16,9 +17,11 @@ namespace ThongKe.Services
         Task<IEnumerable<Role>> GetRoles();
         Task<Role> GetRoleById(int id);
         IEnumerable<Dmchinhanh> GetAllChiNhanh();
+        IEnumerable<Company> GetCompanies();
         IEnumerable<TourNDDTO> DoanhSoTheoDaiLy(string searchFromDate, string searchToDate, List<string> daiLyQL);
         IEnumerable<TourNDDTO> DoanhSoTheoChiNhanh_ND(string searchFromDate, string searchToDate, List<string> maCns);
         IEnumerable<TourOBDTO> DoanhSoTheoChiNhanh_OB(string searchFromDate, string searchToDate, List<string> maCns);
+        IEnumerable<TourIBDTO> DoanhSoTheoThang_IB(string searchFromDate, string searchToDate, List<Dmchinhanh> chiNhanhs, List<string> phongBans, string username);
     }
     public class BaoCaoService : IBaoCaoService
     {
@@ -189,7 +192,7 @@ namespace ThongKe.Services
             return list;
 
         }
-        
+
         public IEnumerable<TourOBDTO> DoanhSoTheoChiNhanh_OB(string searchFromDate, string searchToDate, List<string> maCns)
         {
 
@@ -602,7 +605,7 @@ namespace ThongKe.Services
                 tourDto.TuyenTQ = item.TuyenTq;
                 tourDto.SoKhachDK = item.SoKhachDk;
                 tourDto.DoanhThuDK = item.DoanhThuDk;
-                tourDto.CompanyName = _unitOfWork.companyRepository.Find(x => x.CompanyId == item.MaKh).FirstOrDefault().Name;
+                tourDto.CompanyId = item.MaKh;// _unitOfWork.companyRepository.Find(x => x.CompanyId == item.MaKh).FirstOrDefault().Name;
 
                 if (item.NgayDamPhan.HasValue)
                 {
@@ -681,6 +684,196 @@ namespace ThongKe.Services
             return list;
         }
 
+        public IEnumerable<TourIBDTO> DoanhSoTheoThang_IB(string searchFromDate, string searchToDate, 
+            List<Dmchinhanh> chiNhanhs, List<string> phongBanQLs, string username)
+        {
+
+            var tours = new List<Tours>();// _unitOfWork.tourRepository.Find(item1 => listCN.Any(item2 => item1.ChiNhanhTaoId == item2.Id)).ToList();
+            #region search date
+            // search date
+            DateTime fromDate, toDate;
+            if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
+            {
+
+                try
+                {
+                    fromDate = DateTime.Parse(searchFromDate);
+                    toDate = DateTime.Parse(searchToDate);
+
+                    if (fromDate > toDate)
+                    {
+                        return null;
+                    }
+                    tours = _unitOfWork.tourKDIBRepository.Find(x => x.NgayDen >= fromDate &&
+                                       x.NgayDi < toDate.AddDays(1)).ToList();
+                }
+                catch (Exception)
+                {
+
+                    return null;
+                }
+
+
+                //list.Where(x => x.NgayTao >= fromDate && x.NgayTao < (toDate.AddDays(1))/*.ToPagedList(page, pageSize)*/;
+
+
+
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchFromDate))
+                {
+                    try
+                    {
+                        fromDate = DateTime.Parse(searchFromDate);
+                        tours = _unitOfWork.tourKDIBRepository.Find(x => x.NgayDen >= fromDate).ToList();
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+
+                }
+                if (!string.IsNullOrEmpty(searchToDate))
+                {
+                    try
+                    {
+                        toDate = DateTime.Parse(searchToDate);
+                        tours = _unitOfWork.tourKDIBRepository.Find(x => x.NgayDi < toDate.AddDays(1)).ToList();
+
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+
+                }
+            }
+            // search date
+            #endregion
+
+            var list = new List<TourIBDTO>();
+            //var companies = _unitOfWork.khachHangRepository.GetAll();
+            var dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll();
+            var loaiTours = _unitOfWork.tourKindRepository.GetAll();
+            var cacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll();
+
+            if (tours == null)
+            {
+                return null;
+            }
+            else
+            {
+                if (chiNhanhs.Count > 0) // chiNhanhs: cn QL
+                {
+                    //list = list.Where(x => x.MaCNTao == macn).ToList();
+                    tours = tours.Where(item1 => chiNhanhs.Any(item2 => item1.ChiNhanhTaoId == item2.Id)).ToList();
+                    if (phongBanQLs.Count > 0) // chi lay phong ban QL
+                    {
+                        var usernames = _unitOfWork.userRepository.Find(x => phongBanQLs.Any(y => y == x.PhongBanId)); // tat ca user trong thitruong
+                        tours = tours.Where(x => usernames.Any(y => x.NguoiTao == y.Username)).ToList();
+
+                    }
+                    if (!string.IsNullOrEmpty(username)) // ko QL ai het ==> user thuong
+                    {
+                        tours = tours.Where(x => x.NguoiTao == username).ToList();
+                    }
+                }
+            }
+
+            foreach (var item in tours)
+            {
+                var tourDto = new TourIBDTO();
+
+                tourDto.Id = item.Id;
+                tourDto.Sgtcode = item.Sgtcode;
+                tourDto.KhachLe = item.KhachLe.Value;
+                tourDto.ChuDeTour = item.ChuDeTour;
+                tourDto.ThiTruong = item.PhongDh;
+                tourDto.NgayKhoa = item.NgayKhoa;
+                tourDto.NguoiKhoa = item.NguoiKhoa;
+                tourDto.NgayTao = item.NgayTao;
+                tourDto.NguoiTao = item.NguoiTao;
+                tourDto.NgayDen = item.NgayDen;
+                tourDto.NgayDi = item.NgayDi;
+                tourDto.TuyenTQ = item.TuyenTq;
+                tourDto.SoKhachDK = item.SoKhachDk;
+                tourDto.DoanhThuDK = item.DoanhThuDk;
+                tourDto.CompanyId = item.MaKh;// _unitOfWork.companyRepository.Find(x => x.CompanyId == item.MaKh).FirstOrDefault().Name;
+
+                if (item.NgayDamPhan.HasValue)
+                {
+                    tourDto.NgayDamPhan = item.NgayDamPhan.Value;
+                }
+
+                tourDto.HinhThucGiaoDich = item.HinhThucGiaoDich;
+                if (item.NgayKyHopDong.HasValue)
+                {
+                    tourDto.NgayKyHopDong = item.NgayKyHopDong.Value;
+                }
+
+                tourDto.NguoiKyHopDong = item.NguoiKyHopDong;
+                if (item.HanXuatVe.HasValue)
+                {
+                    tourDto.HanXuatVe = item.HanXuatVe.Value;
+                }
+                if (item.NgayThanhLyHd.HasValue)
+                {
+                    tourDto.NgayThanhLyHD = item.NgayThanhLyHd.Value;
+                }
+
+                tourDto.SoKhachTT = item.SoKhachTt;
+                tourDto.SKTreEm = item.SktreEm;
+                tourDto.DoanhThuTT = item.DoanhThuTt;
+                tourDto.ChuongTrinhTour = item.ChuongTrinhTour;
+                tourDto.NoiDungThanhLyHD = item.NoiDungThanhLyHd;
+                tourDto.DichVu = item.DichVu;
+                tourDto.DaiLy = item.DaiLy;
+                tourDto.TrangThai = item.TrangThai;
+                tourDto.NgaySua = item.NgaySua;
+                tourDto.NguoiSua = item.NguoiSua;
+                tourDto.TenLoaiTour = loaiTours.Where(x => x.Id == item.LoaiTourId).FirstOrDefault().TourkindInf;
+                tourDto.MaCNTao = (item.ChiNhanhTaoId == 0) ? "" : _unitOfWork.dmChiNhanhRepository.Find(x => x.Id == item.ChiNhanhTaoId).FirstOrDefault().Macn;// chiNhanhs.Where(x => x.Id == item.ChiNhanhTaoId).FirstOrDefault().Macn;
+                if (item.NgayNhanDuTien.HasValue)
+                {
+                    tourDto.NgayNhanDuTien = item.NgayNhanDuTien.Value;
+                }
+
+                tourDto.LyDoNhanDu = item.LyDoNhanDu;
+                tourDto.SoHopDong = item.SoHopDong;
+                tourDto.LaiChuaVe = item.LaiChuaVe;
+                tourDto.LaiGomVe = item.LaiGomVe;
+                tourDto.LaiThucTeGomVe = item.LaiThucTeGomVe;
+                tourDto.NguonTour = item.NguonTour;
+                tourDto.FileKhachDiTour = item.FileKhachDiTour;
+                tourDto.FileVeMayBay = item.FileVeMayBay;
+                tourDto.FileBienNhan = item.FileBienNhan;
+                tourDto.NguoiDaiDien = item.NguoiDaiDien;
+                tourDto.DoiTacNuocNgoai = item.DoiTacNuocNgoai;
+                tourDto.MaCNDH = dmchinhanhs.Where(x => x.Id == item.ChiNhanhDhid).FirstOrDefault().Macn;
+                if (item.NgayHuyTour.HasValue)
+                {
+                    tourDto.NgayHuyTour = item.NgayHuyTour.Value;
+                }
+                tourDto.HuyTour = item.HuyTour;
+                tourDto.NDHuyTour = (item.NdhuyTourId == 0) ? "" : cacNoiDungHuyTours.Where(x => x.Id == item.NdhuyTourId).FirstOrDefault().NoiDung;
+                tourDto.GhiChu = item.GhiChu;
+                tourDto.LoaiTien = item.LoaiTien;
+                tourDto.TyGia = item.TyGia;
+                tourDto.LogFile = item.LogFile;
+
+                //tourDto.Invoices = _context.Invoices.Where(x => x.TourId == item.Id).Count();
+
+                list.Add(tourDto);
+            }
+
+
+            list = list.Where(x => x.HuyTour != true).OrderBy(x => x.NgayTao).ToList();
+            var count = list.Count();
+
+            return list;
+
+        }
 
         public IEnumerable<TourIBDTO> DoanhSoTheoThiTruong(string searchFromDate, string searchToDate, List<string> thiTruongs)
         {
@@ -796,7 +989,7 @@ namespace ThongKe.Services
                 tourDto.TuyenTQ = item.TuyenTq;
                 tourDto.SoKhachDK = item.SoKhachDk;
                 tourDto.DoanhThuDK = item.DoanhThuDk;
-                tourDto.CompanyName = _unitOfWork.companyRepository.Find(x => x.CompanyId == item.MaKh).FirstOrDefault().Name;
+                tourDto.CompanyId = item.MaKh;// _unitOfWork.companyRepository.Find(x => x.CompanyId == item.MaKh).FirstOrDefault().Name;
 
                 if (item.NgayDamPhan.HasValue)
                 {
@@ -884,6 +1077,11 @@ namespace ThongKe.Services
 
         }
 
+        public IEnumerable<Company> GetCompanies()
+        {
+            return _unitOfWork.companyRepository.GetAll();
+        }
+        
         public IEnumerable<Dmchinhanh> GetAllChiNhanh()
         {
             return _unitOfWork.dmChiNhanhRepository.GetAll();

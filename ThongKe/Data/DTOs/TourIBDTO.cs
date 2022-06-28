@@ -45,7 +45,7 @@ namespace ThongKe.Data.DTOs
         public decimal DoanhThuDK { get; set; }
 
         [DisplayName("Công ty")]
-        public string CompanyName { get; set; }
+        public string CompanyId { get; set; }
 
         [DisplayName("Ngày đàm phán")]
         public DateTime NgayDamPhan { get; set; }

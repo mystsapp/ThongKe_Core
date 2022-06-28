@@ -84,7 +84,7 @@
                                 @*<th>#</th>*@
                                 <th>STT</th>
                                 <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().Sgtcode)</th>
-                                <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().CompanyName)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().CompanyId)</th>
                                 <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().NgayDen)</th>
                                 <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().NgayDi)</th>
                                 <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().ChuDeTour)</th>
@@ -128,7 +128,11 @@
                                                     <td class="tdVal bg-red" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
                                                     break;
                                             }
-                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.CompanyName)</td>
+                                            <td class="tdVal" data-id="@item.Id">
+                                                <select class="form-control form-control-sm border-input "
+                                        asp-items="@(new SelectList(Model.Companies,"CompanyId","Name", item.CompanyId))">
+                                                </select>
+                                            </td>
                                             <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
                                             <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
                                             <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ChuDeTour)</td>
@@ -608,7 +612,51 @@
 
 </section>
 <!-- /.content -->
+<style>
+
+    / Fixed Headers /
+
+    th {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+    }
+
+    th[scope=row] {
+        position: -webkit-sticky;
+        position: sticky;
+        left: 0;
+        z-index: 1;
+    }
+
+    th[scope=row] {
+        vertical-align: top;
+        color: inherit;
+        background-color: inherit;
+        background: linear-gradient(90deg, transparent 0%, transparent calc(100% - .05em), #d6d6d6 calc(100% - .05em), #d6d6d6 100%);
+    }
+
+    table:nth-of-type(2) th:not([scope=row]):first-child {
+        left: 0;
+        z-index: 3;
+        background: linear-gradient(90deg, #666 0%, #666 calc(100% - .05em), #ccc calc(100% - .05em), #ccc 100%);
+    }
+
+    / Strictly for making the scrolling happen. /
+
+    th[scope=row] + td {
+        min-width: 24em;
+    }
+
+    th[scope=row] {
+        min-width: 20em;
+    }
+
+</style>
 @section Scripts{
+
+
     <script>
 
         //$(function () {
@@ -685,21 +733,21 @@
 
     <style>
         /*#listDoanhSoTheoSale {
-                                                            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-                                                        }*/
+                                                                                    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                                                                                }*/
 
         #search {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
         /*.tblTour .cursor-pointer:hover {
-                                                            background-color: #3E5C9A;
-                                                            cursor: pointer;
-                                                        }*/
+                                                                                    background-color: #3E5C9A;
+                                                                                    cursor: pointer;
+                                                                                }*/
 
         /*.hoverClass {
-                                                            background-color: #3E5C9A;
-                                                        }*/
+                                                                                    background-color: #3E5C9A;
+                                                                                }*/
     </style>
 }
 

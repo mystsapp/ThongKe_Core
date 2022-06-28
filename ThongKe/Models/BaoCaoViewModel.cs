@@ -8,6 +8,7 @@ namespace ThongKe.Models
     public class BaoCaoViewModel
     {
         public IEnumerable<Dmchinhanh> Dmchinhanhs { get; set; }
+        public IEnumerable<Company> Companies { get; set; }
         public IEnumerable<KhoiViewModel> Khois_KD { get; set; }
         public IEnumerable<TourIBDTO> TourIBDTOs { get; internal set; }
         public IEnumerable<TourNDDTO> TourNDDTOs { get; internal set; }
@@ -15,6 +16,14 @@ namespace ThongKe.Models
         public IEnumerable<TourIBDtosGroupByNguoiTaoViewModel> TourIBDtosGroupByNguoiTaos { get; set; }
         public IEnumerable<TourNDDtosGroupByNguoiTaoViewModel> TourNDDtosGroupByNguoiTaos { get; set; }
         public IEnumerable<TourOBDtosGroupByNguoiTaoViewModel> TourOBDtosGroupByNguoiTaos { get; internal set; }
+        
+
+        // theo thang
+        public IEnumerable<TourBaoCaoTheoThangViewModel> TourBaoCaoTheoThangs1_IB { get; set; }
+        public IEnumerable<ListViewModel> Thangs { get; set; }
+        public IEnumerable<TourBaoCaoTheoThangViewModel> TourBaoCaoTheoThangs2_IB { get; set; }
+        // theo thang
+
         public decimal? TongCong { get; set; }
         public int? TongSK { get; set; }
         public string Khoi { get; set; }

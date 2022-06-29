@@ -55,12 +55,12 @@
 
 
                     <div class="form-group row">
-                        
+
                         <div class="col-2">
                             <label asp-for="User.Username"></label>
                         </div>
                         <div class="col-4">
-                            <input class="form-control" asp-for="User.Username" readonly/>
+                            <input class="form-control" asp-for="User.Username" readonly />
                             <span class="text-danger" asp-validation-for="User.Username"></span>
                         </div>
 
@@ -136,7 +136,7 @@
                             <label asp-for="User.RoleId"></label>
                         </div>
                         <div class="col-4">
-                            <select asp-for="User.RoleId" class="form-control border-input "
+                            <select asp-for="User.RoleId" class="form-control border-input " id="ddlRoleId"
                                     asp-items="@(new SelectList(Model.Roles,"Id","RoleName"))">
                             </select>
                             <span class="text-danger" asp-validation-for="User.RoleId"></span>
@@ -208,6 +208,10 @@
     }
 
     <script>
+        $(document).ready(function() {
+            OnOffPhongBanQL();
+        });
+
         // for phongBanQL edit
         var selectedValues = new Array();
         var phongBanQL = $('#hidDdlPhongBanQL').val();
@@ -250,6 +254,22 @@
             $('#hidDdlDaiLyQL').val(daiLy);
 
         });
+
+        $('#ddlRoleId').change(function() {
+            OnOffPhongBanQL();
+        })
+
+        function OnOffPhongBanQL() {
+            debugger
+            roleId = $('#ddlRoleId').val();
+            if (roleId !== '9') // 9: users
+            {
+                $('#ddlPhongBanQL').attr('disabled', true);
+            }
+            else {
+                $('#ddlPhongBanQL').attr('disabled', false);
+            }
+        }
 
     </script>
 }

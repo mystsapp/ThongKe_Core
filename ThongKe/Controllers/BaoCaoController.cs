@@ -5354,7 +5354,7 @@ namespace ThongKe.Controllers
 
         public async Task<IActionResult> DoanhSoTheoThang(string tuThang1, string denThang1, string nam1,
                                               string tuThang2, string denThang2, string nam2, 
-                                              string Macn = null, string khoi = null)
+                                              string maCn = null, string khoi = null)
         {
 
             // from session
@@ -5393,7 +5393,7 @@ namespace ThongKe.Controllers
             ViewBag.denThang2 = denThang2;
             ViewBag.nam2 = nam2;
 
-            ViewBag.chiNhanh = Macn;
+            ViewBag.chiNhanh = maCn ?? user.Chinhanh;
 
             // Error: bat dau phai nho hon ket thuc
             if ((int.Parse(tuThang1) > int.Parse(denThang1)) || (int.Parse(tuThang2) > int.Parse(denThang2)))
@@ -5487,7 +5487,7 @@ namespace ThongKe.Controllers
                         {
                             case "IB":
 
-                                if (string.IsNullOrEmpty(Macn)) // ko chon cn => lay het cn dang co'
+                                if (string.IsNullOrEmpty(maCn)) // ko chon cn => lay het cn dang co'
                                 {
                                     //1
                                     BaoCaoVM.TourBaoCaoTheoThangs1_IB = TourBaoCaoTheoThangViewModels_IB(tuThang1, denThang1, nam1, BaoCaoVM.Dmchinhanhs.ToList(), 
@@ -5502,7 +5502,7 @@ namespace ThongKe.Controllers
                                 }
                                 else // co' chon chinhanh
                                 {
-                                    BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(x => x.Macn == Macn);
+                                    BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(x => x.Macn == maCn);
                                     //1
                                     BaoCaoVM.TourBaoCaoTheoThangs1_IB = TourBaoCaoTheoThangViewModels_IB(tuThang1, denThang1, nam1, BaoCaoVM.Dmchinhanhs.ToList(),
                                         new List<string>(), user.Username);
@@ -5571,7 +5571,7 @@ namespace ThongKe.Controllers
                     switch (khoi)
                     {
                         case "IB":
-                            if (string.IsNullOrEmpty(Macn)) // ko chon cn => lay het cn dang co'
+                            if (string.IsNullOrEmpty(maCn)) // ko chon cn => lay het cn dang co'
                             {
                                 //1
                                 BaoCaoVM.TourBaoCaoTheoThangs1_IB = TourBaoCaoTheoThangViewModels_IB(tuThang1, denThang1, nam1, BaoCaoVM.Dmchinhanhs.ToList(), new List<string>(), "");
@@ -5584,7 +5584,7 @@ namespace ThongKe.Controllers
                             }
                             else // co' chon chinhanh
                             {
-                                BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(x => x.Macn == Macn);
+                                BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(x => x.Macn == maCn);
                                 //1
                                 BaoCaoVM.TourBaoCaoTheoThangs1_IB = TourBaoCaoTheoThangViewModels_IB(tuThang1, denThang1, nam1, 
                                     BaoCaoVM.Dmchinhanhs.ToList(), new List<string>(), "");

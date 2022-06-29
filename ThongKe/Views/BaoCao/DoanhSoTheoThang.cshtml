@@ -1,6 +1,12 @@
 ﻿@model BaoCaoViewModel
 
+@using Microsoft.AspNetCore.Http
+@using ThongKe.Helps
+@inject IHttpContextAccessor HttpContextAccessor
+
 @{
+    var user = HttpContextAccessor.HttpContext.Session.Get<Users>("loginUser");
+
     ViewData["Title"] = "DoanhSoTheoThang - Thong Ke";
     decimal doanhThu1Tong = 0;
     decimal doanhThu2Tong = 0;
@@ -34,7 +40,7 @@
 
                     <div class="row">
 
-                        <div class="col-md-3 rounded">
+                        <div class="col-md-2 rounded">
                             <br />
                             <label class="alert alert-info d-block">Năm trước</label>
                         </div>
@@ -58,17 +64,25 @@
                             <input type="number" class="form-control " name="nam1" value="@ViewBag.nam1" />
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label class="control-label">Chi nhánh</label>
-                            <select class="form-control" name="chiNhanh"
+                            <select class="form-control" name="maCn"
                                     asp-items="@(new SelectList(Model.Dmchinhanhs, "Macn", "Macn", ViewBag.chiNhanh))">
                             </select>
                         </div>
+
+                        <div class="col-md-2">                            
+                            <label class="control-label">Khối</label>
+                            <select class="form-control form-control-sm" name="khoi"
+                                    asp-items="@(new SelectList(Model.Khois_KD, "Name", "Name", ViewBag.khoi))">
+                            </select>
+                        </div>
+
                     </div>
 
                     <div class="row">
 
-                        <div class="col-md-3 rounded">
+                        <div class="col-md-2 rounded">
                             <br />
                             <label class="alert alert-info d-block">Năm báo cáo</label>
                         </div>
@@ -92,7 +106,7 @@
                             <input type="number" class="form-control" name="nam2" value="@ViewBag.nam2" />
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label class="control-label">&#160;</label>
                             <div class="btn-group btn-block">
                                 <button type="submit" class="btn btn-outline-primary " id="btnSubmitSearch" formaction="/BaoCao/DoanhSoTheoThang" formmethod="post" title="Search"><i class="fas fa-search"></i></button>
@@ -219,76 +233,76 @@
                                         {
                                             tyLeDT = 0;
                                         }
-                                        <td class="tdVal">@(tyLeSK)%</td>
-                                        <td class="tdVal">@(tyLeDT)%</td>
+                                        <td class="tdVal">@(Math.Round(tyLeSK, 2))%</td>
+                                        <td class="tdVal">@(Math.Round(tyLeDT, 2))%</td>
                                     }
                                     <!-- ty le -->
                                 </tr>
 
                             }
-                    <tr>
-                        <td></td>
-                        <td><strong>Tổng Cộng:</strong></td>
-                        <td>
-                            @{
+                            <tr>
+                                <td></td>
+                                <td><strong>Tổng Cộng:</strong></td>
+                                <td>
+                                    @{
 
-                                tongSK1 = Model.TourBaoCaoTheoThangs1_IB.Sum(x => x.SoKhach);
-                                <strong>@tongSK1.ToString("N0")</strong>
-                            }
+                                        tongSK1 = Model.TourBaoCaoTheoThangs1_IB.Sum(x => x.SoKhach);
+                                        <strong>@tongSK1.ToString("N0")</strong>
+                                    }
 
-                        </td> <!-- tong SK1-->
-                        <td><strong>@Model.TourBaoCaoTheoThangs1_IB.Sum(x => x.DoanhSo).ToString("N0")</strong></td> <!-- tong DS1-->
-                        <td><strong>@doanhThu1Tong.ToString("N0")</strong></td><!-- tong DT1-->
+                                </td> <!-- tong SK1-->
+                                <td><strong>@Model.TourBaoCaoTheoThangs1_IB.Sum(x => x.DoanhSo).ToString("N0")</strong></td> <!-- tong DS1-->
+                                <td><strong>@doanhThu1Tong.ToString("N0")</strong></td><!-- tong DT1-->
 
-                        <td>
-                            @{
+                                <td>
+                                    @{
 
-                                tongSK2 = Model.TourBaoCaoTheoThangs2_IB.Sum(x => x.SoKhach);
-                                <strong>@tongSK2.ToString("N0")</strong>
-                            }
+                                        tongSK2 = Model.TourBaoCaoTheoThangs2_IB.Sum(x => x.SoKhach);
+                                        <strong>@tongSK2.ToString("N0")</strong>
+                                    }
 
-                        </td>
-                        <td><strong>@Model.TourBaoCaoTheoThangs2_IB.Sum(x => x.DoanhSo).ToString("N0")</strong></td>
-                        <td><strong>@doanhThu2Tong.ToString("N0")</strong></td>
-                        <td>
-                            <!--tyLeSKCuaTong = tongSK2 / tongSK1 * 100-->
-                            @{
-                                decimal tyLeSKCuaTong = 0;
+                                </td>
+                                <td><strong>@Model.TourBaoCaoTheoThangs2_IB.Sum(x => x.DoanhSo).ToString("N0")</strong></td>
+                                <td><strong>@doanhThu2Tong.ToString("N0")</strong></td>
+                                <td>
+                                    <!--tyLeSKCuaTong = tongSK2 / tongSK1 * 100-->
+                                    @{
+                                        decimal tyLeSKCuaTong = 0;
 
-                                if (tongSK1 > 0)
-                                {
-                                    tyLeSKCuaTong = Convert.ToDecimal(tongSK2) / Convert.ToDecimal(tongSK1) * 100;
-                                    <strong>@tyLeSKCuaTong.ToString("N0")%</strong>
-                                }
-                                else
-                                {
-                                    <strong>0%</strong>
-                                }
+                                        if (tongSK1 > 0)
+                                        {
+                                            tyLeSKCuaTong = Convert.ToDecimal(tongSK2) / Convert.ToDecimal(tongSK1) * 100;
+                                            <strong>@tyLeSKCuaTong.ToString("N0")%</strong>
+                                        }
+                                        else
+                                        {
+                                            <strong>0%</strong>
+                                        }
 
-                            }
+                                    }
 
-                        </td>
-                        <td>
-                            <!--tyLeDTCuaTong = doanhThu2Tong / doanhThu1Tong * 100-->
-                            @{
-                                decimal tyLeDTCuaTong = 0;
+                                </td>
+                                <td>
+                                    <!--tyLeDTCuaTong = doanhThu2Tong / doanhThu1Tong * 100-->
+                                    @{
+                                        decimal tyLeDTCuaTong = 0;
 
-                                if (doanhThu1Tong > 0)
-                                {
-                                    tyLeDTCuaTong = doanhThu2Tong / doanhThu1Tong * 100;
-                                    <strong>@tyLeDTCuaTong.ToString("N0")%</strong>
-                                }
-                                else
-                                {
-                                    <strong>0%</strong>
-                                }
+                                        if (doanhThu1Tong > 0)
+                                        {
+                                            tyLeDTCuaTong = doanhThu2Tong / doanhThu1Tong * 100;
+                                            <strong>@tyLeDTCuaTong.ToString("N0")%</strong>
+                                        }
+                                        else
+                                        {
+                                            <strong>0%</strong>
+                                        }
 
-                            }
+                                    }
 
-                        </td>
-                    </tr>
+                                </td>
+                            </tr>
                         }
-                        
+
                     </tbody>
                 </table>
             </div>
@@ -298,11 +312,10 @@
     <!-- /.card -->
 </section>
 <!-- /.content -->
-
 @section Scripts{
     <script>
 
-        $(function () {
+        $(function() {
             //$("#datepicker").datepicker({
             //    dateFormat: 'dd/mm/yy'
             //});
@@ -321,20 +334,20 @@
 
     <style>
         /*#listDoanhSoTheoSale {
-            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        }*/
+                    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                }*/
 
         #search {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
         /*.tblTour .cursor-pointer:hover {
-            background-color: #3E5C9A;
-            cursor: pointer;
-        }*/
+                    background-color: #3E5C9A;
+                    cursor: pointer;
+                }*/
 
         /*.hoverClass {
-            background-color: #3E5C9A;
-        }*/
+                    background-color: #3E5C9A;
+                }*/
     </style>
 }

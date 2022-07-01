@@ -5394,6 +5394,7 @@ namespace ThongKe.Controllers
             ViewBag.nam2 = nam2;
 
             ViewBag.chiNhanh = maCn ?? user.Chinhanh;
+            ViewBag.khoi = khoi ?? user.Khoi;
 
             // Error: bat dau phai nho hon ket thuc
             if ((int.Parse(tuThang1) > int.Parse(denThang1)) || (int.Parse(tuThang2) > int.Parse(denThang2)))
@@ -5454,19 +5455,28 @@ namespace ThongKe.Controllers
                             }
                             break;
 
-                        //case "ND":
-                        //    // do tournd ko co daily -> lay theo chinhanh
-                        //    BaoCaoVM.TourNDDTOs = _baoCaoService.DoanhSoTheoChiNhanh_ND(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
-                        //    BaoCaoVM.TourNDDTOs = BaoCaoVM.TourNDDTOs.Where(x => x.Nguoitao == user.Username);
-                        //    DoanhSoTheoSaleGroupbyNguoiTao_ND();
-                        //    break;
+                        case "ND":
+                            // do tournd ko co daily -> lay theo chinhanh
+                            // do saledoan ND ko co STN => STN = STS
+                            var maCn1 = user.Chinhanh == "STN" ? "STS" : user.Chinhanh;
+                            maCns = new List<string>();
+                            maCns.Add(maCn1);
+                            //1
+                            BaoCaoVM.TourBaoCaoTheoThangs1_ND = TourBaoCaoTheoThangViewModels_ND(tuThang1, denThang1, nam1, maCns, user.Username);
+                            //1
 
-                        //case "OB":
-                        //    // do tourob ko co daily -> lay theo chinhanh
-                        //    BaoCaoVM.TourOBDTOs = _baoCaoService.DoanhSoTheoChiNhanh_OB(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
-                        //    //BaoCaoVM.TourOBDTOs = BaoCaoVM.TourOBDTOs.Where(x => x.Nguoitao == user.Username);
-                        //    DoanhSoTheoSaleGroupbyNguoiTao_OB();
-                        //    break;
+                            //2
+                            BaoCaoVM.TourBaoCaoTheoThangs2_ND = TourBaoCaoTheoThangViewModels_ND(tuThang2, denThang2, nam2, maCns, user.Username);
+                            //2
+
+                            break;
+
+                            //case "OB":
+                            //    // do tourob ko co daily -> lay theo chinhanh
+                            //    BaoCaoVM.TourOBDTOs = _baoCaoService.DoanhSoTheoChiNhanh_OB(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+                            //    //BaoCaoVM.TourOBDTOs = BaoCaoVM.TourOBDTOs.Where(x => x.Nguoitao == user.Username);
+                            //    DoanhSoTheoSaleGroupbyNguoiTao_OB();
+                            //    break;
 
                     }
 
@@ -5505,49 +5515,65 @@ namespace ThongKe.Controllers
                                     BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(x => x.Macn == maCn);
                                     //1
                                     BaoCaoVM.TourBaoCaoTheoThangs1_IB = TourBaoCaoTheoThangViewModels_IB(tuThang1, denThang1, nam1, BaoCaoVM.Dmchinhanhs.ToList(),
-                                        new List<string>(), user.Username);
+                                        new List<string>(), "");
                                     //1
 
                                     //2
                                     BaoCaoVM.TourBaoCaoTheoThangs2_IB = TourBaoCaoTheoThangViewModels_IB(tuThang2, denThang2, nam2, BaoCaoVM.Dmchinhanhs.ToList(),
-                                        new List<string>(), user.Username);
+                                        new List<string>(), "");
                                     //2
 
                                 }
                                 
                                 break;
 
-                            //case "ND":
-                            //    // do tournd ko co daily -> lay theo chinhanh
-                            //    if (string.IsNullOrEmpty(Macn)) // ko chon cn => lay het cn dang co'
-                            //    {
-                            //        BaoCaoVM.TourNDDTOs = _baoCaoService.DoanhSoTheoChiNhanh_ND(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
-                            //    }
-                            //    else // co' chon chinhanh
-                            //    {
-                            //        maCns = new List<string>() { Macn };
-                            //        BaoCaoVM.TourNDDTOs = _baoCaoService.DoanhSoTheoChiNhanh_ND(searchFromDate, searchToDate, maCns);
-                            //    }
+                            case "ND":
+                                // do tournd ko co daily -> lay theo chinhanh
+                                
+                                if (string.IsNullOrEmpty(maCn)) // ko chon cn => lay het cn dang co'
+                                {
+                                    //1
+                                    BaoCaoVM.TourBaoCaoTheoThangs1_ND = TourBaoCaoTheoThangViewModels_ND(tuThang1, denThang1, nam1, maCns, "");
+                                    //1
 
-                            //    //BaoCaoVM.TourNDDTOs = BaoCaoVM.TourNDDTOs.Where(x => x.Nguoitao == user.Username);
-                            //    DoanhSoTheoSaleGroupbyNguoiTao_ND();
-                            //    break;
+                                    //2
+                                    BaoCaoVM.TourBaoCaoTheoThangs2_ND = TourBaoCaoTheoThangViewModels_ND(tuThang2, denThang2, nam2, maCns, "");
+                                    //2
 
-                            //case "OB":
-                            //    // do tourOB ko co daily -> lay theo chinhanh
-                            //    if (string.IsNullOrEmpty(Macn)) // ko chon cn => lay het cn dang co'
-                            //    {
-                            //        BaoCaoVM.TourOBDTOs = _baoCaoService.DoanhSoTheoChiNhanh_OB(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
-                            //    }
-                            //    else
-                            //    {
-                            //        maCns = new List<string>() { Macn };
-                            //        BaoCaoVM.TourOBDTOs = _baoCaoService.DoanhSoTheoChiNhanh_OB(searchFromDate, searchToDate, maCns);
-                            //    }
+                                }
+                                else // co' chon chinhanh
+                                {
+                                    // do saledoan ND ko co STN => STN = STS
+                                    maCn = maCn == "STN" ? "STS" : maCn;
+                                    maCns = new List<string>();
+                                    maCns.Add(maCn);
+                                    //1
+                                    BaoCaoVM.TourBaoCaoTheoThangs1_ND = TourBaoCaoTheoThangViewModels_ND(tuThang1, denThang1, nam1, maCns, "");
+                                    //1
 
-                            //    //BaoCaoVM.TourOBDTOs = BaoCaoVM.TourOBDTOs.Where(x => x.Nguoitao == user.Username);
-                            //    DoanhSoTheoSaleGroupbyNguoiTao_OB();
-                            //    break;
+                                    //2
+                                    BaoCaoVM.TourBaoCaoTheoThangs2_ND = TourBaoCaoTheoThangViewModels_ND(tuThang2, denThang2, nam2, maCns, "");
+                                    //2
+
+                                }
+
+                                break;
+
+                                //case "OB":
+                                //    // do tourOB ko co daily -> lay theo chinhanh
+                                //    if (string.IsNullOrEmpty(Macn)) // ko chon cn => lay het cn dang co'
+                                //    {
+                                //        BaoCaoVM.TourOBDTOs = _baoCaoService.DoanhSoTheoChiNhanh_OB(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+                                //    }
+                                //    else
+                                //    {
+                                //        maCns = new List<string>() { Macn };
+                                //        BaoCaoVM.TourOBDTOs = _baoCaoService.DoanhSoTheoChiNhanh_OB(searchFromDate, searchToDate, maCns);
+                                //    }
+
+                                //    //BaoCaoVM.TourOBDTOs = BaoCaoVM.TourOBDTOs.Where(x => x.Nguoitao == user.Username);
+                                //    DoanhSoTheoSaleGroupbyNguoiTao_OB();
+                                //    break;
 
                         }
 
@@ -5573,6 +5599,7 @@ namespace ThongKe.Controllers
                         case "IB":
                             if (string.IsNullOrEmpty(maCn)) // ko chon cn => lay het cn dang co'
                             {
+                                
                                 //1
                                 BaoCaoVM.TourBaoCaoTheoThangs1_IB = TourBaoCaoTheoThangViewModels_IB(tuThang1, denThang1, nam1, BaoCaoVM.Dmchinhanhs.ToList(), new List<string>(), "");
                                 //1
@@ -5599,37 +5626,53 @@ namespace ThongKe.Controllers
 
                             break;
 
-                        //case "ND":
-                        //    // do tournd ko co daily -> lay theo chinhanh
-                        //    if (string.IsNullOrEmpty(Macn)) // ko chon cn => lay het cn dang co'
-                        //    {
-                        //        BaoCaoVM.TourNDDTOs = _baoCaoService.DoanhSoTheoChiNhanh_ND(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
-                        //    }
-                        //    else // co' chon chinhanh
-                        //    {
-                        //        maCns = new List<string>() { Macn };
-                        //        BaoCaoVM.TourNDDTOs = _baoCaoService.DoanhSoTheoChiNhanh_ND(searchFromDate, searchToDate, maCns);
-                        //    }
+                        case "ND":
+                            // do tournd ko co daily -> lay theo chinhanh
+                            maCns = new List<string>();
+                            maCns.AddRange(BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+                            if (string.IsNullOrEmpty(maCn)) // ko chon cn => lay het cn dang co'
+                            {
+                                //1
+                                BaoCaoVM.TourBaoCaoTheoThangs1_ND = TourBaoCaoTheoThangViewModels_ND(tuThang1, denThang1, nam1, maCns, "");
+                                //1
 
-                        //    //BaoCaoVM.TourNDDTOs = BaoCaoVM.TourNDDTOs.Where(x => x.Nguoitao == user.Username);
-                        //    DoanhSoTheoSaleGroupbyNguoiTao_ND();
-                        //    break;
+                                //2
+                                BaoCaoVM.TourBaoCaoTheoThangs2_ND = TourBaoCaoTheoThangViewModels_ND(tuThang2, denThang2, nam2, maCns, "");
+                                //2
+                            }
+                            else // co' chon chinhanh
+                            {
+                                // do saledoan ND ko co STN => STN = STS
+                                maCn = maCn == "STN" ? "STS" : maCn;
+                                maCns = new List<string>();
+                                maCns.Add(maCn);
 
-                        //case "OB":
-                        //    // do tourOB ko co daily -> lay theo chinhanh
-                        //    if (string.IsNullOrEmpty(Macn)) // ko chon cn => lay het cn dang co'
-                        //    {
-                        //        BaoCaoVM.TourOBDTOs = _baoCaoService.DoanhSoTheoChiNhanh_OB(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
-                        //    }
-                        //    else
-                        //    {
-                        //        maCns = new List<string>() { Macn };
-                        //        BaoCaoVM.TourOBDTOs = _baoCaoService.DoanhSoTheoChiNhanh_OB(searchFromDate, searchToDate, maCns);
-                        //    }
+                                //1
+                                BaoCaoVM.TourBaoCaoTheoThangs1_ND = TourBaoCaoTheoThangViewModels_ND(tuThang1, denThang1, nam1, maCns, "");
+                                //1
 
-                        //    //BaoCaoVM.TourOBDTOs = BaoCaoVM.TourOBDTOs.Where(x => x.Nguoitao == user.Username);
-                        //    DoanhSoTheoSaleGroupbyNguoiTao_OB();
-                        //    break;
+                                //2
+                                BaoCaoVM.TourBaoCaoTheoThangs2_ND = TourBaoCaoTheoThangViewModels_ND(tuThang2, denThang2, nam2, maCns, "");
+                                //2
+                            }
+
+                            break;
+
+                            //case "OB":
+                            //    // do tourOB ko co daily -> lay theo chinhanh
+                            //    if (string.IsNullOrEmpty(Macn)) // ko chon cn => lay het cn dang co'
+                            //    {
+                            //        BaoCaoVM.TourOBDTOs = _baoCaoService.DoanhSoTheoChiNhanh_OB(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+                            //    }
+                            //    else
+                            //    {
+                            //        maCns = new List<string>() { Macn };
+                            //        BaoCaoVM.TourOBDTOs = _baoCaoService.DoanhSoTheoChiNhanh_OB(searchFromDate, searchToDate, maCns);
+                            //    }
+
+                            //    //BaoCaoVM.TourOBDTOs = BaoCaoVM.TourOBDTOs.Where(x => x.Nguoitao == user.Username);
+                            //    DoanhSoTheoSaleGroupbyNguoiTao_OB();
+                            //    break;
 
                     }
 
@@ -6136,6 +6179,76 @@ namespace ThongKe.Controllers
                 Thang = x.First().NgayTao.Month.ToString(),
                 SoKhach = x.Sum(x => x.SoKhachTT == 0 ? x.SoKhachDK : x.SoKhachTT),
                 DoanhSo = x.Sum(x => x.DoanhThuTT == 0 ? x.DoanhThuDK : x.DoanhThuTT)
+            });
+
+            var TourBaoCaoTheoThangs1Array = tourBaoCaoTheoThangViewModels.ToArray();
+            var count = 12 - TourBaoCaoTheoThangs1Array.Length;
+
+            if (count != 0) // chua du 12 thang
+            {
+                // add list du 12 thang
+                List<TourBaoCaoTheoThangViewModel> list = new List<TourBaoCaoTheoThangViewModel>();
+                for (int i = 1; i <= 12; i++)
+                {
+                    list.Add(new TourBaoCaoTheoThangViewModel() { Thang = i.ToString(), SoKhach = 0, DoanhSo = 0 });
+                }
+
+                if (tourBaoCaoTheoThangViewModels.Count() != 0)
+                {
+                    // chi lay nhung item ma thang khong co' trong BaoCaoVM.TourBaoCaoTheoThangs1
+                    foreach (var item in tourBaoCaoTheoThangViewModels)
+                    {
+                        var itemInList = list.Where(x => int.Parse(x.Thang) == int.Parse(item.Thang));
+                        list.Remove(itemInList.FirstOrDefault());
+                    }
+
+                    tourBaoCaoTheoThangViewModels = tourBaoCaoTheoThangViewModels.Concat(list);
+                }
+                else
+                {
+                    tourBaoCaoTheoThangViewModels = list;
+                }
+
+                // add cho du 12 con vao BaoCaoVM.TourBaoCaoTheoThangs1
+            }
+            return tourBaoCaoTheoThangViewModels;
+        }
+        
+        private IEnumerable<TourBaoCaoTheoThangViewModel> TourBaoCaoTheoThangViewModels_ND(string tuThang1, string denThang1, string nam1,
+            List<string> chiNhanhs, string username)
+        {
+            var searchFromDate = "01/" + tuThang1 + "/" + nam1;
+            string searchToDate = "01/" + denThang1 + "/" + nam1;
+
+            // thang co 31 ngay
+            if (denThang1 == "1" || denThang1 == "3" || denThang1 == "5" || denThang1 == "7" || denThang1 == "8" || denThang1 == "10" || denThang1 == "12")
+            {
+                searchToDate = "31/" + denThang1 + "/" + nam1;
+            }
+            // thang co 30 ngay
+            if (denThang1 == "4" || denThang1 == "6" || denThang1 == "9" || denThang1 == "11")
+            {
+                searchToDate = "30/" + denThang1 + "/" + nam1;
+            }
+            // kiem tra nam nhuan
+            if ((denThang1 == "2") && (int.Parse(nam1) % 400 == 0)) // chia het 400 => nam nhuan
+            {
+                searchToDate = "29/" + denThang1 + "/" + nam1;
+            }
+            if ((denThang1 == "2") && (int.Parse(nam1) % 400 != 0)) // ko phai nam nhuan
+            {
+                searchToDate = "28/" + denThang1 + "/" + nam1;
+            }
+            //BaoCaoVM.TourBaoCaoDtos
+            IEnumerable<TourNDDTO> TourNDDTOs = _baoCaoService.DoanhSoTheoThang_ND(searchFromDate, searchToDate, chiNhanhs, username);
+
+            var tourBaoCaoDtos = TourNDDTOs.GroupBy(x => x.Ngaytao.Value.Month);
+
+            IEnumerable<TourBaoCaoTheoThangViewModel> tourBaoCaoTheoThangViewModels = tourBaoCaoDtos.Select(x => new TourBaoCaoTheoThangViewModel()
+            {
+                Thang = x.First().Ngaytao.Value.Month.ToString(),
+                SoKhach = x.Sum(x => x.Sokhachtt == 0 ? x.Sokhachdk : x.Sokhachtt),
+                DoanhSo = x.Sum(x => x.Doanhthutt == 0 ? x.Doanhthudk : x.Doanhthutt)
             });
 
             var TourBaoCaoTheoThangs1Array = tourBaoCaoTheoThangViewModels.ToArray();

@@ -27,6 +27,7 @@ namespace ThongKe.Models
         public decimal? TongCong { get; set; }
         public int? TongSK { get; set; }
         public string Khoi { get; set; }
-        
+        public IEnumerable<TourBaoCaoTheoThangViewModel> TourBaoCaoTheoThangs1_ND { get; internal set; }
+        public IEnumerable<TourBaoCaoTheoThangViewModel> TourBaoCaoTheoThangs2_ND { get; internal set; }
     }
 }

@@ -22,12 +22,17 @@ namespace ThongKe.Models
         public IEnumerable<TourBaoCaoTheoThangViewModel> TourBaoCaoTheoThangs1_IB { get; set; }
         public IEnumerable<ListViewModel> Thangs { get; set; }
         public IEnumerable<TourBaoCaoTheoThangViewModel> TourBaoCaoTheoThangs2_IB { get; set; }
+
+        public IEnumerable<TourBaoCaoTheoThangViewModel> TourBaoCaoTheoThangs1_ND { get; internal set; }
+        public IEnumerable<TourBaoCaoTheoThangViewModel> TourBaoCaoTheoThangs2_ND { get; internal set; }
+
+        public IEnumerable<TourBaoCaoTheoThangViewModel> TourBaoCaoTheoThangs1_OB { get; internal set; }
+        public IEnumerable<TourBaoCaoTheoThangViewModel> TourBaoCaoTheoThangs2_OB { get; internal set; }
         // theo thang
 
         public decimal? TongCong { get; set; }
         public int? TongSK { get; set; }
         public string Khoi { get; set; }
-        public IEnumerable<TourBaoCaoTheoThangViewModel> TourBaoCaoTheoThangs1_ND { get; internal set; }
-        public IEnumerable<TourBaoCaoTheoThangViewModel> TourBaoCaoTheoThangs2_ND { get; internal set; }
+        
     }
 }

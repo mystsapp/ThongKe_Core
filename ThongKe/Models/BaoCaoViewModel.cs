@@ -2,6 +2,7 @@
 using ThongKe.Data.DTOs;
 using ThongKe.Data.Models;
 using ThongKe.Data.Models_QLTour;
+using ThongKe.Models.TourTheoNgay;
 
 namespace ThongKe.Models
 {
@@ -29,6 +30,13 @@ namespace ThongKe.Models
         public IEnumerable<TourBaoCaoTheoThangViewModel> TourBaoCaoTheoThangs1_OB { get; internal set; }
         public IEnumerable<TourBaoCaoTheoThangViewModel> TourBaoCaoTheoThangs2_OB { get; internal set; }
         // theo thang
+
+        // theo ngay di
+        public IEnumerable<Tourkind> Tourkinds { get; set; } // qltour
+        public TourTheoNgay_IB TourTheoNgay_IB { get; set; }
+        public TourTheoNgay_ND TourTheoNgay_ND { get; set; }
+        public TourTheoNgay_OB TourTheoNgay_OB { get; set; }
+        // theo ngay di
 
         public decimal? TongCong { get; set; }
         public int? TongSK { get; set; }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ThongKe.Data.DTOs;
 using ThongKe.Data.Models;
+using ThongKe.Data.Models_KDND;
 using ThongKe.Data.Models_QLTour;
 using ThongKe.Models.TourTheoNgay;
 
@@ -33,6 +34,7 @@ namespace ThongKe.Models
 
         // theo ngay di
         public IEnumerable<Tourkind> Tourkinds { get; set; } // qltour
+        public IEnumerable<Loaitour> Loaitours { get; set; } // khachdoanND
         public TourTheoNgay_IB TourTheoNgay_IB { get; set; }
         public TourTheoNgay_ND TourTheoNgay_ND { get; set; }
         public TourTheoNgay_OB TourTheoNgay_OB { get; set; }

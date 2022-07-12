@@ -28,6 +28,8 @@ namespace ThongKe.Services
         IEnumerable<TourIBDTO> DoanhSoTheoNgay_IB(string searchFromDate, string searchToDate, string loaiTour, List<Dmchinhanh> listCN, List<string> phongBanQLs, string username);
         IEnumerable<TourNDDTO> DoanhSoTheoNgay_ND(string searchFromDate, string searchToDate, string loaiTour, List<string> listCN, string username);
         IEnumerable<TourOBDTO> DoanhSoTheoNgay_OB(string searchFromDate, string searchToDate, string loaiTour, List<string> listCN, string username);
+        IEnumerable<Tourkind> GetTourinds();
+        IEnumerable<Loaitour> GetLoaiTours();
     }
     public class BaoCaoService : IBaoCaoService
     {
@@ -1755,9 +1757,9 @@ namespace ThongKe.Services
                 tourDto.Tuyentq = item.Tuyentq;
                 tourDto.Diemtq = item.Diemtq;
                 tourDto.Sokhachdk = item.Sokhachdk;
-                tourDto.Sokhachtt = item.Sokhachtt;
+                tourDto.Sokhachtt = item.Sokhachtt ?? 0;
                 tourDto.Doanhthudk = item.Doanhthudk;
-                tourDto.Doanhthutt = item.Doanhthutt;
+                tourDto.Doanhthutt = item.Doanhthutt ?? 0;
                 tourDto.Makh = item.Makh;
                 tourDto.Tenkh = item.Tenkh;
                 tourDto.Diachi = item.Diachi;
@@ -1949,9 +1951,9 @@ namespace ThongKe.Services
                 tourDto.Tuyentq = item.Tuyentq;
                 tourDto.Diemtq = item.Diemtq;
                 tourDto.Sokhachdk = item.Sokhachdk;
-                tourDto.Sokhachtt = item.Sokhachtt;
+                tourDto.Sokhachtt = item.Sokhachtt ?? 0;
                 tourDto.Doanhthudk = item.Doanhthudk;
-                tourDto.Doanhthutt = item.Doanhthutt;
+                tourDto.Doanhthutt = item.Doanhthutt ?? 0;
                 tourDto.Makh = item.Makh;
                 tourDto.Tenkh = item.Tenkh;
                 tourDto.Diachi = item.Diachi;
@@ -2049,6 +2051,16 @@ namespace ThongKe.Services
         public async Task<IEnumerable<Role>> GetRoles()
         {
             return await _unitOfWork.roleRepository.GetRoles();
+        }
+
+        public IEnumerable<Tourkind> GetTourinds()
+        {
+            return _unitOfWork.tourKindRepository.GetAll();
+        }
+
+        public IEnumerable<Loaitour> GetLoaiTours()
+        {
+            return _unitOfWork.tourKDNDRepository.GetLoaitours();
         }
     }
 }

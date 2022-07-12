@@ -15,6 +15,7 @@ namespace ThongKe.Data.Models_KDND
         {
         }
 
+        public virtual DbSet<Loaitour> Loaitour { get; set; }
         public virtual DbSet<Tour> Tour { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -28,6 +29,19 @@ namespace ThongKe.Data.Models_KDND
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Loaitour>(entity =>
+            {
+                entity.ToTable("loaitour");
+
+                entity.Property(e => e.Loaitourid).HasColumnName("loaitourid");
+
+                entity.Property(e => e.Sudung).HasColumnName("sudung");
+
+                entity.Property(e => e.Tenloaitour)
+                    .HasColumnName("tenloaitour")
+                    .HasMaxLength(50);
+            });
+
             modelBuilder.Entity<Tour>(entity =>
             {
                 entity.HasKey(e => e.Idtour);

@@ -1,0 +1,318 @@
+﻿@model BaoCaoViewModel
+
+@{
+    ViewData["Title"] = "DoanhSoTheoThiTruong - Thong Ke";
+    int i = 1;
+}
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title text-bold">BÁO CÁO DOANH SỐ THEO THỊ TRƯỜNG</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <form autocomplete="off" id="frmDoanhSoTheoThiTruong">
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="container" style="padding-bottom:10px; background-color: aliceblue;" id="search">
+
+                    <div class="col-md-12">
+                        <div class="row" style="padding-top: 10px;">
+
+                            <div class="col-md-2">
+                                <label>Từ ngày</label>
+                                <input class="form-control form-control-sm maskInput" name="searchFromDate" value="@ViewBag.searchFromDate" id="txtSearchFromDate" />
+                            </div>
+
+                            <div class="col-md-2">
+                                <label>Đến ngày</label>
+                                <input class="form-control form-control-sm maskInput" name="searchToDate" value="@ViewBag.searchToDate" id="txtSearchToDate" />
+                            </div>
+
+                            <div class="col-md-2">
+                                <label>Thị trường</label>
+                                <select class="form-control form-control-sm" name="thiTruong"
+                                        asp-items="@(new SelectList(Model.Phongbans, "Maphong", "Tenphong", ViewBag.thiTruong))">
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Chi nhánh</label>
+                                <select class="form-control form-control-sm" name="maCn"
+                                        asp-items="@(new SelectList(Model.Dmchinhanhs, "Macn", "Macn", ViewBag.Macn))">
+                                </select>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label>Khối</label>
+                                <input class="form-control form-control-sm " name="khoi" value="IB" id="txtKhoi" readonly />
+                                @*<select class="form-control form-control-sm" name="khoi" disabled
+                                asp-items="@(new SelectList(Model.Khois_KD, "Name", "Name", ViewBag.khoi))" >
+                                </select>*@
+                            </div>
+
+                            <div class="col-md-2">
+                                <label>&nbsp;</label>
+                                <br />
+                                <div class="btn-group btn-block">
+                                    <button type="submit" class="btn btn-outline-primary btn-sm" id="btnSubmitSearch" formaction="/BaoCao/DoanhSoTheoThiTruong" formmethod="get" title="Search"><i class="fas fa-search"></i></button>
+                                    <button type="submit" class="btn btn-outline-success btn-sm" id="btnSubmitExcel" formaction="/BaoCao/DoanhSoTheoThiTruongExcel" formmethod="post" title="Export excel"><i class="fas fa-file-excel"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <br />
+
+            <div style="overflow-x:auto;">
+                <table class="table mytable text-nowrap " id="listDoanhSoTheoThiTruong">
+                    <thead>
+                        <tr class="table-info">
+                            <th>Sgtcode</th>
+                            <th>Ngày đi</th>
+                            <th>Ngày về</th>
+                            <th>Tuyến tham quan</th>
+                            <th>Số khách</th>
+                            <th>Doanh số</th>
+                            <th>Sales</th>
+                            <th>Tên công ty / Khách hàng</th>
+                            <th>Loại tour</th>
+                            <th>Nguồn tour</th>
+                            <th>Ngày tạo</th>
+                            <th>Thị trường</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.TourTheoNgay_IB.TourIBDTOs != null)
+                        {
+                            @foreach (var item in Model.TourTheoNgay_IB.TourIBDTOs)
+                            {
+
+                                <tr class="cursor-pointer ">
+                                    
+                                    @switch (item.TrangThai)
+                                    {
+
+                                        case "0":
+                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            break;
+                                        case "1":
+                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            break;
+                                        case "2":
+                                            <td class="tdVal bg-yellow" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            break;
+                                        case "3":
+                                            <td class="tdVal " style="background-color: chartreuse" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            break;
+                                        case "4":
+                                            <td class="tdVal bg-red" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            break;
+                                        default:
+                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            break;
+                                    }
+
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TuyenTQ)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw((item.SoKhachTT == 0) ? "0" : item.SoKhachTT.ToString("N0"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw((item.DoanhThuTT == 0) ? "0" : item.DoanhThuTT.ToString("N0"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
+                                    <td class="tdVal" data-id="@item.Id">
+                                        <select class="form-control form-control-sm border-input "
+                                        asp-items="@(new SelectList(Model.Companies,"CompanyId","Name", item.CompanyId))">
+                                        </select>
+                                    </td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenLoaiTour)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguonTour)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ThiTruongByNguoiTao)</td>
+                                </tr>
+
+                            }
+                            <tr class="cursor-pointer text-bold">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>Tổng Cộng:</td>
+                                <td>@Html.Raw(Model.TourTheoNgay_IB.TongSK.ToString("N0"))</td>
+                                <td>@Html.Raw(Model.TourTheoNgay_IB.TongDS.ToString("N0"))</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+
+                            </tr>
+                            <tr class="cursor-pointer text-bold">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="background-color: chartreuse">Các đoàn đã thanh lý:</td>
+                                <td>@Html.Raw(Model.TourTheoNgay_IB.TongSKCacDoanDaThanhLy.ToString("N0"))</td>
+                                <td>@Html.Raw(Model.TourTheoNgay_IB.TongDSCacDoanDaThanhLy.ToString("N0"))</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+
+                            </tr>
+                            <tr class="cursor-pointer text-bold">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="bg-yellow">Các đoàn chưa thanh lý:</td>
+                                <td>@Html.Raw(Model.TourTheoNgay_IB.TongSKCacDoanChuaThanhLy.ToString("N0"))</td>
+                                <td>@Html.Raw(Model.TourTheoNgay_IB.TongDSCacDoanChuaThanhLy.ToString("N0"))</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+
+                            </tr>
+                            <tr class="cursor-pointer text-bold">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>Các đoàn chưa ký HD:</td>
+                                <td>@Html.Raw(Model.TourTheoNgay_IB.TongSKCacDoanChuaKyHD.ToString("N0"))</td>
+                                <td>@Html.Raw(Model.TourTheoNgay_IB.TongDSCacDoanChuaKyHD.ToString("N0"))</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+
+                            </tr>
+
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+@section Scripts{
+
+    <script>
+
+        $(function() {
+            //$("#datepicker").datepicker({
+            //    dateFormat: 'dd/mm/yy'
+            //});
+
+            $('#listDoanhSoTheoThiTruong').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": false,
+                "info": false,
+                "autoWidth": true,
+            });
+        });
+
+        $('#frmDoanhSoTheoThiTruong').validate({
+            //rules: {
+            //    email: {
+            //        required: true,
+            //        email: true,
+            //    },
+            //    NgayDen: {
+            //        required: true
+            //    },
+            //    chuDetour1: {
+            //        required: true
+            //    },
+            //},
+            //messages: {
+            //    email: {
+            //        required: "Please enter a email address",
+            //        email: "Please enter a vaild email address"
+            //    },
+            //    NgayDen: {
+            //        required: "Please provide a date"
+            //    },
+            //    chuDetour1: "Please enter value"
+            //},
+            errorElement: 'span',
+            errorPlacement: function(error, element) {
+                // add error text
+
+                //error.addClass('invalid-feedback').removeClass('error');
+                //element.closest('.chuDeTourGroup').append(error);
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#txtSearchFromDate').rules('add', {
+            dateITA: true,
+            messages: {
+                //required: "Chủ đề không được để trống"
+            }
+        });
+
+        $('#txtSearchToDate').rules('add', {
+            dateITA: true,
+            messages: {
+                //required: "Chủ đề không được để trống"
+            }
+        });
+
+    </script>
+    @*<script src="~/js/Admin/DoanhSoTheoSale/doanhSoTheoSaleController.js"></script>*@
+
+    <style>
+        /*#listDoanhSoTheoSale {
+                                    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                                }*/
+
+        #search {
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        /*.tblTour .cursor-pointer:hover {
+                                    background-color: #3E5C9A;
+                                    cursor: pointer;
+                                }*/
+
+        /*.hoverClass {
+                                    background-color: #3E5C9A;
+                                }*/
+    </style>
+}
+

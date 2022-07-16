@@ -40,6 +40,10 @@ namespace ThongKe.Models
         public TourTheoNgay_OB TourTheoNgay_OB { get; set; }
         // theo ngay di
 
+        // theo thi truong
+        public IEnumerable<Phongban> Phongbans { get; set; }
+        // theo thi truong
+
         public decimal? TongCong { get; set; }
         public int? TongSK { get; set; }
         public string Khoi { get; set; }

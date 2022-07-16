@@ -16,6 +16,7 @@ using ThongKe.Data.Models_QLTour;
 using ThongKe.Data.Repository;
 using ThongKe.Helps;
 using ThongKe.Models;
+using ThongKe.Models.TourTheoNgay;
 using ThongKe.Services;
 
 namespace ThongKe.Controllers
@@ -6502,7 +6503,7 @@ namespace ThongKe.Controllers
             ViewBag.searchToDate = searchToDate;// DateTime.Parse(searchToDate).ToShortDateString();
             ViewBag.khoi = khoi ?? user.Khoi;
 
-            BaoCaoVM.Companies = _baoCaoService.GetCompanies();
+            BaoCaoVM.Companies = _baoCaoService.GetCompanies(); // IB
             BaoCaoVM.Dmchinhanhs = _baoCaoService.GetAllChiNhanh().Where(x => !string.IsNullOrEmpty(x.Macn));
             BaoCaoVM.Khois_KD = KhoiViewModels_KD();
             List<string> maCns = new List<string>();
@@ -6648,6 +6649,550 @@ namespace ThongKe.Controllers
         }
         #endregion
         #endregion
+
+        #region Doanh so theo thi truong
+
+        public async Task<IActionResult> DoanhSoTheoThiTruong(string searchFromDate = null, string searchToDate = null,
+            string thiTruong = null, string maCn = null, string khoi = null)
+        {
+
+            // from session
+            var user = HttpContext.Session.Get<Users>("loginUser");
+
+            string fromDate, toDate;
+            if (string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate))
+            {
+                //var currentTime = DateTime.Now;
+                //string TuNgayDenNgayString = LoadTuNgayDenNgay(currentTime.Month.ToString(), currentTime.Month.ToString(), currentTime.Year.ToString());
+                //searchFromDate = TuNgayDenNgayString.Split('-')[0];
+                //searchToDate = TuNgayDenNgayString.Split('-')[1];
+
+                fromDate = "01/01/" + DateTime.Now.ToString("yyyy");
+                toDate = "31/12/" + DateTime.Now.ToString("yyyy");
+
+                searchFromDate = fromDate;
+                searchToDate = toDate;
+            }
+            else // da chon ngay thang - // check date correct
+            {
+                try
+                {
+                    var dateTime = Convert.ToDateTime(searchFromDate);
+                    var dateTime1 = Convert.ToDateTime(searchToDate);
+                    if (dateTime > dateTime1)
+                    {
+                        ModelState.AddModelError("", "Lỗi ngày tháng.");
+                        ViewBag.macn = maCn;
+                        ViewBag.searchFromDate = searchFromDate;
+                        ViewBag.searchToDate = searchToDate;
+                        return View(BaoCaoVM);
+                    }
+                }
+                catch (Exception)
+                {
+                    BaoCaoVM = new BaoCaoViewModel()
+                    {
+                        Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
+                        Tourkinds = _unitOfWork.tourKindRepository.GetAll(),
+                        TourTheoNgay_IB = new TourTheoNgay_IB(),
+                        TourTheoNgay_ND = new TourTheoNgay_ND(),
+                        TourTheoNgay_OB = new TourTheoNgay_OB()
+                    };
+
+                    ViewBag.macn = maCn;
+                    ViewBag.thiTruong = thiTruong;
+                    ViewBag.searchFromDate = searchFromDate;
+                    ViewBag.searchToDate = searchToDate;
+                    ViewBag.khoi = khoi ?? user.Khoi;
+
+                    ModelState.AddModelError("", "Lỗi định dạng ngày tháng.");
+                    return View(BaoCaoVM);
+                }
+            }
+
+            ViewBag.macn = maCn;
+            ViewBag.thiTruong = thiTruong;
+            ViewBag.searchFromDate = searchFromDate;
+            ViewBag.searchToDate = searchToDate;
+            ViewBag.khoi = khoi ?? user.Khoi;
+
+            BaoCaoVM.Phongbans = _unitOfWork.phongBanRepository.GetAll().Where(x => !string.IsNullOrEmpty(x.Macode)); // IB
+            BaoCaoVM.Companies = _baoCaoService.GetCompanies(); // IB
+            BaoCaoVM.Dmchinhanhs = _baoCaoService.GetAllChiNhanh();//.Where(x => !string.IsNullOrEmpty(x.Macn));
+            BaoCaoVM.Khois_KD = KhoiViewModels_KD().Where(x => x.Name == "IB");
+            List<string> thiTruongs = new List<string>();
+            List<string> maCns = new List<string>();
+
+            if (user.RoleId != 8) // 8: Admins
+            {
+                if (user.RoleId == 9) // 9: Users
+                {
+                    switch (khoi)
+                    {
+                        case "IB":
+                            List<Dmchinhanh> dmchinhanhs1 = BaoCaoVM.Dmchinhanhs.Where(x => x.Macn == user.Chinhanh).ToList();
+                            if (!string.IsNullOrEmpty(user.PhongBanQL)) // co ql phongban khac' --> IB
+                            {
+                                var phongBanQL = user.PhongBanQL.Split(',').ToList();
+                                BaoCaoVM.TourIBDTOs = _baoCaoService.DoanhSoTheoThiTruong_IB(searchFromDate, searchToDate, dmchinhanhs1, phongBanQL, "").ToList();
+                            }
+                            else // ko ql phongban khac' --> IB
+                            {
+                                BaoCaoVM.TourIBDTOs = _baoCaoService.DoanhSoTheoThiTruong_IB(searchFromDate, searchToDate, dmchinhanhs1, new List<string>(), user.Username).ToList();
+                            }
+                            DoanhSoTheoNgay_IB();
+                            break;
+                        default:
+                            List<Dmchinhanh> dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(x => x.Macn == user.Chinhanh).ToList();
+                            if (!string.IsNullOrEmpty(user.PhongBanQL)) // co ql phongban khac' --> IB
+                            {
+                                var phongBanQL = user.PhongBanQL.Split(',').ToList();
+                                BaoCaoVM.TourIBDTOs = _baoCaoService.DoanhSoTheoThiTruong_IB(searchFromDate, searchToDate, dmchinhanhs, phongBanQL, "").ToList();
+                            }
+                            else // ko ql phongban khac' --> IB
+                            {
+                                BaoCaoVM.TourIBDTOs = _baoCaoService.DoanhSoTheoThiTruong_IB(searchFromDate, searchToDate, dmchinhanhs, new List<string>(), user.Username).ToList();
+                            }
+                            DoanhSoTheoNgay_IB();
+                            break;
+                    }
+
+                }
+                else // admin khuvuc
+                {
+                    // phanKhuCNs = co cn QL
+                    var role1 = await _baoCaoService.GetRoleById(user.RoleId);
+                    var listMaCN = role1.ChiNhanhQL.Split(',').ToList();
+                    maCns.AddRange(listMaCN);
+
+                    // hien thi tren view
+                    BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(x => maCns.Any(y => x.Macn == y));
+                    if (!string.IsNullOrEmpty(khoi)) // luc chon khoi
+                    {
+                        switch (khoi)
+                        {
+                            case "IB":
+                                if (!string.IsNullOrEmpty(maCn)) // co' chon chinhanh | else lấy hết
+                                {
+                                    BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(x => x.Macn == maCn);
+                                }
+                                if (!string.IsNullOrEmpty(user.PhongBanQL)) // co ql phongban khac'
+                                {
+                                    var phongBanQL = user.PhongBanQL.Split(',').ToList();
+                                    BaoCaoVM.TourIBDTOs = _baoCaoService.DoanhSoTheoThiTruong_IB(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.ToList(), phongBanQL, "");
+
+                                }
+                                else
+                                {
+                                    BaoCaoVM.TourIBDTOs = _baoCaoService.DoanhSoTheoThiTruong_IB(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.ToList(), new List<string>(), "");
+                                }
+                                DoanhSoTheoNgay_IB();
+                                break;
+                            default:
+                                if (!string.IsNullOrEmpty(maCn)) // co' chon chinhanh | else lấy hết
+                                {
+                                    BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(x => x.Macn == maCn);
+                                }
+                                if (!string.IsNullOrEmpty(user.PhongBanQL)) // co ql phongban khac'
+                                {
+                                    var phongBanQL = user.PhongBanQL.Split(',').ToList();
+                                    BaoCaoVM.TourIBDTOs = _baoCaoService.DoanhSoTheoThiTruong_IB(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.ToList(), phongBanQL, "");
+
+                                }
+                                else
+                                {
+                                    BaoCaoVM.TourIBDTOs = _baoCaoService.DoanhSoTheoThiTruong_IB(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.ToList(), new List<string>(), "");
+                                }
+                                DoanhSoTheoNgay_IB();
+                                break;
+                        }
+                    }
+
+                }
+            }
+            else // admin tong
+            {
+                //maCns = BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList();
+                thiTruongs = string.IsNullOrEmpty(thiTruong) ? BaoCaoVM.Phongbans.Select(x => x.Maphong).ToList() :
+                    new List<string>() { thiTruong };
+
+                switch (khoi)
+                {
+                    case "IB":
+                        var dmchinhanhs = string.IsNullOrEmpty(maCn) ? BaoCaoVM.Dmchinhanhs.ToList() :
+                            BaoCaoVM.Dmchinhanhs.Where(x => x.Macn == maCn);
+
+                        BaoCaoVM.TourIBDTOs = _baoCaoService.DoanhSoTheoThiTruong_IB(searchFromDate, searchToDate, dmchinhanhs.ToList(), thiTruongs, "");
+                        DoanhSoTheoNgay_IB();
+                        break;
+                    
+                }
+
+            }
+
+            return View(BaoCaoVM);
+        }
+
+        //[HttpPost]
+        //public async Task<IActionResult> DoanhSoTheoThiTruongExcel(string searchFromDate = null, string searchToDate = null, string thiTruong = null)
+        //{
+        //    BaoCaoVM.TourBaoCaoDtosTheoNgay = new TourBaoCaoDtosTheoNgay();
+        //    // from session
+        //    var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
+        //    //BaoCaoVM.Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll();
+
+        //    //ViewBag.macn = macn;
+        //    ViewBag.thiTruong = thiTruong;
+        //    ViewBag.searchFromDate = searchFromDate;
+        //    ViewBag.searchToDate = searchToDate;
+
+        //    string fromTo = "";
+        //    ExcelPackage ExcelApp = new ExcelPackage();
+        //    ExcelWorksheet xlSheet = ExcelApp.Workbook.Worksheets.Add("Report");
+        //    // Định dạng chiều dài cho cột
+        //    xlSheet.Column(1).Width = 10;// STT
+        //    xlSheet.Column(2).Width = 20;// Code đoàn
+        //    xlSheet.Column(3).Width = 15;// Ngày đi
+        //    xlSheet.Column(4).Width = 15;// Ngày về
+        //    xlSheet.Column(5).Width = 40;// Tuyến tham quan
+        //    xlSheet.Column(6).Width = 10;// Số khách
+        //    xlSheet.Column(7).Width = 15;// Doanh số
+        //    xlSheet.Column(8).Width = 15;// Sales
+        //    xlSheet.Column(9).Width = 35;// Tên công ty/Khách hàng
+        //    xlSheet.Column(10).Width = 25;// Loại tour
+        //    xlSheet.Column(11).Width = 15;// Nguồn tour
+        //    xlSheet.Column(12).Width = 15;// Ngày tạo
+        //    xlSheet.Column(13).Width = 15;// Thị trường
+
+        //    xlSheet.Cells[1, 1].Value = "CÔNG TY DVLH SAIGONTOURIST";
+        //    xlSheet.Cells[1, 1].Style.Font.SetFromFont(new Font("Times New Roman", 14, FontStyle.Bold));
+        //    xlSheet.Cells[1, 1, 1, 13].Merge = true;
+
+        //    xlSheet.Cells[2, 1].Value = "BÁO CÁO DOANH SỐ THEO THỊ TRƯỜNG";
+        //    xlSheet.Cells[2, 1].Style.Font.SetFromFont(new Font("Times New Roman", 16, FontStyle.Bold));
+        //    xlSheet.Cells[2, 1, 2, 13].Merge = true;
+        //    setCenterAligment(2, 1, 2, 13, xlSheet);
+
+        //    // dinh dang tu ngay den ngay
+        //    if (string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate))
+        //    {
+        //        ViewBag.searchFromDate = searchFromDate;
+        //        ViewBag.searchToDate = searchToDate;
+        //        SetAlert("Từ ngày đến ngày không được để trống.", "warning");
+        //        return RedirectToAction(nameof(DoanhSoTheoThiTruong));
+        //    }
+        //    if (searchFromDate == searchToDate)
+        //    {
+        //        fromTo = "Ngày: " + searchFromDate;
+        //    }
+        //    else
+        //    {
+        //        fromTo = "Từ ngày: " + searchFromDate + " đến ngày: " + searchToDate;
+        //    }
+        //    xlSheet.Cells[3, 1].Value = fromTo;
+        //    xlSheet.Cells[3, 1, 3, 12].Merge = true;
+        //    xlSheet.Cells[3, 1].Style.Font.SetFromFont(new Font("Times New Roman", 14, FontStyle.Bold));
+        //    setCenterAligment(3, 1, 3, 12, xlSheet);
+
+        //    // Tạo header
+        //    xlSheet.Cells[5, 1].Value = "STT";
+        //    xlSheet.Cells[5, 2].Value = "Code đoàn ";
+        //    xlSheet.Cells[5, 3].Value = "Ngày đi";
+        //    xlSheet.Cells[5, 4].Value = "Ngày về";
+        //    xlSheet.Cells[5, 5].Value = "Tuyến tham quan";
+        //    xlSheet.Cells[5, 6].Value = "Số khách";
+        //    xlSheet.Cells[5, 7].Value = "Doanh số";
+        //    xlSheet.Cells[5, 8].Value = "Sales";
+        //    xlSheet.Cells[5, 9].Value = "Tên công ty/Khách hàng ";
+        //    xlSheet.Cells[5, 10].Value = "Loại tour";
+        //    xlSheet.Cells[5, 11].Value = "Nguồn tour";
+        //    xlSheet.Cells[5, 12].Value = "Ngày tạo";
+        //    xlSheet.Cells[5, 13].Value = "Thị trường";
+
+        //    xlSheet.Cells[5, 1, 5, 13].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+        //    setBorder(5, 1, 5, 13, xlSheet);
+        //    setCenterAligment(5, 1, 5, 13, xlSheet);
+
+        //    // do du lieu tu table
+        //    int dong = 6;
+
+        //    //// moi load vao
+        //    List<string> thiTruongs = new List<string>();
+        //    List<string> maCns = new List<string>();
+
+        //    BaoCaoVM.Phongbans = _unitOfWork.phongBanRepository.GetAll().Where(x => !string.IsNullOrEmpty(x.Macode));
+
+        //    if (user.Role.RoleName != "Admins")
+        //    {
+        //        if (user.Role.RoleName == "Users")
+        //        {
+        //            ////BaoCaoVM.Dmchinhanhs = new List<Dmchinhanh>() { new Dmchinhanh() { Macn = user.MaCN } };
+        //            //BaoCaoVM.Phongbans = _unitOfWork.phongBanRepository.Find(x => x.Maphong == user.PhongBanId);
+        //            //BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoThiTruong(searchFromDate, searchToDate, BaoCaoVM.Phongbans.Select(x => x.Maphong).ToList()); //, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+        //            //BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.NguoiTao == user.Username);
+
+        //            if (!string.IsNullOrEmpty(user.PhongBans)) // co ql phongban khac'
+        //            {
+        //                var phongBans = user.PhongBans.Split(',').ToList();
+        //                BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoThiTruong(searchFromDate, searchToDate, phongBans);
+        //                BaoCaoVM.Phongbans = BaoCaoVM.Phongbans.Where(x => phongBans.Any(y => y == x.Maphong));
+        //            }
+        //            else
+        //            {
+        //                BaoCaoVM.Phongbans = BaoCaoVM.Phongbans.Where(x => x.Maphong == user.PhongBanId);
+        //                BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoThiTruong(searchFromDate, searchToDate, BaoCaoVM.Phongbans.Select(x => x.Maphong).ToList()); //, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+
+        //                // loc theo thi truong cua minh
+        //                //BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.ThiTruongByNguoiTao == user.PhongBanId);
+
+        //                // loc chi nhanh
+        //                BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.NguoiTao == user.Username);
+
+        //            }
+        //            DoanhSoTheoNgay();
+        //        }
+        //        else
+        //        {
+        //            var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
+
+        //            foreach (var item in phanKhuCNs)
+        //            {
+        //                maCns.AddRange(item.ChiNhanhs.Split(',').ToList());
+        //            }
+        //            thiTruongs = new List<string>();
+        //            foreach (var item in maCns)
+        //            {
+        //                var users = await _unitOfWork.userRepository.FindIncludeOneAsync(x => x.Role, y => y.MaCN == item);
+        //                var phongBanIds = users.Select(x => x.PhongBanId).Distinct();
+        //                thiTruongs.AddRange(phongBanIds);
+        //            }
+
+        //            BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoThiTruong(searchFromDate, searchToDate, thiTruongs);
+        //            if (!string.IsNullOrEmpty(thiTruong))
+        //            {
+        //                BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.ThiTruongByNguoiTao == thiTruong);
+        //            }
+
+        //            // loc chi nhanh
+        //            BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(item1 => maCns.Any(item2 => item1.MaCNTao == item2));
+
+        //            DoanhSoTheoNgay();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        thiTruongs = new List<string>();
+        //        thiTruongs.AddRange(_unitOfWork.phongBanRepository.GetAll().Where(x => !string.IsNullOrEmpty(x.Macode)).Select(x => x.Maphong).Distinct());
+        //        BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoThiTruong(searchFromDate, searchToDate, thiTruongs);
+        //        if (!string.IsNullOrEmpty(thiTruong))
+        //        {
+        //            BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.ThiTruongByNguoiTao == thiTruong);
+        //        }
+        //        DoanhSoTheoNgay();
+        //    }
+
+        //    //return View(BaoCaoVM);
+
+        //    //du lieu
+        //    //int iRowIndex = 6;
+
+        //    Color colFromHex = System.Drawing.ColorTranslator.FromHtml("#D3D3D3");// ColorTranslator.FromHtml("#D3D3D3");
+        //    Color colorTotalRow = ColorTranslator.FromHtml("#66ccff");
+        //    Color colorThanhLy = ColorTranslator.FromHtml("#7FFF00");
+        //    Color colorChuaThanhLy = ColorTranslator.FromHtml("#FFDEAD");
+
+        //    int idem = 1;
+
+        //    if (BaoCaoVM.TourBaoCaoDtosTheoNgay.TourBaoCaoDtos != null)
+        //    {
+        //        foreach (var item in BaoCaoVM.TourBaoCaoDtosTheoNgay.TourBaoCaoDtos)
+        //        {
+        //            xlSheet.Cells[dong, 1].Value = idem;
+        //            TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Justify, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //            //xlSheet.Cells[dong, 1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+        //            xlSheet.Cells[dong, 2].Value = item.Sgtcode;
+        //            xlSheet.Cells[dong, 2].Style.Fill.PatternType = ExcelFillStyle.Solid;
+        //            if (item.TrangThai == "3")
+        //            {
+        //                xlSheet.Cells[dong, 2].Style.Fill.BackgroundColor.SetColor(colorThanhLy);
+        //            }
+        //            else if (item.TrangThai == "2")
+        //            {
+        //                xlSheet.Cells[dong, 2].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+        //            }
+        //            else if (item.TrangThai == "4")
+        //            {
+        //                xlSheet.Cells[dong, 2].Style.Fill.BackgroundColor.SetColor(Color.Red);
+        //            }
+        //            else
+        //            {
+        //                xlSheet.Cells[dong, 2].Style.Fill.BackgroundColor.SetColor(Color.White);
+        //            }
+
+        //            TrSetCellBorder(xlSheet, dong, 2, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //            // xlSheet.Cells[dong, 2].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+        //            xlSheet.Cells[dong, 3].Value = item.NgayDen.ToShortDateString();
+        //            TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //            // xlSheet.Cells[dong, 3].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+        //            xlSheet.Cells[dong, 4].Value = item.NgayDi.ToShortDateString();
+        //            TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //            //xlSheet.Cells[dong, 4].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+        //            xlSheet.Cells[dong, 5].Value = item.TuyenTQ;
+        //            TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //            //xlSheet.Cells[dong, 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+        //            xlSheet.Cells[dong, 6].Value = (item.SoKhachTT == 0) ? 0 : item.SoKhachTT;
+        //            xlSheet.Cells[dong, 6].Style.Numberformat.Format = "#,##0";
+        //            TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //            // xlSheet.Cells[dong, 8].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+        //            xlSheet.Cells[dong, 7].Value = (item.DoanhThuTT == 0) ? 0 : item.DoanhThuTT;
+        //            xlSheet.Cells[dong, 7].Style.Numberformat.Format = "#,##0";
+        //            TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //            //xlSheet.Cells[dong, 9].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+        //            xlSheet.Cells[dong, 8].Value = item.NguoiTao;
+        //            TrSetCellBorder(xlSheet, dong, 8, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //            // xlSheet.Cells[dong, 10].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+        //            xlSheet.Cells[dong, 9].Value = item.CompanyName;
+        //            TrSetCellBorder(xlSheet, dong, 9, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //            // xlSheet.Cells[dong, 10].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+        //            xlSheet.Cells[dong, 10].Value = item.TenLoaiTour;
+        //            TrSetCellBorder(xlSheet, dong, 10, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //            // xlSheet.Cells[dong, 10].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+        //            xlSheet.Cells[dong, 11].Value = item.NguonTour;
+        //            TrSetCellBorder(xlSheet, dong, 11, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //            // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+        //            xlSheet.Cells[dong, 12].Value = item.NgayTao;
+        //            TrSetCellBorder(xlSheet, dong, 12, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //            // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+        //            xlSheet.Cells[dong, 13].Value = item.ThiTruongByNguoiTao;
+        //            TrSetCellBorder(xlSheet, dong, 13, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //            // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+        //            //setBorder(5, 1, dong, 10, xlSheet);
+
+        //            dong++;
+        //            idem++;
+        //        }
+
+        //        xlSheet.Cells[dong, 5].Value = "TỔNG CỘNG:";
+        //        TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //        xlSheet.Cells[dong, 6].Value = BaoCaoVM.TourBaoCaoDtosTheoNgay.TongSK;
+        //        TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //        xlSheet.Cells[dong, 7].Value = BaoCaoVM.TourBaoCaoDtosTheoNgay.TongDS;
+        //        TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+
+        //        xlSheet.Cells[dong + 1, 5].Value = "Các đoàn đã thanh lý:";
+        //        TrSetCellBorder(xlSheet, dong + 1, 5, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //        xlSheet.Cells[dong + 1, 5].Style.Fill.PatternType = ExcelFillStyle.Solid;
+        //        xlSheet.Cells[dong + 1, 5].Style.Fill.BackgroundColor.SetColor(colorThanhLy);
+        //        xlSheet.Cells[dong + 1, 6].Value = BaoCaoVM.TourBaoCaoDtosTheoNgay.TongSKCacDoanDaThanhLy;
+        //        TrSetCellBorder(xlSheet, dong + 1, 6, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //        xlSheet.Cells[dong + 1, 7].Value = BaoCaoVM.TourBaoCaoDtosTheoNgay.TongDSCacDoanDaThanhLy;
+        //        TrSetCellBorder(xlSheet, dong + 1, 7, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+
+        //        xlSheet.Cells[dong + 2, 5].Value = "Các đoàn chưa thanh lý:";
+        //        TrSetCellBorder(xlSheet, dong + 2, 5, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //        xlSheet.Cells[dong + 2, 5].Style.Fill.PatternType = ExcelFillStyle.Solid;
+        //        xlSheet.Cells[dong + 2, 5].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+        //        xlSheet.Cells[dong + 2, 6].Value = BaoCaoVM.TourBaoCaoDtosTheoNgay.TongSKCacDoanChuaThanhLy;
+        //        TrSetCellBorder(xlSheet, dong + 2, 6, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //        xlSheet.Cells[dong + 2, 7].Value = BaoCaoVM.TourBaoCaoDtosTheoNgay.TongDSCacDoanChuaThanhLy;
+        //        TrSetCellBorder(xlSheet, dong + 2, 7, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+
+        //        xlSheet.Cells[dong + 3, 5].Value = "Các đoàn chưa ký hợp đồng:";
+        //        TrSetCellBorder(xlSheet, dong + 3, 5, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+
+        //        xlSheet.Cells[dong + 3, 6].Value = BaoCaoVM.TourBaoCaoDtosTheoNgay.TongSKCacDoanChuaKyHD;
+        //        TrSetCellBorder(xlSheet, dong + 3, 6, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //        xlSheet.Cells[dong + 3, 7].Value = BaoCaoVM.TourBaoCaoDtosTheoNgay.TongDSCacDoanChuaKyHD;
+        //        TrSetCellBorder(xlSheet, dong + 3, 7, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+
+        //        setBorder(dong, 1, dong + 3, 13, xlSheet);
+        //        setFontBold(dong, 1, dong + 3, 13, 12, xlSheet);
+        //        NumberFormat(6, 6, dong + 3, 7, xlSheet);
+
+        //        DateFormat(6, 12, dong, 12, xlSheet);
+        //        //xlSheet.Cells[dong, 1, dong, 12].Merge = true;
+        //        //xlSheet.Cells[dong, 1].Value = vm.NguoiTao;
+        //        //xlSheet.Cells[dong, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+        //        ////TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+        //        //xlSheet.Cells[dong, 1].Style.Font.Bold = true;
+
+        //        //NumberFormat(6, 8, dong + 1, 9, xlSheet);
+        //        //dong = dong + 3;
+        //        //idem = 1;
+
+        //        //NumberFormat(dong, 2, dong, 5, xlSheet);
+        //        //setFontBold(dong, 2, dong, 5, 12, xlSheet);
+        //        //setBorder(dong, 2, dong, 5, xlSheet);
+        //    }
+        //    else
+        //    {
+        //        SetAlert("No sale.", "warning");
+        //        return RedirectToAction(nameof(DoanhSoTheoThiTruong));
+        //    }
+
+        //    //dong++;
+        //    //// Merger cot 4,5 ghi tổng tiền
+        //    //setRightAligment(dong, 3, dong, 3, xlSheet);
+        //    //xlSheet.Cells[dong, 1, dong, 2].Merge = true;
+        //    //xlSheet.Cells[dong, 1].Value = "Tổng tiền: ";
+
+        //    // Sum tổng tiền
+        //    // xlSheet.Cells[dong, 5].Value = "TC:";
+        //    //DateTimeFormat(6, 4, 6 + d.Count(), 4, xlSheet);
+        //    // DateTimeFormat(6, 4, 9, 4, xlSheet);
+        //    // setCenterAligment(6, 4, 9, 4, xlSheet);
+        //    // xlSheet.Cells[dong, 6].Formula = "SUM(F6:F" + (6 + d.Count() - 1) + ")";
+
+        //    //setBorder(5, 1, 5 + d.Count() + 2, 10, xlSheet);
+
+        //    //setFontBold(5, 1, 5, 8, 11, xlSheet);
+        //    //setFontSize(6, 1, 6 + d.Count() + 2, 8, 11, xlSheet);
+        //    // canh giua cot stt
+        //    setCenterAligment(6, 1, 6 + dong + 2, 1, xlSheet);
+        //    // canh giua code chinhanh
+        //    setCenterAligment(6, 3, 6 + dong + 2, 3, xlSheet);
+        //    // NumberFormat(6, 6, 6 + d.Count(), 6, xlSheet);
+        //    // định dạng số cot, đơn giá, thành tiền tong cong
+        //    // NumberFormat(6, 8, dong, 9, xlSheet);
+
+        //    // setBorder(dong, 5, dong, 6, xlSheet);
+        //    // setFontBold(dong, 5, dong, 6, 12, xlSheet);
+
+        //    //xlSheet.View.FreezePanes(6, 20);
+
+        //    //end du lieu
+
+        //    byte[] fileContents;
+        //    try
+        //    {
+        //        fileContents = ExcelApp.GetAsByteArray();
+        //        return File(
+        //        fileContents: fileContents,
+        //        contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        //        fileDownloadName: "DoanhSoTheoThiTruong_" + System.DateTime.Now.ToString("dd/MM/yyyy HH:mm") + ".xlsx");
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
+
+        #endregion Doanh so theo thi truong
+
         private string LoadTuNgayDenNgay(string tuThang1, string denThang1, string nam1)
         {
             string searchFromDate = "01/" + tuThang1 + "/" + nam1;

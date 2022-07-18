@@ -80,8 +80,7 @@
                     <table class="table mytable text-nowrap tblTour" id="listDoanhSoTheoSale">
                         <thead>
                             <tr class="table-info">
-                                @*<th>#</th>*@
-                                @*<th>#</th>*@
+
                                 <th>STT</th>
                                 <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().Sgtcode)</th>
                                 <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().CompanyId)</th>
@@ -126,6 +125,9 @@
                                                     break;
                                                 case "4":
                                                     <td class="tdVal bg-red" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                    break;
+                                                default:
+                                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
                                                     break;
                                             }
                                             <td class="tdVal" data-id="@item.Id">
@@ -183,12 +185,14 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
+                                        <td></td>
                                     </tr>
                                     <tr class="cursor-pointer text-bold">
                                         <td></td>
                                         <td></td>
                                         <td>ĐÃ THANH LÝ HỢP ĐỒNG:</td>
                                         <td>@Html.Raw(vm.TourIBDTOs.FirstOrDefault().DaThanhLyHopDong.ToString("N0"))</td>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -214,6 +218,7 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
+
                                     </tr>
 
                                 }
@@ -223,6 +228,7 @@
                                     <td></td>
                                     <td>@Html.Raw(Model.TongSK.Value.ToString("N0"))</td>
                                     <td>@Html.Raw(Model.TongCong.Value.ToString("N0"))</td>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -293,8 +299,8 @@
                                                 case "4":
                                                     <td class="tdVal bg-red" data-id="@item.Idtour">@Html.DisplayFor(m => item.Sgtcode)</td>
                                                     break;
-                                                default:
-                                                    <td class="tdVal" data-id="@item.Idtour"></td>
+                                                default: // trangthai == null
+                                                    <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Sgtcode)</td>
                                                     break;
 
                                             }
@@ -354,12 +360,15 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
+                                        <td></td>
+                                        
                                     </tr>
                                     <tr class="cursor-pointer text-bold">
                                         <td></td>
                                         <td></td>
                                         <td>ĐÃ THANH LÝ HỢP ĐỒNG:</td>
                                         <td>@Html.Raw(vm.TourNDDTOs.FirstOrDefault().DaThanhLyHopDong.Value.ToString("N0"))</td>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -404,6 +413,7 @@
                                         }
                                         @Html.Raw(Model.TongCong.Value.ToString("N0"))
                                     </td>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -475,7 +485,7 @@
                                                     <td class="tdVal bg-red" data-id="@item.Idtour">@Html.DisplayFor(m => item.Sgtcode)</td>
                                                     break;
                                                 default:
-                                                    <td class="tdVal" data-id="@item.Idtour"></td>
+                                                    <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Sgtcode)</td>
                                                     break;
 
                                             }
@@ -535,12 +545,14 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
+                                        <td></td>
                                     </tr>
                                     <tr class="cursor-pointer text-bold">
                                         <td></td>
                                         <td></td>
                                         <td>ĐÃ THANH LÝ HỢP ĐỒNG:</td>
                                         <td>@Html.Raw(vm.TourOBDTOs.FirstOrDefault().DaThanhLyHopDong.Value.ToString("N0"))</td>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -585,6 +597,7 @@
                                         }
                                         @Html.Raw(Model.TongCong.Value.ToString("N0"))
                                     </td>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -664,17 +677,15 @@
         //    //    dateFormat: 'dd/mm/yy'
         //    //});
 
-        //    $('#listDoanhSoTheoSale').DataTable({
-        //        "paging": true,
-        //        "lengthChange": true,
-        //        "searching": true,
-        //        "ordering": false,
-        //        "info": false,
-        //        "autoWidth": true,
-        //    });
-        //});
-
-
+        $('#listDoanhSoTheoSale').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": false,
+            "info": false,
+            "autoWidth": true,
+        });
+                
         $('#frmDoanhSoTheoSale').validate({
             //rules: {
             //    email: {
@@ -733,21 +744,21 @@
 
     <style>
         /*#listDoanhSoTheoSale {
-                                                                                    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-                                                                                }*/
+                                                                                            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                                                                                        }*/
 
         #search {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
         /*.tblTour .cursor-pointer:hover {
-                                                                                    background-color: #3E5C9A;
-                                                                                    cursor: pointer;
-                                                                                }*/
+                                                                                            background-color: #3E5C9A;
+                                                                                            cursor: pointer;
+                                                                                        }*/
 
         /*.hoverClass {
-                                                                                    background-color: #3E5C9A;
-                                                                                }*/
+                                                                                            background-color: #3E5C9A;
+                                                                                        }*/
     </style>
 }
 

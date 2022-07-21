@@ -41,18 +41,18 @@
                 </button>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body pb-0">
 
 
             <form method="post" autocomplete="off" enctype="multipart/form-data">
-                <div class="p-4 border rounded">
+                @*<div class="p-4 border rounded">*@
 
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="form-group row">
 
                         <div class="col-2">
-                            <label asp-for="User.Username"></label>
+                            <label asp-for="User.Username"></label> <span class="text-danger">(*)</span>
                         </div>
                         <div class="col-4">
                             <input class="form-control" asp-for="User.Username" />
@@ -60,7 +60,7 @@
                         </div>
 
                         <div class="col-2">
-                            <label asp-for="User.Hoten"></label>
+                            <label asp-for="User.Hoten"></label><span class="text-danger">(*)</span>
                         </div>
                         <div class="col-4">
                             <input class="form-control" asp-for="User.Hoten" />
@@ -74,7 +74,7 @@
                     <div class="form-group row">
 
                         <div class="col-2">
-                            <label asp-for="User.Password"></label>
+                            <label asp-for="User.Password"></label><span class="text-danger">(*)</span>
                         </div>
                         <div class="col-4">
                             <input class="form-control" asp-for="User.Password" />
@@ -83,7 +83,7 @@
 
 
                         <div class="col-2">
-                            <label asp-for="User.Daily"></label>
+                            <label asp-for="User.Daily"></label><span class="text-danger">(*)</span>
                         </div>
                         <div class="col-4">
                             <select asp-for="User.Daily" class="form-control border-input "
@@ -100,7 +100,7 @@
                     <div class="form-group row">
 
                         <div class="col-2">
-                            <label asp-for="User.Chinhanh"></label>
+                            <label asp-for="User.Chinhanh"></label><span class="text-danger">(*)</span>
                         </div>
                         <div class="col-4">
                             <select asp-for="User.Chinhanh" class="form-control border-input"
@@ -110,7 +110,7 @@
 
 
                         <div class="col-2">
-                            <label asp-for="User.Trangthai"></label>
+                            <label asp-for="User.Trangthai"></label><span class="text-danger">(*)</span>
                         </div>
                         <div class="col-4">
                             <input type="checkbox" asp-for="User.Trangthai" />
@@ -120,7 +120,7 @@
                     <div class="form-group row">
 
                         <div class="col-2">
-                            <label asp-for="User.Khoi"></label>
+                            <label asp-for="User.Khoi"></label><span class="text-danger text-bold">(**)</span>
                         </div>
                         <div class="col-4">
                             <select asp-for="User.Khoi" class="form-control border-input "
@@ -130,7 +130,7 @@
                         </div>
 
                         <div class="col-2">
-                            <label asp-for="User.RoleId"></label>
+                            <label asp-for="User.RoleId"></label><span class="text-danger  text-bold">(**)</span>
                         </div>
                         <div class="col-4">
                             <select asp-for="User.RoleId" class="form-control border-input "
@@ -154,7 +154,7 @@
                     <div class="form-group row">
 
                         <div class="col-2">
-                            <label asp-for="User.PhongBanQL"></label>
+                            <label asp-for="User.PhongBanQL"></label> (IB)
                         </div>
                         <div class="col-4">
                             <input type="hidden" asp-for="User.PhongBanQL" id="hidDdlPhongBanQL" />
@@ -165,7 +165,7 @@
                         </div>
 
                         <div class="col-2">
-                            <label asp-for="User.DaiLyQL"></label>
+                            <label asp-for="User.DaiLyQL"></label> (ND, OB)
                         </div>
                         <div class="col-4">
                             <input type="hidden" asp-for="User.DaiLyQL" id="hidDdlDaiLyQL" />
@@ -180,7 +180,7 @@
                     <div class="form-group row">
 
                         <div class="col-2">
-                            <label asp-for="User.PhongBanId"></label>
+                            <label asp-for="User.PhongBanId"></label><span class="text-danger  text-bold">(**)</span>
                         </div>
                         <div class="col-4">
                             <select asp-for="User.PhongBanId" class=" form-control"
@@ -196,7 +196,7 @@
                         <a class="btn btn-success" asp-action="Index"><i class="fas fa-backward"></i></a>
                     </div>
 
-                </div>
+                @*</div>*@
             </form>
 
         </div>

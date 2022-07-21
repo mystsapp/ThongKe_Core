@@ -309,12 +309,12 @@
                                             <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Ketthuc.Value.ToString("dd/MM/yyyy"))</td>
                                             <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Chudetour)</td>
                                             <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Tuyentq)</td>
-                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Sokhachdk.Value.ToString("N0"))</td>
-                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Doanhthudk.Value.ToString("N0"))</td>
-                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Sokhachtt == null ? "0" : item.Sokhachtt.Value.ToString("N0"))</td>
-                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Doanhthutt == null ? "0" : item.Doanhthutt.Value.ToString("N0"))</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Sokhachdk.HasValue ? item.Sokhachdk.Value.ToString("N0") : "0")</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Doanhthudk.HasValue ? item.Doanhthudk.Value.ToString("N0") : "0")</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Sokhachtt.HasValue ? item.Sokhachtt.Value.ToString("N0") : "0")</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Doanhthutt.HasValue ? item.Doanhthutt.Value.ToString("N0") : "0")</td>
                                             <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Nguoitao)</td>
-                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Ngaytao.Value.ToString("dd/MM/yyyy"))</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Ngaytao.HasValue ? item.Ngaytao.Value.ToString("dd/MM/yyyy") : "")</td>
                                             <td class="tdVal" data-id="@item.Idtour">
                                                 @switch (item.Trangthai)
                                                 {
@@ -361,7 +361,7 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        
+
                                     </tr>
                                     <tr class="cursor-pointer text-bold">
                                         <td></td>
@@ -494,12 +494,12 @@
                                             <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Ketthuc.Value.ToString("dd/MM/yyyy"))</td>
                                             <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Chudetour)</td>
                                             <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Tuyentq)</td>
-                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Sokhachdk.Value.ToString("N0"))</td>
-                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Doanhthudk.Value.ToString("N0"))</td>
-                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Sokhachtt == null ? "0" : item.Sokhachtt.Value.ToString("N0"))</td>
-                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Doanhthutt == null ? "0" : item.Doanhthutt.Value.ToString("N0"))</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Sokhachdk.HasValue ? item.Sokhachdk.Value.ToString("N0") : "0")</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Doanhthudk.HasValue? item.Doanhthudk.Value.ToString("N0"):"0"))</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Sokhachtt.HasValue ? item.Sokhachtt.Value.ToString("N0") : "0")</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Doanhthutt.HasValue ? item.Doanhthutt.Value.ToString("N0") : "0")</td>
                                             <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Nguoitao)</td>
-                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Ngaytao.Value.ToString("dd/MM/yyyy"))</td>
+                                            <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Ngaytao.HasValue ? item.Ngaytao.Value.ToString("dd/MM/yyyy") : "")</td>
                                             <td class="tdVal" data-id="@item.Idtour">
                                                 @switch (item.Trangthai)
                                                 {
@@ -685,7 +685,7 @@
             "info": false,
             "autoWidth": true,
         });
-                
+
         $('#frmDoanhSoTheoSale').validate({
             //rules: {
             //    email: {
@@ -744,21 +744,21 @@
 
     <style>
         /*#listDoanhSoTheoSale {
-                                                                                            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-                                                                                        }*/
+                                                                                                    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                                                                                                }*/
 
         #search {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
         /*.tblTour .cursor-pointer:hover {
-                                                                                            background-color: #3E5C9A;
-                                                                                            cursor: pointer;
-                                                                                        }*/
+                                                                                                    background-color: #3E5C9A;
+                                                                                                    cursor: pointer;
+                                                                                                }*/
 
         /*.hoverClass {
-                                                                                            background-color: #3E5C9A;
-                                                                                        }*/
+                                                                                                    background-color: #3E5C9A;
+                                                                                                }*/
     </style>
 }
 

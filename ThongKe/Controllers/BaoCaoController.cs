@@ -5148,7 +5148,7 @@ namespace ThongKe.Controllers
                         TrSetCellBorder(xlSheet, dong, 2, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                         xlSheet.Cells[dong, 4].Value = BaoCaoVM.TongSK;
                         TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-                        xlSheet.Cells[dong, 5].Value = BaoCaoVM.TongCong.Value;
+                        xlSheet.Cells[dong, 5].Value = BaoCaoVM.TongCong.HasValue ? BaoCaoVM.TongCong.Value : 0;
                         TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
 
                         NumberFormat(dong, 2, dong, 5, xlSheet);
@@ -8959,7 +8959,7 @@ namespace ThongKe.Controllers
             int? tongCongSK = 0;
             foreach (var item in results1)
             {
-                tongCong += item.TourNDDTOs.FirstOrDefault().ChuaThanhLyHopDong + item.TourNDDTOs.FirstOrDefault().DaThanhLyHopDong;
+                tongCong += item.TourNDDTOs.FirstOrDefault().ChuaThanhLyHopDong ?? 0 + item.TourNDDTOs.FirstOrDefault().DaThanhLyHopDong;
                 tongCongSK += item.TourNDDTOs.FirstOrDefault().TongSoKhachTheoSale;
             }
             BaoCaoVM.TongCong = tongCong;
@@ -9043,7 +9043,7 @@ namespace ThongKe.Controllers
             int? tongCongSK = 0;
             foreach (var item in results1)
             {
-                tongCong += item.TourOBDTOs.FirstOrDefault().ChuaThanhLyHopDong + item.TourOBDTOs.FirstOrDefault().DaThanhLyHopDong;
+                tongCong += item.TourOBDTOs.FirstOrDefault().ChuaThanhLyHopDong ?? 0 + item.TourOBDTOs.FirstOrDefault().DaThanhLyHopDong;
                 tongCongSK += item.TourOBDTOs.FirstOrDefault().TongSoKhachTheoSale;
             }
             BaoCaoVM.TongCong = tongCong;

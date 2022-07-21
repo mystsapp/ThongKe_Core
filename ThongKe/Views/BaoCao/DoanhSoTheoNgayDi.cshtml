@@ -87,14 +87,14 @@
                                     asp-items="@(new SelectList(Model.Loaitours, "Tenloaitour", "Tenloaitour", ViewBag.loaiTour))">
                             </select>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                             <label>Chi nhánh</label>
                             <select class="form-control form-control-sm" name="Macn"
                                     asp-items="@(new SelectList(Model.Dmchinhanhs, "Macn", "Macn", ViewBag.Macn))">
                             </select>
                         </div>
 
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                             <label class="control-label">Khối</label>
                             <select class="form-control form-control-sm" name="khoi"
                                     asp-items="@(new SelectList(Model.Khois_KD, "Name", "Name", ViewBag.khoi))">
@@ -103,9 +103,9 @@
 
                         <div class="col-md-2 text-sm">
                             <label>&nbsp;</label>
-                            <div class=" btn-block ">
-                                <button type="submit" class="btn btn-outline-primary " id="btnSubmitSearch" formaction="/BaoCao/DoanhSoTheoNgayDi" formmethod="get" title="Search"><i class="fas fa-search"></i></button>
-                                <button type="submit" class="btn btn-outline-success " id="btnSubmitExcel" formaction="/BaoCao/DoanhSoTheoNgayDiExcel" formmethod="post" title="Export excel"><i class="fas fa-file-excel"></i></button>
+                            <div class=" btn-block btn-group">
+                                <button type="submit" class="btn btn-outline-primary btn-sm" id="btnSubmitSearch" formaction="/BaoCao/DoanhSoTheoNgayDi" formmethod="get" title="Search"><i class="fas fa-search"></i></button>
+                                <button type="submit" class="btn btn-outline-success btn-sm" id="btnSubmitExcel" formaction="/BaoCao/DoanhSoTheoNgayDiExcel" formmethod="post" title="Export excel"><i class="fas fa-file-excel"></i></button>
                             </div>
                         </div>
                     </div>
@@ -120,6 +120,7 @@
                 <table class="table mytable text-nowrap " id="listDoanhSoTheoNgayDi">
                     <thead>
                         <tr class="table-info">
+                            <th>STT</th>
                             <th>Sgtcode</th>
                             <th>Ngày đi</th>
                             <th>Ngày về</th>
@@ -143,7 +144,7 @@
                                 {
 
                                     <tr class="cursor-pointer ">
-
+                                        <td>@i</td>
                                         @switch (item.TrangThai)
                                         {
 
@@ -167,8 +168,8 @@
                                         <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
                                         <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
                                         <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TuyenTQ)</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.Raw((item.SoKhachTT == 0) ? "0" : item.SoKhachTT.ToString("N0"))</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.Raw((item.DoanhThuTT == 0) ? "0" : item.DoanhThuTT.ToString("N0"))</td>
+                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoKhachTT == 0) ? item.Sokhachdk.Value.ToString("N0") : item.SoKhachTT.ToString("N0"))</td>
+                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.DoanhThuTT == 0) ? item.DoanhThuDk.Value.ToString("N0") : item.DoanhThuTT.ToString("N0"))</td>
                                         <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
                                         <td class="tdVal" data-id="@item.Id">
                                             <select class="form-control form-control-sm border-input "
@@ -180,9 +181,10 @@
                                         <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
 
                                     </tr>
-
+                                    i++;
                                 }
                                 <tr class="cursor-pointer text-bold">
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -200,6 +202,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
                                     <td style="background-color: chartreuse">Các đoàn đã thanh lý:</td>
                                     <td>@Html.Raw(Model.TourTheoNgay_IB.TongSKCacDoanDaThanhLy.ToString("N0"))</td>
                                     <td>@Html.Raw(Model.TourTheoNgay_IB.TongDSCacDoanDaThanhLy.ToString("N0"))</td>
@@ -214,6 +217,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
                                     <td class="bg-yellow">Các đoàn chưa thanh lý:</td>
                                     <td>@Html.Raw(Model.TourTheoNgay_IB.TongSKCacDoanChuaThanhLy.ToString("N0"))</td>
                                     <td>@Html.Raw(Model.TourTheoNgay_IB.TongDSCacDoanChuaThanhLy.ToString("N0"))</td>
@@ -225,6 +229,7 @@
 
                                 </tr>
                                 <tr class="cursor-pointer text-bold">
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -250,7 +255,7 @@
                                 {
 
                                     <tr class="cursor-pointer ">
-
+                                        <td>@i</td>
                                         @switch (item.Trangthai)
                                         {
 
@@ -278,8 +283,8 @@
                                         <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Batdau.Value.ToString("dd/MM/yyyy"))</td>
                                         <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Ketthuc.Value.ToString("dd/MM/yyyy"))</td>
                                         <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Tuyentq)</td>
-                                        <td class="tdVal" data-id="@item.Idtour">@Html.Raw((item.Sokhachtt == 0) ? "0" : item.Sokhachtt.Value.ToString("N0"))</td>
-                                        <td class="tdVal" data-id="@item.Idtour">@Html.Raw((item.Doanhthutt == 0) ? "0" : item.Doanhthutt.Value.ToString("N0"))</td>
+                                        <td class="tdVal" data-id="@item.Idtour">@Html.Raw((item.Sokhachtt == 0) ? item.Sokhachdk.Value.ToString("N0") : item.Sokhachtt.Value.ToString("N0"))</td>
+                                        <td class="tdVal" data-id="@item.Idtour">@Html.Raw((item.Doanhthutt == 0) ? item.Doanhthudk.Value.ToString("N0") : item.Doanhthutt.Value.ToString("N0"))</td>
                                         <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Nguoitao)</td>
                                         <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Tenkh)</td>
                                         <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Loaitourid)</td>
@@ -287,9 +292,10 @@
                                         <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Ngaytao.Value.ToString("dd/MM/yyyy"))</td>
 
                                     </tr>
-
+                                    i++;
                                 }
                                 <tr class="cursor-pointer text-bold">
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -307,6 +313,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
                                     <td style="background-color: chartreuse">Các đoàn đã thanh lý:</td>
                                     <td>@Html.Raw(Model.TourTheoNgay_ND.TongSKCacDoanDaThanhLy.ToString("N0"))</td>
                                     <td>@Html.Raw(Model.TourTheoNgay_ND.TongDSCacDoanDaThanhLy.ToString("N0"))</td>
@@ -321,6 +328,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
                                     <td class="bg-yellow">Các đoàn chưa thanh lý:</td>
                                     <td>@Html.Raw(Model.TourTheoNgay_ND.TongSKCacDoanChuaThanhLy.ToString("N0"))</td>
                                     <td>@Html.Raw(Model.TourTheoNgay_ND.TongDSCacDoanChuaThanhLy.ToString("N0"))</td>
@@ -332,6 +340,7 @@
 
                                 </tr>
                                 <tr class="cursor-pointer text-bold">
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -357,7 +366,7 @@
                                 {
 
                                     <tr class="cursor-pointer ">
-
+                                        <td>@i</td>
                                         @switch (item.Trangthai)
                                         {
 
@@ -384,8 +393,8 @@
                                         <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Batdau.Value.ToString("dd/MM/yyyy"))</td>
                                         <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Ketthuc.Value.ToString("dd/MM/yyyy"))</td>
                                         <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Tuyentq)</td>
-                                        <td class="tdVal" data-id="@item.Idtour">@Html.Raw((item.Sokhachtt == 0) ? "0" : item.Sokhachtt.Value.ToString("N0"))</td>
-                                        <td class="tdVal" data-id="@item.Idtour">@Html.Raw((item.Doanhthutt == 0) ? "0" : item.Doanhthutt.Value.ToString("N0"))</td>
+                                        <td class="tdVal" data-id="@item.Idtour">@Html.Raw((item.Sokhachtt == 0) ?  item.Sokhachdk.Value.ToString("N0") : item.Sokhachtt.Value.ToString("N0"))</td>
+                                        <td class="tdVal" data-id="@item.Idtour">@Html.Raw((item.Doanhthutt == 0) ?  item.Doanhthudk.Value.ToString("N0") : item.Doanhthutt.Value.ToString("N0"))</td>
                                         <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Nguoitao)</td>
                                         <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Tenkh)</td>
                                         <td class="tdVal" data-id="@item.Idtour">@Html.DisplayFor(m => item.Loaitourid)</td>
@@ -393,9 +402,10 @@
                                         <td class="tdVal" data-id="@item.Idtour">@Html.Raw(item.Ngaytao.Value.ToString("dd/MM/yyyy"))</td>
 
                                     </tr>
-
+                                    i++;
                                 }
                                 <tr class="cursor-pointer text-bold">
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -413,6 +423,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
                                     <td style="background-color: chartreuse">Các đoàn đã thanh lý:</td>
                                     <td>@Html.Raw(Model.TourTheoNgay_OB.TongSKCacDoanDaThanhLy.ToString("N0"))</td>
                                     <td>@Html.Raw(Model.TourTheoNgay_OB.TongDSCacDoanDaThanhLy.ToString("N0"))</td>
@@ -427,6 +438,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
                                     <td class="bg-yellow">Các đoàn chưa thanh lý:</td>
                                     <td>@Html.Raw(Model.TourTheoNgay_OB.TongSKCacDoanChuaThanhLy.ToString("N0"))</td>
                                     <td>@Html.Raw(Model.TourTheoNgay_OB.TongDSCacDoanChuaThanhLy.ToString("N0"))</td>
@@ -438,6 +450,7 @@
 
                                 </tr>
                                 <tr class="cursor-pointer text-bold">
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -546,21 +559,21 @@
 
     <style>
         /*#listDoanhSoTheoSale {
-                                                                    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-                                                                }*/
+                                                                            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                                                                        }*/
 
         #search {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
         /*.tblTour .cursor-pointer:hover {
-                                                                    background-color: #3E5C9A;
-                                                                    cursor: pointer;
-                                                                }*/
+                                                                            background-color: #3E5C9A;
+                                                                            cursor: pointer;
+                                                                        }*/
 
         /*.hoverClass {
-                                                                    background-color: #3E5C9A;
-                                                                }*/
+                                                                            background-color: #3E5C9A;
+                                                                        }*/
     </style>
 }
 

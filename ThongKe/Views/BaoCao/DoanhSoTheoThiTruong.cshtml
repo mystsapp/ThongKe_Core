@@ -83,6 +83,7 @@
                 <table class="table mytable text-nowrap " id="listDoanhSoTheoThiTruong">
                     <thead>
                         <tr class="table-info">
+                            <th>STT</th>
                             <th>Sgtcode</th>
                             <th>Ngày đi</th>
                             <th>Ngày về</th>
@@ -105,7 +106,7 @@
                             {
 
                                 <tr class="cursor-pointer ">
-                                    
+                                    <td>@i</td>
                                     @switch (item.TrangThai)
                                     {
 
@@ -132,8 +133,8 @@
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TuyenTQ)</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw((item.SoKhachTT == 0) ? "0" : item.SoKhachTT.ToString("N0"))</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw((item.DoanhThuTT == 0) ? "0" : item.DoanhThuTT.ToString("N0"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw((item.SoKhachTT == 0) ? item.SoKhachDK.ToString("N0") : item.SoKhachTT.ToString("N0"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw((item.DoanhThuTT == 0) ? item.DoanhThuDK.ToString("N0") : item.DoanhThuTT.ToString("N0"))</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
                                     <td class="tdVal" data-id="@item.Id">
                                         <select class="form-control form-control-sm border-input "
@@ -145,9 +146,10 @@
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ThiTruongByNguoiTao)</td>
                                 </tr>
-
+                                i++;
                             }
                             <tr class="cursor-pointer text-bold">
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -166,6 +168,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
                                 <td style="background-color: chartreuse">Các đoàn đã thanh lý:</td>
                                 <td>@Html.Raw(Model.TourTheoNgay_IB.TongSKCacDoanDaThanhLy.ToString("N0"))</td>
                                 <td>@Html.Raw(Model.TourTheoNgay_IB.TongDSCacDoanDaThanhLy.ToString("N0"))</td>
@@ -181,6 +184,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
                                 <td class="bg-yellow">Các đoàn chưa thanh lý:</td>
                                 <td>@Html.Raw(Model.TourTheoNgay_IB.TongSKCacDoanChuaThanhLy.ToString("N0"))</td>
                                 <td>@Html.Raw(Model.TourTheoNgay_IB.TongDSCacDoanChuaThanhLy.ToString("N0"))</td>
@@ -193,6 +197,7 @@
 
                             </tr>
                             <tr class="cursor-pointer text-bold">
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>

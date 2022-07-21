@@ -48,7 +48,7 @@
                                 @*<input class="form-control" name="searchString" value="@ViewBag.searchString" />*@
                                 <select class="form-control form-control-sm" name="Macn"
                                         asp-items="@(new SelectList(Model.Dmchinhanhs, "Macn", "Macn", ViewBag.Macn))">
-                                    <option value="">-- All --</option>
+                                    @*<option value="">-- All --</option>*@
                                 </select>
                             </div>
 

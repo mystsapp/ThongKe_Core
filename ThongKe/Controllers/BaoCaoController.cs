@@ -1937,12 +1937,12 @@ namespace ThongKe.Controllers
             string[] chiNhanhs = null;
             if (user.Nhom != "Users")
             {
-                if (user.Nhom != "Admins")
+                if (user.Nhom != "Admins") // admin khu vuc
                 {
                     chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Where(x => x.Nhom == user.Nhom).Select(x => x.Chinhanh1).Distinct().ToArray();
 
                 }
-                else
+                else // admins
                 {
                     chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
 
@@ -1959,7 +1959,7 @@ namespace ThongKe.Controllers
                 }
                 doanTheoNgayDiVM.KhoiViewModels_KL = KhoiViewModels_KL();
             }
-            else
+            else // users
             {
                 doanTheoNgayDiVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
                 doanTheoNgayDiVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();

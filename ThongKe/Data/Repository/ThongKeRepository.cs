@@ -281,6 +281,7 @@ namespace ThongKe.Data.Repository
         ////////////////////////////////////// Doan Theo Ngay di //////////////////////////////////////////
         public IEnumerable<DoanhthuDoanNgayDi> listDoanTheoNgayDi(string tungay, string denngay, string chinhanh, string khoi)
         {
+            khoi = khoi ?? "";
             if (tungay == null)
                 return null;
             var parameter = new SqlParameter[]

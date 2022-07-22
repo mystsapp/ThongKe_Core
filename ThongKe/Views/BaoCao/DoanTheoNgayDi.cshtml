@@ -38,8 +38,8 @@
 
 
             <form id="formSearch" autocomplete="off">
-                <div class="p-4 border rounded">
-
+                @*<div class="p-4 border rounded">
+*@
                     <div class="form-group row">
                        
                         <div class="col-2">
@@ -59,13 +59,13 @@
                             </select>
                         </div>
 
-                        @*<div class="col-2">
+                        <div class="col-2">
                             Khối
                             <select class="form-control" id="ddlKhoi" name="khoi"
-                                    asp-items="@(new SelectList(Model.khoiViewModels, "Name", "Name", ViewBag.khoi))">
+                                    asp-items="@(new SelectList(Model.KhoiViewModels_KL, "Name", "Name", ViewBag.khoi))">
                             </select>
                         </div>
-*@
+
                         <div class="col-2">
                             <br />
                             <span class="btn-group">
@@ -77,8 +77,8 @@
                     </div>
 
 
-                </div>
-
+                @*</div>
+*@
             </form>
 
         </div>

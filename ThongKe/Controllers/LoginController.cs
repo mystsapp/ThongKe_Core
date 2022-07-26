@@ -42,6 +42,7 @@ namespace ThongKe.Controllers
                     if (!result.Trangthai)
                     {
                         ModelState.AddModelError("", "Tài khoản này đã bị khóa");
+                        return View();
                     }
                     string modelPass = sha1.EncodeSHA1(LoginVM.Password);
                     if (result.Password != modelPass)

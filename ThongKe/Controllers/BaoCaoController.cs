@@ -50,7 +50,7 @@ namespace ThongKe.Controllers
         }
 
         /////////////////////////////////////// Sale theo quay ///////////////////////////////////////////////////////////////////
-        public IActionResult SaleTheoQuay(string tungay = null, string denngay = null, string chiNhanh = null, string khoi = null)
+        public async Task<IActionResult> SaleTheoQuay(string tungay = null, string denngay = null, string chiNhanh = null, string khoi = null)
         {
             var user = HttpContext.Session.Get<Users>("loginUser");
             var dtSaleQuayVM = new DoanhthuSaleQuayViewModel();
@@ -60,18 +60,29 @@ namespace ThongKe.Controllers
             dtSaleQuayVM.Khoi = khoi;
 
             string[] chiNhanhs = null;
-            if (user.Nhom != "Users")
+
+
+            if (user.RoleId != 8) // 8: Admins
             {
-                if (user.Nhom != "Admins")
+                if (user.RoleId == 9) // 9: Users
                 {
-                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Where(x => x.Nhom == user.Nhom).Select(x => x.Chinhanh1).Distinct().ToArray();
-
+                    dtSaleQuayVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
+                    dtSaleQuayVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
                 }
-                else
+                else // admin khuvuc
                 {
-                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
-
+                    //chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Where(x => x.Nhom == user.Nhom).Select(x => x.Chinhanh1).Distinct().ToArray();
+                    var role1 = await _baoCaoService.GetRoleById(user.RoleId);
+                    var listMaCN = role1.ChiNhanhQL.Split(',').ToList();
+                    chiNhanhs = listMaCN.ToArray();
                 }
+            }
+            else // admin tong
+            {
+                chiNhanhs = _unitOfWork.dmChiNhanhRepository.GetAll().Select(x => x.Macn).Distinct().ToArray();
+            }
+            if (chiNhanhs.Count() > 0) // danh cho admin khuvuc va admin tong
+            {
                 for (int i = 0; i < chiNhanhs.Count(); i++)
                 {
                     var cnToreturn = new ChiNhanhToReturnViewModel()
@@ -84,12 +95,36 @@ namespace ThongKe.Controllers
                 }
                 dtSaleQuayVM.KhoiViewModels_KL = KhoiViewModels_KL();
             }
-            else
-            {
-                dtSaleQuayVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
-                dtSaleQuayVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
+            //if (user.Nhom != "Users")
+            //{
+            //    if (user.Nhom != "Admins")
+            //    {
+            //        chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Where(x => x.Nhom == user.Nhom).Select(x => x.Chinhanh1).Distinct().ToArray();
 
-            }
+            //    }
+            //    else
+            //    {
+            //        chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
+
+            //    }
+            //    for (int i = 0; i < chiNhanhs.Count(); i++)
+            //    {
+            //        var cnToreturn = new ChiNhanhToReturnViewModel()
+            //        {
+            //            Stt = i,
+            //            Name = chiNhanhs[i]
+            //        };
+
+            //        dtSaleQuayVM.chiNhanhToReturnViewModels.Add(cnToreturn);
+            //    }
+            //    dtSaleQuayVM.KhoiViewModels_KL = KhoiViewModels_KL();
+            //}
+            //else
+            //{
+            //    dtSaleQuayVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
+            //    dtSaleQuayVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
+
+            //}
 
 
             try
@@ -117,8 +152,16 @@ namespace ThongKe.Controllers
         }
 
         [HttpPost]
-        public IActionResult SaleTheoQuayPost(string tungay, string denngay, string chinhanh, string khoi)//(string tungay,string denngay, string daily)
+        public async Task<IActionResult> SaleTheoQuayPost(string tungay, string denngay, string chinhanh, string khoi)//(string tungay,string denngay, string daily)
         {
+            var user = HttpContext.Session.Get<Users>("loginUser");
+            var dtSaleQuayVM = new DoanhthuSaleQuayViewModel();
+            dtSaleQuayVM.TuNgay = tungay;
+            dtSaleQuayVM.DenNgay = denngay;
+            dtSaleQuayVM.Khoi = khoi;
+
+            string[] chiNhanhs = null;
+
             if (tungay == null || denngay == null)
             {
                 return RedirectToAction("SaleTheoQuay");
@@ -178,7 +221,65 @@ namespace ThongKe.Controllers
             // do du lieu tu table
             int dong = 5;
 
-            var d = _unitOfWork.thongKeRepository.listSaleTheoQuay(tungay, denngay, chinhanh, khoi);// Session["daily"].ToString(), Session["khoi"].ToString());
+
+            if (user.RoleId != 8) // 8: Admins
+            {
+                if (user.RoleId == 9) // 9: Users
+                {
+                    dtSaleQuayVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
+                    dtSaleQuayVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
+                }
+                else // admin khuvuc
+                {
+                    //chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Where(x => x.Nhom == user.Nhom).Select(x => x.Chinhanh1).Distinct().ToArray();
+                    var role1 = await _baoCaoService.GetRoleById(user.RoleId);
+                    var listMaCN = role1.ChiNhanhQL.Split(',').ToList();
+                    chiNhanhs = listMaCN.ToArray();
+                }
+            }
+            else // admin tong
+            {
+                chiNhanhs = _unitOfWork.dmChiNhanhRepository.GetAll().Select(x => x.Macn).Distinct().ToArray();
+            }
+            if (chiNhanhs.Count() > 0) // danh cho admin khuvuc va admin tong
+            {
+                for (int i = 0; i < chiNhanhs.Count(); i++)
+                {
+                    var cnToreturn = new ChiNhanhToReturnViewModel()
+                    {
+                        Stt = i,
+                        Name = chiNhanhs[i]
+                    };
+
+                    dtSaleQuayVM.chiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                dtSaleQuayVM.KhoiViewModels_KL = KhoiViewModels_KL();
+            }
+
+            List<DoanhthuSaleQuay> d = new List<DoanhthuSaleQuay>();
+            try
+            {
+                ViewBag.searchFromDate = tungay;
+                ViewBag.searchToDate = denngay;
+                chinhanh = chinhanh ?? "";
+                ViewBag.chiNhanh = chinhanh;
+                ViewBag.khoi = khoi;
+
+                if (tungay == null || denngay == null)
+                {
+                    return View("SaleTheoQuay", dtSaleQuayVM);
+                }
+
+                d = _unitOfWork.thongKeRepository.listSaleTheoQuay(tungay, denngay, chinhanh, khoi).ToList();
+                //dtSaleQuayVM.DoanhthuSaleQuays = d;
+                //return RedirectToAction(nameof(SaleTheoQuay), dtSaleQuayVM);
+            }
+            catch
+            {
+                SetAlert("Lỗi định dạng ngày tháng", "error");
+                return View("SaleTheoQuay", dtSaleQuayVM);
+            }
+            //var d = _unitOfWork.thongKeRepository.listSaleTheoQuay(tungay, denngay, chinhanh, khoi);// Session["daily"].ToString(), Session["khoi"].ToString());
 
             //du lieu
             int iRowIndex = 6;
@@ -1910,7 +2011,7 @@ namespace ThongKe.Controllers
         }
 
         /////////////////////////////////////// Doan Theo ngay di ///////////////////////////////////////////////////////////////////////////
-        public IActionResult DoanTheoNgayDi(string tungay = null, string denngay = null, string chiNhanh = null, string khoi = null)
+        public async Task<IActionResult> DoanTheoNgayDi(string tungay = null, string denngay = null, string chiNhanh = null, string khoi = null)
         {
             //var doanTheoNgayDiVM = new DoanTheoNgayDiViewModel();
 
@@ -1935,18 +2036,28 @@ namespace ThongKe.Controllers
             doanTheoNgayDiVM.DenNgay = denngay;
             doanTheoNgayDiVM.Khoi = khoi;
             string[] chiNhanhs = null;
-            if (user.Nhom != "Users")
+
+            if (user.RoleId != 8) // 8: Admins
             {
-                if (user.Nhom != "Admins") // admin khu vuc
+                if (user.RoleId == 9) // 9: Users
                 {
-                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Where(x => x.Nhom == user.Nhom).Select(x => x.Chinhanh1).Distinct().ToArray();
-
+                    doanTheoNgayDiVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
+                    doanTheoNgayDiVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
                 }
-                else // admins
+                else // admin khuvuc
                 {
-                    chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
-
+                    //chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Where(x => x.Nhom == user.Nhom).Select(x => x.Chinhanh1).Distinct().ToArray();
+                    var role1 = await _baoCaoService.GetRoleById(user.RoleId);
+                    var listMaCN = role1.ChiNhanhQL.Split(',').ToList();                    
+                    chiNhanhs = listMaCN.ToArray();
                 }
+            }
+            else // admin tong
+            {
+                chiNhanhs = _unitOfWork.dmChiNhanhRepository.GetAll().Select(x => x.Macn).Distinct().ToArray();
+            }
+            if(chiNhanhs.Count() > 0) // danh cho admin khuvuc va admin tong
+            {
                 for (int i = 0; i < chiNhanhs.Count(); i++)
                 {
                     var cnToreturn = new ChiNhanhToReturnViewModel()
@@ -1959,12 +2070,43 @@ namespace ThongKe.Controllers
                 }
                 doanTheoNgayDiVM.KhoiViewModels_KL = KhoiViewModels_KL();
             }
-            else // users
-            {
-                doanTheoNgayDiVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
-                doanTheoNgayDiVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
+            
 
-            }
+
+
+
+
+
+            //if (user.Nhom != "Users")
+            //{
+            //    if (user.Nhom != "Admins") // admin khu vuc
+            //    {
+            //        chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Where(x => x.Nhom == user.Nhom).Select(x => x.Chinhanh1).Distinct().ToArray();
+
+            //    }
+            //    else // admins
+            //    {
+            //        chiNhanhs = _unitOfWork.chiNhanhRepository.GetAll().Select(x => x.Chinhanh1).Distinct().ToArray();
+
+            //    }
+            //    for (int i = 0; i < chiNhanhs.Count(); i++)
+            //    {
+            //        var cnToreturn = new ChiNhanhToReturnViewModel()
+            //        {
+            //            Stt = i,
+            //            Name = chiNhanhs[i]
+            //        };
+
+            //        doanTheoNgayDiVM.chiNhanhToReturnViewModels.Add(cnToreturn);
+            //    }
+            //    doanTheoNgayDiVM.KhoiViewModels_KL = KhoiViewModels_KL();
+            //}
+            //else // users
+            //{
+            //    doanTheoNgayDiVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
+            //    doanTheoNgayDiVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
+
+            //}
 
             try
             {
@@ -7637,7 +7779,7 @@ namespace ThongKe.Controllers
 
             switch (khoi)
             {
-                
+
                 case "IB":
                     if (BaoCaoVM.TourTheoNgay_IB.TourIBDTOs != null)
                     {
@@ -8108,13 +8250,13 @@ namespace ThongKe.Controllers
                 fileContents: fileContents,
                 contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 fileDownloadName: "DoanhSoTheoNgayDi_IB_" + System.DateTime.Now.ToString("dd/MM/yyyy HH:mm") + ".xlsx");
-                    
+
                     case "ND":
                         return File(
                 fileContents: fileContents,
                 contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 fileDownloadName: "DoanhSoTheoNgayDi_ND_" + System.DateTime.Now.ToString("dd/MM/yyyy HH:mm") + ".xlsx");
-                    
+
                     case "OB":
                         return File(
                 fileContents: fileContents,
@@ -8320,7 +8462,7 @@ namespace ThongKe.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DoanhSoTheoThiTruongExcel(string searchFromDate = null, string searchToDate = null, 
+        public async Task<IActionResult> DoanhSoTheoThiTruongExcel(string searchFromDate = null, string searchToDate = null,
             string thiTruong = null, string maCn = null, string khoi = null)
         {
 
@@ -8729,7 +8871,7 @@ namespace ThongKe.Controllers
                     setCenterAligment(6, 3, 6 + dong + 2, 3, xlSheet);
                     break;
             }
-            
+
             //dong++;
             //// Merger cot 4,5 ghi tổng tiền
             //setRightAligment(dong, 3, dong, 3, xlSheet);
@@ -8778,7 +8920,7 @@ namespace ThongKe.Controllers
                         SetAlert("No sale.", "warning");
                         return RedirectToAction(nameof(DoanhSoTheoThiTruong));
                 }
-                
+
             }
             catch (Exception)
             {

@@ -15,8 +15,11 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- overlayScrollbars -->
     <link href="~/lib/datatables/css/dataTables.bootstrap4.css" rel="stylesheet" />
-    <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
+    
+<!-- select2 -->
     <link href="~/lib/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
+
     @*<link rel="stylesheet" href="~/lib/dist/css/adminlte.min.css">*@
     <link href="~/lib/dist/css/adminlte.min.css" rel="stylesheet" />
     <link href="~/lib/jqueryui/jquery-ui.css" rel="stylesheet" />
@@ -135,6 +138,15 @@
     <style>
         .error {
             color: red;
+        }
+
+        /*select2 small input and small text*/
+        .select2-search input {
+            height: calc(1.8125rem + 2px);
+        }
+
+        .select2-results li {
+            font-size: 0.875rem !important;
         }
     </style>
 </body>

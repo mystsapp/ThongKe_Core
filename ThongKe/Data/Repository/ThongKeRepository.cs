@@ -191,8 +191,8 @@ namespace ThongKe.Data.Repository
                 return null;
             var parameter = new SqlParameter[]
               {
-                    new SqlParameter("@tungay",DateTime.Parse(tungay)),
-                    new SqlParameter("@denngay",DateTime.Parse(denngay)),
+                    new SqlParameter("@tungay",tungay),
+                    new SqlParameter("@denngay",denngay),
                     new SqlParameter("@nhanvien",nhanvien),
                     new SqlParameter("@tuyentq",tuyentq),
                     new SqlParameter("@khoi",khoi)

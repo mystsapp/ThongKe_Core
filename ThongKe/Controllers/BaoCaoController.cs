@@ -1097,21 +1097,6 @@ namespace ThongKe.Controllers
 
             //tuyentq = string.IsNullOrEmpty(tuyentq) ? "" : tuyentq.Trim();
 
-            if (tungay == null || denngay == null)
-            {
-                return RedirectToAction("SaleTheoTuyenThamQuan");
-            }
-            try
-            {
-                DateTime.Parse(tungay);
-                DateTime.Parse(denngay);
-            }
-            catch
-            {
-                SetAlert("Lỗi định dạng ngày tháng", "error");
-                return RedirectToAction("SaleTheoTuyenThamQuan");
-            }
-
             // cn = Session["chinhanh"].ToString();
             //khoi = String.IsNullOrEmpty(khoi) ? Session["khoi"].ToString() : khoi;
             string fromTo = "";
@@ -1218,11 +1203,11 @@ namespace ThongKe.Controllers
 
                     return View("SaleTheoTuyenThamQuan", dtSaleTuyenVM);
                 }
-
+                
                 //var list = _unitOfWork.thongKeRepository.ListSaleTheoTuyenThamQuan(tungay, denngay, tuyentq, khoi);
                 var list = _baoCaoService.ListSaleTheoTuyenThamQuan(tungay, denngay, chiNhanh, tuyentq, khoi);
                 dtSaleTuyenVM.DoanhthuSaleTuyens = list;
-                return View(dtSaleTuyenVM);
+                
             }
             catch
             {
@@ -1377,7 +1362,7 @@ namespace ThongKe.Controllers
                 int iRowIndex = 6;
                 int idem = 1;
 
-                if (d != null)
+                if (d.Count() > 0)
                 {
                     foreach (var vm in d)
                     {

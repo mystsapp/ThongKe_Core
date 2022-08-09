@@ -616,7 +616,7 @@ namespace ThongKe.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost] // SaleTheoNgayDiPost - excell
         public async Task<IActionResult> SaleTheoNgayDiPost(string tungay, string denngay, string chinhanh, string khoi)
         {
             if (tungay == null || denngay == null)
@@ -974,39 +974,78 @@ namespace ThongKe.Controllers
         }
 
         /////////////////////////////////////// Sale Theo Tuyen Tham Quan ///////////////////////////////////////////////////////////////
-        public IActionResult SaleTheoTuyenThamQuan(string tungay = null, string denngay = null, string tuyentq = null, string khoi = null)
+        public async Task<IActionResult> SaleTheoTuyenThamQuan(string tungay = null, string denngay = null,
+            string chiNhanh = null, string tuyentq = null, string khoi = null)
         {
-            ViewBag.searchFromDate = tungay;
-            ViewBag.searchToDate = denngay;
-            ViewBag.ttq = tuyentq;
-            ViewBag.khoi = khoi;
-
+            
             var user = HttpContext.Session.Get<Users>("loginUser");
-            var dtSaleTuyenVM = new DoanhThuSaleTuyenViewModel();
+            var dtSaleTuyenVM = new DoanhThuSaleTuyenViewModel()
+            {
+                chiNhanhToReturnViewModels = new List<ChiNhanhToReturnViewModel>()
+            };
             dtSaleTuyenVM.TuNgay = tungay;
             dtSaleTuyenVM.DenNgay = denngay;
             dtSaleTuyenVM.Khoi = khoi;
             tuyentq = string.IsNullOrEmpty(tuyentq) ? "" : tuyentq.Trim();
+            string[] chiNhanhs = null;
 
-            if (user.Nhom != "Users")
+            if (user.RoleId != 8) // 8: Admins
             {
-                dtSaleTuyenVM.KhoiViewModels_KL = KhoiViewModels_KL();
+                if (user.RoleId == 9) // 9: Users
+                {
+                    dtSaleTuyenVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
+                    dtSaleTuyenVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
+                    dtSaleTuyenVM.tuyenThamQuanViewModels = _unitOfWork.userRepository.GetAllTuyentqByKhoi(user.Khoi);
+                }
+                else // admin khuvuc
+                {
+                    var role1 = await _baoCaoService.GetRoleById(user.RoleId);
+                    var listMaCN = role1.ChiNhanhQL.Split(',').ToList();
+                    chiNhanhs = listMaCN.ToArray();
+
+
+                    //dtSaleTuyenVM.KhoiViewModels_KL = KhoiViewModels_KL();
+                    dtSaleTuyenVM.tuyenThamQuanViewModels = _unitOfWork.userRepository.GetAllTuyentqByKhoi("OB");
+                }
+
+            }
+            else // admin tong
+            {
+                chiNhanhs = _unitOfWork.dmChiNhanhRepository.GetAll().Select(x => x.Macn).Distinct().ToArray();
+                //dtSaleTuyenVM.KhoiViewModels_KL = KhoiViewModels_KL();
                 dtSaleTuyenVM.tuyenThamQuanViewModels = _unitOfWork.userRepository.GetAllTuyentqByKhoi("OB");
             }
-
-            else
+            if (chiNhanhs.Count() > 0) // danh cho admin khuvuc va admin tong
             {
-                dtSaleTuyenVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
-                dtSaleTuyenVM.tuyenThamQuanViewModels = _unitOfWork.userRepository.GetAllTuyentqByKhoi(user.Khoi);
+                for (int i = 0; i < chiNhanhs.Count(); i++)
+                {
+                    var cnToreturn = new ChiNhanhToReturnViewModel()
+                    {
+                        Stt = i,
+                        Name = chiNhanhs[i]
+                    };
+
+                    dtSaleTuyenVM.chiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                dtSaleTuyenVM.KhoiViewModels_KL = KhoiViewModels_KL();
             }
             try
             {
+                ViewBag.searchFromDate = tungay;
+                ViewBag.searchToDate = denngay;
+                chiNhanh = chiNhanh ?? "";
+                ViewBag.chiNhanh = chiNhanh;
+                ViewBag.ttq = tuyentq;
+                ViewBag.khoi = khoi;
+                
                 if (tungay == null || denngay == null)
                 {
+                    
                     return View("SaleTheoTuyenThamQuan", dtSaleTuyenVM);
                 }
 
-                var list = _unitOfWork.thongKeRepository.ListSaleTheoTuyenThamQuan(tungay, denngay, tuyentq, khoi);
+                //var list = _unitOfWork.thongKeRepository.ListSaleTheoTuyenThamQuan(tungay, denngay, tuyentq, khoi);
+                var list = _baoCaoService.ListSaleTheoTuyenThamQuan(tungay, denngay, chiNhanh, tuyentq, khoi);
                 dtSaleTuyenVM.DoanhthuSaleTuyens = list;
                 return View(dtSaleTuyenVM);
             }
@@ -1015,16 +1054,48 @@ namespace ThongKe.Controllers
                 SetAlert("Lỗi định dạng ngày tháng", "error");
                 return View("SaleTheoTuyenThamQuan", dtSaleTuyenVM);
             }
+
+
+
+
+
+            //if (user.Nhom != "Users")
+            //{
+            //    dtSaleTuyenVM.KhoiViewModels_KL = KhoiViewModels_KL();
+            //    dtSaleTuyenVM.tuyenThamQuanViewModels = _unitOfWork.userRepository.GetAllTuyentqByKhoi("OB");
+            //}
+
+            //else
+            //{
+            //    dtSaleTuyenVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
+            //    dtSaleTuyenVM.tuyenThamQuanViewModels = _unitOfWork.userRepository.GetAllTuyentqByKhoi(user.Khoi);
+            //}
+            //try
+            //{
+            //    if (tungay == null || denngay == null)
+            //    {
+            //        return View("SaleTheoTuyenThamQuan", dtSaleTuyenVM);
+            //    }
+
+            //    var list = _unitOfWork.thongKeRepository.ListSaleTheoTuyenThamQuan(tungay, denngay, tuyentq, khoi);
+            //    dtSaleTuyenVM.DoanhthuSaleTuyens = list;
+            //    return View(dtSaleTuyenVM);
+            //}
+            //catch
+            //{
+            //    SetAlert("Lỗi định dạng ngày tháng", "error");
+            //    return View("SaleTheoTuyenThamQuan", dtSaleTuyenVM);
+            //}
         }
 
         [HttpPost]
-        public IActionResult SaleTheoTuyenThamQuanPost(string tungay, string denngay, string tuyentq, string khoi)
+        public async Task<IActionResult> SaleTheoTuyenThamQuanPost(string tungay, string denngay, string chiNhanh, string tuyentq, string khoi)
         {
-            ViewBag.searchFromDate = tungay;
-            ViewBag.searchToDate = denngay;
-            ViewBag.ttq = tuyentq;
+            //ViewBag.searchFromDate = tungay;
+            //ViewBag.searchToDate = denngay;
+            //ViewBag.ttq = tuyentq;
 
-            tuyentq = string.IsNullOrEmpty(tuyentq) ? "" : tuyentq.Trim();
+            //tuyentq = string.IsNullOrEmpty(tuyentq) ? "" : tuyentq.Trim();
 
             if (tungay == null || denngay == null)
             {
@@ -1082,7 +1153,84 @@ namespace ThongKe.Controllers
 
             xlSheet.Cells[5, 1, 5, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
             int dong = 5;
-            var d = _unitOfWork.thongKeRepository.ListSaleTheoTuyenThamQuan(tungay, denngay, tuyentq, khoi);// Session["fullName"].ToString());
+            ///
+            var user = HttpContext.Session.Get<Users>("loginUser");
+            var dtSaleTuyenVM = new DoanhThuSaleTuyenViewModel()
+            {
+                chiNhanhToReturnViewModels = new List<ChiNhanhToReturnViewModel>()
+            };
+            dtSaleTuyenVM.TuNgay = tungay;
+            dtSaleTuyenVM.DenNgay = denngay;
+            dtSaleTuyenVM.Khoi = khoi;
+            tuyentq = string.IsNullOrEmpty(tuyentq) ? "" : tuyentq.Trim();
+            string[] chiNhanhs = null;
+            if (user.RoleId != 8) // 8: Admins
+            {
+                if (user.RoleId == 9) // 9: Users
+                {
+                    dtSaleTuyenVM.chiNhanhToReturnViewModels.Add(new ChiNhanhToReturnViewModel() { Stt = 1, Name = user.Chinhanh });
+                    dtSaleTuyenVM.KhoiViewModels_KL = KhoiViewModels_KL().Where(x => x.Name.Equals(user.Khoi)).ToList();
+                    dtSaleTuyenVM.tuyenThamQuanViewModels = _unitOfWork.userRepository.GetAllTuyentqByKhoi(user.Khoi);
+                }
+                else // admin khuvuc
+                {
+                    var role1 = await _baoCaoService.GetRoleById(user.RoleId);
+                    var listMaCN = role1.ChiNhanhQL.Split(',').ToList();
+                    chiNhanhs = listMaCN.ToArray();
+
+
+                    //dtSaleTuyenVM.KhoiViewModels_KL = KhoiViewModels_KL();
+                    dtSaleTuyenVM.tuyenThamQuanViewModels = _unitOfWork.userRepository.GetAllTuyentqByKhoi("OB");
+                }
+
+            }
+            else // admin tong
+            {
+                chiNhanhs = _unitOfWork.dmChiNhanhRepository.GetAll().Select(x => x.Macn).Distinct().ToArray();
+                //dtSaleTuyenVM.KhoiViewModels_KL = KhoiViewModels_KL();
+                dtSaleTuyenVM.tuyenThamQuanViewModels = _unitOfWork.userRepository.GetAllTuyentqByKhoi("OB");
+            }
+            if (chiNhanhs.Count() > 0) // danh cho admin khuvuc va admin tong
+            {
+                for (int i = 0; i < chiNhanhs.Count(); i++)
+                {
+                    var cnToreturn = new ChiNhanhToReturnViewModel()
+                    {
+                        Stt = i,
+                        Name = chiNhanhs[i]
+                    };
+
+                    dtSaleTuyenVM.chiNhanhToReturnViewModels.Add(cnToreturn);
+                }
+                dtSaleTuyenVM.KhoiViewModels_KL = KhoiViewModels_KL();
+            }
+            try
+            {
+                ViewBag.searchFromDate = tungay;
+                ViewBag.searchToDate = denngay;
+                chiNhanh = chiNhanh ?? "";
+                ViewBag.chiNhanh = chiNhanh;
+                ViewBag.ttq = tuyentq;
+                ViewBag.khoi = khoi;
+
+                if (tungay == null || denngay == null)
+                {
+
+                    return View("SaleTheoTuyenThamQuan", dtSaleTuyenVM);
+                }
+
+                //var list = _unitOfWork.thongKeRepository.ListSaleTheoTuyenThamQuan(tungay, denngay, tuyentq, khoi);
+                var list = _baoCaoService.ListSaleTheoTuyenThamQuan(tungay, denngay, chiNhanh, tuyentq, khoi);
+                dtSaleTuyenVM.DoanhthuSaleTuyens = list;
+                return View(dtSaleTuyenVM);
+            }
+            catch
+            {
+                SetAlert("Lỗi định dạng ngày tháng", "error");
+                return View("SaleTheoTuyenThamQuan", dtSaleTuyenVM);
+            }
+            ///
+            var d = dtSaleTuyenVM.DoanhthuSaleTuyens;// _unitOfWork.thongKeRepository.ListSaleTheoTuyenThamQuan(tungay, denngay, tuyentq, khoi);// Session["fullName"].ToString());
 
             //du lieu
             int iRowIndex = 6;

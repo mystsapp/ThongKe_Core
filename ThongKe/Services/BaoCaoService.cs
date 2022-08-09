@@ -31,6 +31,7 @@ namespace ThongKe.Services
         IEnumerable<TourIBDTO> DoanhSoTheoSale_IB(string searchFromDate, string searchToDate, List<Dmchinhanh> dmchinhanhs, List<string> thiTruongs, string username);
         IEnumerable<Tourkind> GetTourinds();
         IEnumerable<Loaitour> GetLoaiTours();
+        IEnumerable<DoanhthuSaleTuyen> ListSaleTheoTuyenThamQuan(string tungay, string denngay, string chiNhanh, string tuyentq, string khoi);
 
     }
     public class BaoCaoService : IBaoCaoService
@@ -2288,6 +2289,12 @@ namespace ThongKe.Services
         public IEnumerable<Loaitour> GetLoaiTours()
         {
             return _unitOfWork.tourKDNDRepository.GetLoaitours();
+        }
+
+        public IEnumerable<DoanhthuSaleTuyen> ListSaleTheoTuyenThamQuan(string tungay, string denngay, string chiNhanh, string tuyentq, string khoi)
+        {
+            return _unitOfWork.thongKeRepository.ListSaleTheoTuyenThamQuan(tungay, denngay, tuyentq, khoi)
+                .Where(x => x.Chinhanh == chiNhanh);
         }
     }
 }

@@ -14,6 +14,7 @@ namespace ThongKe.Models
 
         public IEnumerable<DoanhthuSaleTuyen> DoanhthuSaleTuyens { get; set; }
         public IEnumerable<TuyenThamQuanViewModel> tuyenThamQuanViewModels { get; set; }
+        public List<ChiNhanhToReturnViewModel> chiNhanhToReturnViewModels { get; set; }
         public List<KhoiViewModel> KhoiViewModels_KL { get; set; }
         public DoanhThuSaleTuyenViewModel()
         {

@@ -44,24 +44,24 @@
                        
                         <div class="col-md-2">
                             Từ ngày
-                            <input value="@ViewBag.searchFromDate" name="tungay" class="form-control maskInput" id="txtTuNgay" />
+                            <input value="@ViewBag.searchFromDate" name="tungay" class="form-control form-control-sm maskInput" id="txtTuNgay" />
                         </div>
 
                         <div class="col-md-2">
                             Đến ngày
-                            <input value="@ViewBag.searchToDate" name="denngay" class="form-control maskInput" id="txtDenNgay" />
+                            <input value="@ViewBag.searchToDate" name="denngay" class="form-control form-control-sm maskInput" id="txtDenNgay" />
                         </div>
 
                         <div class="col-md-2">
                             Code CN
-                            <select name="chiNhanh" class="form-control border-input ddlChiNhanh" id="ddlChiNhanh"
+                            <select name="chiNhanh" class="form-control form-control-sm border-input ddlChiNhanh" id="ddlChiNhanh"
                                     asp-items="@(new SelectList(Model.chiNhanhToReturnViewModels,"Name","Name", ViewBag.chiNhanh))">
                             </select>
                         </div>
 
                         <div class="col-md-2">
                             Khối
-                            <select class="form-control" id="ddlKhoi" name="khoi"
+                            <select class="form-control form-control-sm" id="ddlKhoi" name="khoi"
                                     asp-items="@(new SelectList(Model.KhoiViewModels_KL, "Name", "Name", ViewBag.khoi))">
                             </select>
                         </div>

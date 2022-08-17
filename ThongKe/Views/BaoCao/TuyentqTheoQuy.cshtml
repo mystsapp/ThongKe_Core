@@ -1,29 +1,12 @@
 ﻿@model TuyentqTheoQuyViewModel
-<!-- Content Header (Page header) -->
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>BÁO CÁO DOANH THU TUYẾN THAM QUAN THEO QUÝ</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active">DOANH THU TUYẾN THAM QUAN THEO QUÝ</li>
-                </ol>
-            </div>
-        </div>
-    </div><!-- /.container-fluid -->
-</section>
-
 
 <!-- Main content -->
-<section class="content">
+<section class="content pt-2">
 
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-search text-info"></i> Tìm Kiếm</h3>
+            <h3 class="card-title text-bold">BÁO CÁO DOANH THU TUYẾN THAM QUAN THEO QUÝ</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -34,53 +17,53 @@
                 </button>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body p-2">
 
 
             <form id="formSearch" autocomplete="off">
-                <div class="p-4 border rounded">
+                @*<div class="p-4 border rounded">*@
 
                     <div class="form-group row">
                         
-                        <div class="col-2">
+                        <div class="col-md-2">
                             Quý
-                            <select name="quy" class="form-control border-input " id="ddlQuy"
+                            <select name="quy" class="form-control form-control-sm border-input " id="ddlQuy"
                                     asp-items="@(new SelectList(Model.QuyViewModels,"Id","Name", ViewBag.quy))">
                             </select>
                         </div>
 
-                        <div class="col-2">
+                        <div class="col-md-2">
                             Năm
-                            <input type="number" value="@ViewBag.nam" name="nam" class="form-control" id="txtNam" placeholder="Type year..." />
+                            <input type="number" value="@ViewBag.nam" name="nam" class="form-control form-control-sm" id="txtNam" placeholder="Type year..." />
                         </div>
 
-                        <div class="col-2">
+                        <div class="col-md-2">
                             Chi nhánh
-                            <select name="chiNhanh" class="form-control border-input ddlChiNhanh" id="ddlChiNhanh"
+                            <select name="chiNhanh" class="form-control form-control-sm border-input ddlChiNhanh" id="ddlChiNhanh"
                                     asp-items="@(new SelectList(Model.ChiNhanhToReturnViewModels,"Name","Name", ViewBag.chiNhanh))">
                             </select>
                         </div>
 
-                        <div class="col-2">
+                        <div class="col-md-2">
                             Khối
-                            <select class="form-control" id="ddlKhoi" name="khoi"
+                            <select class="form-control form-control-sm" id="ddlKhoi" name="khoi"
                                     asp-items="@(new SelectList(Model.KhoiViewModels_KL, "Name", "Name", ViewBag.khoi))">
                             </select>
                         </div>
 
-                        <div class="col-2">
+                        <div class="col-md-2">
                             <br />
-                            <span class="btn-group">
+                            <span class="btn-group btn-block">
                                 @*<button type="submit" id="btnSearch" class="btn btn-outline-primary" formaction="/BaoCao/SaleTheoQuay"><i class="fa fa-search"></i></button>*@
-                                <button type="submit" id="btnExportAll1" class="btn btn-outline-success" formmethod="post" formaction="/BaoCao/TuyentqTheoQuyPost"><i class="fas fa-file-export"></i></button>
+                                <button type="submit" id="btnExportAll1" class="btn btn-outline-success btn-sm" formmethod="post" formaction="/BaoCao/TuyentqTheoQuyPost"><i class="fas fa-file-export"></i></button>
                             </span>
                         </div>
 
                     </div>
 
 
-                </div>
-
+                @*</div>
+*@
             </form>
 
         </div>

@@ -1,22 +1,9 @@
 ﻿@model DoanhThuSaleTuyenViewModel
-@*<!-- Content Header (Page header) -->
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>BÁO CÁO DOANH THU THEO TUYẾN THAM QUAN</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active">Sale theo tuyến tham quan</li>
-                </ol>
-            </div>
-        </div>
-    </div><!-- /.container-fluid -->
-</section>
 
-*@
+@{
+    int i = 1;
+}
+
 <!-- Main content -->
 <section class="content pt-2">
 
@@ -119,7 +106,7 @@
 
                                         </form>
                                     </td>
-                                    <td>@Html.DisplayFor(m => item.Stt)</td>
+                                    <td>@i</td>
                                     <td>@Html.DisplayFor(m => item.Nguoixuatve)</td>
                                     <td id="tdChiNhanh">@Html.DisplayFor(m => item.Chinhanh)</td>
                                     <td>@Html.DisplayFor(m => item.Tuyentq)</td>
@@ -127,6 +114,7 @@
                                     <td>@Html.Raw(item.Thucthu.Value.ToString("N0"))</td>
 
                                 </tr>
+                                i++;
                             }
                         }
                     </tbody>

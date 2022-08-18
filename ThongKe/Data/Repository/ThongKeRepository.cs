@@ -171,13 +171,14 @@ namespace ThongKe.Data.Repository
 
         public IEnumerable<DoanhthuSaleTuyen> ListSaleTheoTuyenThamQuan(string tungay, string denngay, string tuyentq, string khoi)
         {
+            tuyentq = tuyentq ?? "";
             if (tungay == null)
                 return null;
             var parameter = new SqlParameter[]
               {
                     new SqlParameter("@tungay",tungay),
                     new SqlParameter("@denngay",denngay),
-                    new SqlParameter("@tuyentq",tuyentq),
+                    new SqlParameter("@tuyentq",tuyentq.Trim()),
                     new SqlParameter("@khoi",khoi)
               };
             var d = _context.DoanhthuSaleTuyen.FromSqlRaw("EXECUTE dbo.spBaocaoDoanhThuSaleTheoTuyen @tungay, @denngay, @tuyentq, @khoi", parameter).ToList();

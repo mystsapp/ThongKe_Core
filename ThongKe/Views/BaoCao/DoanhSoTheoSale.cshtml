@@ -85,7 +85,7 @@
 
                                 <th>STT</th>
                                 <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().Sgtcode)</th>
-                                <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().CompanyId)</th>
+                                <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().TenKh)</th>
                                 <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().NgayDen)</th>
                                 <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().NgayDi)</th>
                                 <th>@Html.DisplayNameFor(m => m.TourIBDTOs.FirstOrDefault().ChuDeTour)</th>
@@ -132,11 +132,7 @@
                                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
                                                     break;
                                             }
-                                            <td class="tdVal" data-id="@item.Id">
-                                                <select class="form-control form-control-sm border-input "
-                                        asp-items="@(new SelectList(Model.Companies,"CompanyId","Name", item.CompanyId))">
-                                                </select>
-                                            </td>
+                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenKh)</td>
                                             <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
                                             <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
                                             <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ChuDeTour)</td>
@@ -673,11 +669,13 @@
 
 
     <script>
+        $(function () {
+            $(".maskInput").mask("99/99/9999");
 
-        //$(function () {
-        //    //$("#datepicker").datepicker({
-        //    //    dateFormat: 'dd/mm/yy'
-        //    //});
+            $('#AlertBox').removeClass('hide');
+            $('#AlertBox').delay(1000).slideUp(1000);
+        });
+
 
         $('#listDoanhSoTheoSale').DataTable({
             "paging": true,
@@ -726,20 +724,20 @@
             }
         });
 
-        $('#txtSearchFromDate').rules('add', {
-            dateITA: true,
-            messages: {
-                //dateITA: "Không đúng định dạng."
-            }
-        });
+        //$('#txtSearchFromDate').rules('add', {
+        //    dateITA: true,
+        //    messages: {
+        //        //dateITA: "Không đúng định dạng."
+        //    }
+        //});
 
-        $('#txtSearchToDate').rules('add', {
-            dateITA: true,
-            messages: {
+        //$('#txtSearchToDate').rules('add', {
+        //    dateITA: true,
+        //    messages: {
 
-                //dateITA: "Không đúng định dạng."
-            }
-        });
+        //        //dateITA: "Không đúng định dạng."
+        //    }
+        //});
 
     </script>
     @*<script src="~/js/Admin/DoanhSoTheoSale/doanhSoTheoSaleController.js"></script>*@
@@ -749,7 +747,7 @@
         #search {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
-                                                                    }*/
+                                                                    }
     </style>
 }
 

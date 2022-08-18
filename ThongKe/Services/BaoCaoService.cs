@@ -20,15 +20,16 @@ namespace ThongKe.Services
         IEnumerable<Dmchinhanh> GetAllChiNhanh();
         IEnumerable<Company> GetCompanies();
         IEnumerable<TourNDDTO> DoanhSoTheoDaiLy(string searchFromDate, string searchToDate, List<string> daiLyQL);
-        IEnumerable<TourNDDTO> DoanhSoTheoSale_ND(string searchFromDate, string searchToDate, List<string> maCns, string username);
-        IEnumerable<TourOBDTO> DoanhSoTheoSale_OB(string searchFromDate, string searchToDate, List<string> maCns, string username);
+        IEnumerable<TourNDDTO> DoanhSoTheoSale_ND(string searchFromDate, string searchToDate, string maCn, string username);
+        IEnumerable<TourOBDTO> DoanhSoTheoSale_OB(string searchFromDate, string searchToDate, string maCn, string username);
         IEnumerable<TourIBDTO> DoanhSoTheoThang_IB(string searchFromDate, string searchToDate, List<Dmchinhanh> chiNhanhs, List<string> phongBans, string username);
         IEnumerable<TourNDDTO> DoanhSoTheoThang_ND(string searchFromDate, string searchToDate, List<string> chiNhanhs, string username);
         IEnumerable<TourOBDTO> DoanhSoTheoThang_OB(string searchFromDate, string searchToDate, List<string> chiNhanhs, string username);
         IEnumerable<TourIBDTO> DoanhSoTheoNgay_IB(string searchFromDate, string searchToDate, string loaiTour, List<Dmchinhanh> listCN, List<string> phongBanQLs, string username);
         IEnumerable<TourNDDTO> DoanhSoTheoNgay_ND(string searchFromDate, string searchToDate, string loaiTour, List<string> listCN, string username);
         IEnumerable<TourOBDTO> DoanhSoTheoNgay_OB(string searchFromDate, string searchToDate, string loaiTour, List<string> listCN, string username);
-        IEnumerable<TourIBDTO> DoanhSoTheoSale_IB(string searchFromDate, string searchToDate, List<Dmchinhanh> dmchinhanhs, List<string> thiTruongs, string username);
+        IEnumerable<TourIBDTO> DoanhSoTheoSale_IB(string searchFromDate, string searchToDate, Dmchinhanh dmchinhanh, List<string> thiTruongs, string username);
+        //IEnumerable<TourIBDTO> DoanhSoTheoSale_IB(string searchFromDate, string searchToDate, List<Dmchinhanh> dmchinhanhs, List<string> thiTruongs, string username);
         IEnumerable<Tourkind> GetTourinds();
         IEnumerable<Loaitour> GetLoaiTours();
         IEnumerable<DoanhthuSaleTuyen> ListSaleTheoTuyenThamQuan(string tungay, string denngay, string chiNhanh, string tuyentq, string khoi);
@@ -43,7 +44,7 @@ namespace ThongKe.Services
             _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<TourNDDTO> DoanhSoTheoSale_ND(string searchFromDate, string searchToDate, List<string> maCns, string username)
+        public IEnumerable<TourNDDTO> DoanhSoTheoSale_ND(string searchFromDate, string searchToDate, string maCn, string username)
         {
 
             var list = new List<TourNDDTO>();
@@ -53,7 +54,7 @@ namespace ThongKe.Services
             //var loaiTours = _unitOfWork.tourKindRepository.GetAll();
             //var cacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll();
 
-            // search date
+            #region search date
             DateTime fromDate, toDate;
             if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
             {
@@ -112,7 +113,7 @@ namespace ThongKe.Services
 
                 }
             }
-            // search date
+            #endregion
 
             if (tours == null)
             {
@@ -192,10 +193,9 @@ namespace ThongKe.Services
                 list.Add(tourDto);
             }
 
-            if (maCns.Count > 0)
+            if (!string.IsNullOrEmpty(maCn))
             {
-                //list = list.Where(x => x.MaCNTao == macn).ToList();
-                list = list.Where(item1 => maCns.Any(item2 => item1.Chinhanh == item2)).ToList();
+                list = list.Where(x => x.Chinhanh == maCn).ToList();
                 if (!string.IsNullOrEmpty(username))
                 {
                     list = list.Where(x => x.Nguoitao == username).ToList();
@@ -208,7 +208,7 @@ namespace ThongKe.Services
 
         }
 
-        public IEnumerable<TourOBDTO> DoanhSoTheoSale_OB(string searchFromDate, string searchToDate, List<string> maCns, string username)
+        public IEnumerable<TourOBDTO> DoanhSoTheoSale_OB(string searchFromDate, string searchToDate, string maCn, string username)
         {
 
             var list = new List<TourOBDTO>();
@@ -359,10 +359,9 @@ namespace ThongKe.Services
                 list.Add(tourDto);
             }
 
-            if (maCns.Count > 0)
+            if (!string.IsNullOrEmpty(maCn))
             {
-                //list = list.Where(x => x.MaCNTao == macn).ToList();
-                list = list.Where(item1 => maCns.Any(item2 => item1.Chinhanh == item2)).ToList();
+                list = list.Where(x => x.Chinhanh == maCn).ToList();
                 if (!string.IsNullOrEmpty(username))
                 {
                     list = list.Where(x => x.Nguoitao == username).ToList();
@@ -1461,7 +1460,7 @@ namespace ThongKe.Services
 
     /// DoanhSoTheoSale_IB
     public IEnumerable<TourIBDTO> DoanhSoTheoSale_IB(string searchFromDate, string searchToDate, 
-            List<Dmchinhanh> dmchinhanhs, List<string> thiTruongs, string username)
+            Dmchinhanh dmchinhanh, List<string> thiTruongs, string username)
         {
 
             var list = new List<TourIBDTO>();
@@ -1551,9 +1550,9 @@ namespace ThongKe.Services
             else
             {
                 // loc theo chinhanh
-                if (dmchinhanhs.Count > 0)
+                if (dmchinhanh != null)
                 {
-                    tours = tours.Where(item1 => dmchinhanhs.Any(item2 => item1.ChiNhanhTaoId == item2.Id)).ToList();
+                    tours = tours.Where(x => x.ChiNhanhTaoId == dmchinhanh.Id).ToList();
 
                     // loc theo thiTruong
                     if (thiTruongs.Count > 0)
@@ -1589,6 +1588,7 @@ namespace ThongKe.Services
                 tourDto.SoKhachDK = item.SoKhachDk;
                 tourDto.DoanhThuDK = item.DoanhThuDk;
                 tourDto.CompanyId = item.MaKh;// _unitOfWork.companyRepository.Find(x => x.CompanyId == item.MaKh).FirstOrDefault().Name;
+                tourDto.TenKh = item.TenKh;// _unitOfWork.companyRepository.Find(x => x.CompanyId == item.MaKh).FirstOrDefault().Name;
 
                 if (item.NgayDamPhan.HasValue)
                 {

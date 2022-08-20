@@ -28,9 +28,9 @@ namespace ThongKe.Services
         //IEnumerable<TourNDDTO> DoanhSoTheoThang_ND(string searchFromDate, string searchToDate, List<string> chiNhanhs, string username);
         IEnumerable<TourOBDTO> DoanhSoTheoThang_OB(string searchFromDate, string searchToDate, string chiNhanh, string username);
         //IEnumerable<TourOBDTO> DoanhSoTheoThang_OB(string searchFromDate, string searchToDate, List<string> chiNhanhs, string username);
-        IEnumerable<TourIBDTO> DoanhSoTheoNgay_IB(string searchFromDate, string searchToDate, string loaiTour, List<Dmchinhanh> listCN, List<string> phongBanQLs, string username);
-        IEnumerable<TourNDDTO> DoanhSoTheoNgay_ND(string searchFromDate, string searchToDate, string loaiTour, List<string> listCN, string username);
-        IEnumerable<TourOBDTO> DoanhSoTheoNgay_OB(string searchFromDate, string searchToDate, string loaiTour, List<string> listCN, string username);
+        IEnumerable<TourIBDTO> DoanhSoTheoNgay_IB(string searchFromDate, string searchToDate, string loaiTour, Dmchinhanh dmchinhanh, List<string> phongBanQLs, string username);
+        IEnumerable<TourNDDTO> DoanhSoTheoNgay_ND(string searchFromDate, string searchToDate, string loaiTour, string maCn, string username);
+        IEnumerable<TourOBDTO> DoanhSoTheoNgay_OB(string searchFromDate, string searchToDate, string loaiTour, string maCn, string username);
         IEnumerable<TourIBDTO> DoanhSoTheoSale_IB(string searchFromDate, string searchToDate, Dmchinhanh dmchinhanh, List<string> thiTruongs, string username);
         //IEnumerable<TourIBDTO> DoanhSoTheoSale_IB(string searchFromDate, string searchToDate, List<Dmchinhanh> dmchinhanhs, List<string> thiTruongs, string username);
         IEnumerable<Tourkind> GetTourinds();
@@ -1669,7 +1669,7 @@ namespace ThongKe.Services
 
         // DoanhSoTheoNgay_IB
         public IEnumerable<TourIBDTO> DoanhSoTheoNgay_IB(string searchFromDate, string searchToDate, string loaiTour,
-            List<Dmchinhanh> listCN, List<string> phongBanQLs, string username)
+            Dmchinhanh dmchinhanh, List<string> phongBanQLs, string username)
         {
             var tours = new List<Tours>();
             #region search date
@@ -1690,18 +1690,13 @@ namespace ThongKe.Services
                     //list = list.Where(x => x.NgayTao >= fromDate &&
                     //                   x.NgayTao < toDate.AddDays(1)).ToList();
                     tours = _unitOfWork.tourKDIBRepository.Find(x => x.NgayDen >= fromDate &&
-                                       x.NgayDi < toDate.AddDays(1)).ToList(); // tungay denngay
+                                       x.NgayDen < toDate.AddDays(1)).ToList(); // tungay denngay
                 }
                 catch (Exception)
                 {
 
                     return null;
                 }
-
-
-                //list.Where(x => x.NgayTao >= fromDate && x.NgayTao < (toDate.AddDays(1))/*.ToPagedList(page, pageSize)*/;
-
-
 
             }
             else
@@ -1725,8 +1720,7 @@ namespace ThongKe.Services
                     try
                     {
                         toDate = DateTime.Parse(searchToDate);
-                        //list = list.Where(x => x.NgayTao < toDate.AddDays(1)).ToList();
-                        tours = _unitOfWork.tourKDIBRepository.Find(x => x.NgayDi < toDate.AddDays(1)).ToList();
+                        tours = _unitOfWork.tourKDIBRepository.Find(x => x.NgayDen < toDate.AddDays(1)).ToList();
 
                     }
                     catch (Exception)
@@ -1755,10 +1749,10 @@ namespace ThongKe.Services
             }
             else
             {
-                if (listCN.Count > 0) // listCN: cn QL && loc theo chinhanh
+                if (dmchinhanh != null)
                 {
-                    //list = list.Where(x => x.MaCNTao == macn).ToList();
-                    tours = tours.Where(item1 => listCN.Any(item2 => item1.ChiNhanhTaoId == item2.Id)).ToList();
+                    tours = tours.Where(x => x.ChiNhanhTaoId == dmchinhanh.Id).ToList();
+                    //tours = tours.Where(item1 => listCN.Any(item2 => item1.ChiNhanhTaoId == item2.Id)).ToList();
                     if (phongBanQLs.Count > 0) // chi lay phong ban QL
                     {
                         var usernames = _unitOfWork.userRepository.Find(x => phongBanQLs.Any(y => y == x.PhongBanId)); // tat ca user trong thitruong
@@ -1790,6 +1784,7 @@ namespace ThongKe.Services
                 tourDto.SoKhachDK = item.SoKhachDk;
                 tourDto.DoanhThuDK = item.DoanhThuDk;
                 tourDto.CompanyId = item.MaKh;// _unitOfWork.companyRepository.Find(x => x.CompanyId == item.MaKh).FirstOrDefault().Name;
+                tourDto.TenKh = item.TenKh;// _unitOfWork.companyRepository.Find(x => x.CompanyId == item.MaKh).FirstOrDefault().Name;
 
                 if (item.NgayDamPhan.HasValue)
                 {
@@ -1823,7 +1818,7 @@ namespace ThongKe.Services
                 tourDto.NgaySua = item.NgaySua;
                 tourDto.NguoiSua = item.NguoiSua;
                 tourDto.TenLoaiTour = loaiTours.Where(x => x.Id == item.LoaiTourId).FirstOrDefault().TourkindInf;
-                tourDto.MaCNTao = (item.ChiNhanhTaoId == 0) ? "" : _unitOfWork.dmChiNhanhRepository.Find(x => x.Id == item.ChiNhanhTaoId).FirstOrDefault().Macn;// chiNhanhs.Where(x => x.Id == item.ChiNhanhTaoId).FirstOrDefault().Macn;
+                tourDto.MaCNTao = (item.ChiNhanhTaoId == 0) ? "" : dmchinhanhs.FirstOrDefault(x => x.Id == item.ChiNhanhTaoId).Macn;
                 if (item.NgayNhanDuTien.HasValue)
                 {
                     tourDto.NgayNhanDuTien = item.NgayNhanDuTien.Value;
@@ -1880,7 +1875,7 @@ namespace ThongKe.Services
         
         // DoanhSoTheoNgay_ND
         public IEnumerable<TourNDDTO> DoanhSoTheoNgay_ND(string searchFromDate, string searchToDate, string loaiTour,
-            List<string> listCN, string username)
+            string maCn, string username)
         {
             var tours = new List<ThongKe.Data.Models_KDND.Tour>();
             #region search date
@@ -1901,7 +1896,7 @@ namespace ThongKe.Services
                     //list = list.Where(x => x.NgayTao >= fromDate &&
                     //                   x.NgayTao < toDate.AddDays(1)).ToList();
                     tours = _unitOfWork.tourKDNDRepository.Find(x => x.Batdau >= fromDate &&
-                                       x.Ketthuc < toDate.AddDays(1)).ToList(); // tungay denngay
+                                       x.Batdau < toDate.AddDays(1)).ToList(); // tungay denngay
                 }
                 catch (Exception)
                 {
@@ -1937,7 +1932,7 @@ namespace ThongKe.Services
                     {
                         toDate = DateTime.Parse(searchToDate);
                         //list = list.Where(x => x.NgayTao < toDate.AddDays(1)).ToList();
-                        tours = _unitOfWork.tourKDNDRepository.Find(x => x.Ketthuc < toDate.AddDays(1)).ToList();
+                        tours = _unitOfWork.tourKDNDRepository.Find(x => x.Batdau < toDate.AddDays(1)).ToList();
 
                     }
                     catch (Exception)
@@ -1966,10 +1961,10 @@ namespace ThongKe.Services
             }
             else
             {
-                if (listCN.Count > 0) // listCN: cn QL && loc theo chinhanh
+                if (!string.IsNullOrEmpty(maCn))
                 {
-                    //list = list.Where(x => x.MaCNTao == macn).ToList();
-                    tours = tours.Where(item1 => listCN.Any(item2 => item1.Chinhanh == item2)).ToList();
+                    tours = tours.Where(x => x.Chinhanh == maCn).ToList();
+                    //tours = tours.Where(item1 => listCN.Any(item2 => item1.Chinhanh == item2)).ToList();
                     if (!string.IsNullOrEmpty(username)) // ko QL ai het ==> user thuong
                     {
                         tours = tours.Where(x => x.Nguoitao == username).ToList();
@@ -2074,7 +2069,7 @@ namespace ThongKe.Services
         
         // DoanhSoTheoNgay_OB
         public IEnumerable<TourOBDTO> DoanhSoTheoNgay_OB(string searchFromDate, string searchToDate, string loaiTour,
-            List<string> listCN, string username)
+            string maCn, string username)
         {
             var tours = new List<ThongKe.Data.Models_KDOB.Tour>();
             #region search date
@@ -2095,7 +2090,7 @@ namespace ThongKe.Services
                     //list = list.Where(x => x.NgayTao >= fromDate &&
                     //                   x.NgayTao < toDate.AddDays(1)).ToList();
                     tours = _unitOfWork.tourKDOBRepository.Find(x => x.Batdau >= fromDate &&
-                                       x.Ketthuc < toDate.AddDays(1)).ToList(); // tungay denngay
+                                       x.Batdau < toDate.AddDays(1)).ToList(); // tungay denngay
                 }
                 catch (Exception)
                 {
@@ -2131,7 +2126,7 @@ namespace ThongKe.Services
                     {
                         toDate = DateTime.Parse(searchToDate);
                         //list = list.Where(x => x.NgayTao < toDate.AddDays(1)).ToList();
-                        tours = _unitOfWork.tourKDOBRepository.Find(x => x.Ketthuc < toDate.AddDays(1)).ToList();
+                        tours = _unitOfWork.tourKDOBRepository.Find(x => x.Batdau < toDate.AddDays(1)).ToList();
 
                     }
                     catch (Exception)
@@ -2160,10 +2155,10 @@ namespace ThongKe.Services
             }
             else
             {
-                if (listCN.Count > 0) // listCN: cn QL && loc theo chinhanh
+                if (!string.IsNullOrEmpty(maCn)) // listCN: cn QL && loc theo chinhanh
                 {
-                    //list = list.Where(x => x.MaCNTao == macn).ToList();
-                    tours = tours.Where(item1 => listCN.Any(item2 => item1.Chinhanh == item2)).ToList();
+                    tours = tours.Where(x => x.Chinhanh == maCn).ToList();
+                    //tours = tours.Where(item1 => listCN.Any(item2 => item1.Chinhanh == item2)).ToList();
                     if (!string.IsNullOrEmpty(username)) // ko QL ai het ==> user thuong
                     {
                         tours = tours.Where(x => x.Nguoitao == username).ToList();
@@ -2301,5 +2296,6 @@ namespace ThongKe.Services
             return _unitOfWork.thongKeRepository.ListSaleTheoTuyenThamQuan(tungay, denngay, tuyentq, khoi)
                 .Where(x => x.Chinhanh == chiNhanh);
         }
+
     }
 }

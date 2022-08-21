@@ -28,7 +28,7 @@
 
                 <div asp-validation-summary="All" class="text-danger"></div>
 
-                <div class="container" style="padding-bottom:10px; background-color: aliceblue;" id="search">
+                <div style="padding-bottom:10px; background-color: aliceblue;" id="search">
 
                     <div class="col-md-12">
                         <div class="row" style="padding-top: 10px;">
@@ -136,11 +136,7 @@
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw((item.SoKhachTT == 0) ? item.SoKhachDK.ToString("N0") : item.SoKhachTT.ToString("N0"))</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw((item.DoanhThuTT == 0) ? item.DoanhThuDK.ToString("N0") : item.DoanhThuTT.ToString("N0"))</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
-                                    <td class="tdVal" data-id="@item.Id">
-                                        <select class="form-control form-control-sm border-input "
-                                        asp-items="@(new SelectList(Model.Companies,"CompanyId","Name", item.CompanyId))">
-                                        </select>
-                                    </td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenKh)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenLoaiTour)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguonTour)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>

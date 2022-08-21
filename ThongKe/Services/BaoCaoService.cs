@@ -13,7 +13,8 @@ namespace ThongKe.Services
 {
     public interface IBaoCaoService
     {
-        IEnumerable<TourIBDTO> DoanhSoTheoThiTruong_IB(string searchFromDate, string searchToDate, List<Dmchinhanh> dmchinhanhs, List<string> thiTruongs, string username);
+        IEnumerable<TourIBDTO> DoanhSoTheoThiTruong_IB(string searchFromDate, string searchToDate, Dmchinhanh dmchinhanh, List<string> thiTruongs, string username);
+        //IEnumerable<TourIBDTO> DoanhSoTheoThiTruong_IB(string searchFromDate, string searchToDate, List<Dmchinhanh> dmchinhanhs, List<string> thiTruongs, string username);
         IEnumerable<TourIBDTO> DoanhSoTheoSale(string searchFromDate, string searchToDate, List<string> MaCNs);
         Task<IEnumerable<Role>> GetRoles();
         Task<Role> GetRoleById(int id);
@@ -1250,7 +1251,7 @@ namespace ThongKe.Services
 
         /// DoanhSoTheoThiTruong_IB
         public IEnumerable<TourIBDTO> DoanhSoTheoThiTruong_IB(string searchFromDate, string searchToDate, 
-            List<Dmchinhanh> dmchinhanhs, List<string> thiTruongs, string username)
+            Dmchinhanh dmchinhanh, List<string> thiTruongs, string username)
         {
 
             var list = new List<TourIBDTO>();
@@ -1286,7 +1287,7 @@ namespace ThongKe.Services
                         return null;
                     }
                     tours = _unitOfWork.tourKDIBRepository.Find(x => x.NgayDen >= fromDate &&
-                                       x.NgayDi < toDate.AddDays(1)).ToList();
+                                       x.NgayDen < toDate.AddDays(1)).ToList();
                 }
                 catch (Exception)
                 {
@@ -1320,7 +1321,7 @@ namespace ThongKe.Services
                     try
                     {
                         toDate = DateTime.Parse(searchToDate);
-                        tours = _unitOfWork.tourKDIBRepository.Find(x => x.NgayDi < toDate.AddDays(1)).ToList();
+                        tours = _unitOfWork.tourKDIBRepository.Find(x => x.NgayDen < toDate.AddDays(1)).ToList();
 
                     }
                     catch (Exception)
@@ -1334,9 +1335,10 @@ namespace ThongKe.Services
             #endregion
 
             // loc theo chinhan
-            if(dmchinhanhs.Count > 0)
+            if(dmchinhanh != null)
             {
-                tours = tours.Where(x => dmchinhanhs.Any(y => x.ChiNhanhTaoId == y.Id)).ToList();
+                tours = tours.Where(x => x.ChiNhanhTaoId == dmchinhanh.Id).ToList();
+                //tours = tours.Where(x => dmchinhanhs.Any(y => x.ChiNhanhTaoId == y.Id)).ToList();
                 // loc theo thiTruong
                 if (thiTruongs.Count > 0)
                 {
@@ -1376,6 +1378,7 @@ namespace ThongKe.Services
                 tourDto.SoKhachDK = item.SoKhachDk;
                 tourDto.DoanhThuDK = item.DoanhThuDk;
                 tourDto.CompanyId = item.MaKh;// _unitOfWork.companyRepository.Find(x => x.CompanyId == item.MaKh).FirstOrDefault().Name;
+                tourDto.TenKh = item.TenKh;
 
                 if (item.NgayDamPhan.HasValue)
                 {
@@ -1409,7 +1412,7 @@ namespace ThongKe.Services
                 tourDto.NgaySua = item.NgaySua;
                 tourDto.NguoiSua = item.NguoiSua;
                 tourDto.TenLoaiTour = loaiTours.Where(x => x.Id == item.LoaiTourId).FirstOrDefault().TourkindInf;
-                tourDto.MaCNTao = (item.ChiNhanhTaoId == 0) ? "" : _unitOfWork.dmChiNhanhRepository.Find(x => x.Id == item.ChiNhanhTaoId).FirstOrDefault().Macn;// chiNhanhs.Where(x => x.Id == item.ChiNhanhTaoId).FirstOrDefault().Macn;
+                tourDto.MaCNTao = (item.ChiNhanhTaoId == 0) ? "" : chiNhanhs.FirstOrDefault(x => x.Id == item.ChiNhanhTaoId).Macn;// chiNhanhs.Where(x => x.Id == item.ChiNhanhTaoId).FirstOrDefault().Macn;
                 if (item.NgayNhanDuTien.HasValue)
                 {
                     tourDto.NgayNhanDuTien = item.NgayNhanDuTien.Value;

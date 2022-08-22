@@ -6,7 +6,7 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title text-bold">BÁO CÁO DOANH THU TUYẾN THAM QUAN THEO NGÀY ĐI</h3>
+            <h3 class="card-title text-bold">BÁO CÁO DOANH THU TUYẾN THAM QUAN THEO NGÀY BÁN</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -53,8 +53,8 @@
                             <br />
                             <span class="btn-group btn-block">
 
-                                <button type="submit" id="btnSearch" class="btn btn-outline-primary btn-sm" formaction="/BaoCao/TuyentqTheoNgayDi"><i class="fa fa-search"></i></button>
-                                <button type="submit" id="btnExportAll1" class="btn btn-outline-success btn-sm" formmethod="post" formaction="/BaoCao/TuyentqTheoNgayDiPost"><i class="fas fa-file-export"></i></button>
+                                <button type="submit" id="btnSearch" class="btn btn-outline-primary btn-sm" formaction="/BaoCao/TuyentqTheoNgayBan"><i class="fa fa-search"></i></button>
+                                <button type="submit" id="btnExportAll1" class="btn btn-outline-success btn-sm" formmethod="post" formaction="/BaoCao/TuyentqTheoNgayBanPost"><i class="fas fa-file-export"></i></button>
                             </span>
                         </div>
 
@@ -86,7 +86,7 @@
                             {
                                 <tr>
                                     <td>
-                                        <form id="frmDetail" asp-action="TuyentqTheoNgayDiChiTietToExcel">
+                                        <form id="frmDetail" asp-action="TuyentqTheoNgayBanChiTietToExcel">
                                             <input type="hidden" name="tungay" id="hidTuNgay" value="@Model.TuNgay" />
                                             <input type="hidden" name="denngay" id="hidDenNgay" value="@Model.DenNgay" />
                                             <input type="hidden" name="tuyentq" id="hidTuyentq" value="@item.Tuyentq" />

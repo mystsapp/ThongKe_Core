@@ -81,7 +81,7 @@ namespace ThongKe.Controllers
             {
                 chiNhanhs = _unitOfWork.dmChiNhanhRepository.GetAll().Select(x => x.Macn).Distinct().ToArray();
             }
-            if (chiNhanhs.Count() > 0) // danh cho admin khuvuc va admin tong
+            if (chiNhanhs != null) // danh cho admin khuvuc va admin tong
             {
                 for (int i = 0; i < chiNhanhs.Count(); i++)
                 {
@@ -480,7 +480,7 @@ namespace ThongKe.Controllers
             {
                 chiNhanhs = _unitOfWork.dmChiNhanhRepository.GetAll().Select(x => x.Macn).Distinct().ToArray();
             }
-            if (chiNhanhs.Count() > 0) // danh cho admin khuvuc va admin tong
+            if (chiNhanhs != null) // danh cho admin khuvuc va admin tong
             {
                 for (int i = 0; i < chiNhanhs.Count(); i++)
                 {
@@ -887,7 +887,7 @@ namespace ThongKe.Controllers
                 chiNhanhs = _unitOfWork.dmChiNhanhRepository.GetAll().Select(x => x.Macn).Distinct().ToArray();
 
             }
-            if (chiNhanhs.Count() > 0) // danh cho admin khuvuc va admin tong
+            if (chiNhanhs != null) // danh cho admin khuvuc va admin tong
             {
                 for (int i = 0; i < chiNhanhs.Count(); i++)
                 {
@@ -1294,7 +1294,7 @@ namespace ThongKe.Controllers
                 chiNhanhs = _unitOfWork.dmChiNhanhRepository.GetAll().Select(x => x.Macn).Distinct().ToArray();
 
             }
-            if (chiNhanhs.Count() > 0) // danh cho admin khuvuc va admin tong
+            if (chiNhanhs != null) // danh cho admin khuvuc va admin tong
             {
                 for (int i = 0; i < chiNhanhs.Count(); i++)
                 {
@@ -1716,7 +1716,7 @@ namespace ThongKe.Controllers
             {
                 chiNhanhs = _unitOfWork.dmChiNhanhRepository.GetAll().Select(x => x.Macn).Distinct().ToArray();
             }
-            if (chiNhanhs.Count() > 0) // danh cho admin khuvuc va admin tong
+            if (chiNhanhs != null) // danh cho admin khuvuc va admin tong
             {
                 for (int i = 0; i < chiNhanhs.Count(); i++)
                 {
@@ -2134,7 +2134,7 @@ namespace ThongKe.Controllers
             {
                 chiNhanhs = _unitOfWork.dmChiNhanhRepository.GetAll().Select(x => x.Macn).Distinct().ToArray();
             }
-            if (chiNhanhs.Count() > 0) // danh cho admin khuvuc va admin tong
+            if (chiNhanhs != null) // danh cho admin khuvuc va admin tong
             {
                 for (int i = 0; i < chiNhanhs.Count(); i++)
                 {
@@ -2613,7 +2613,7 @@ namespace ThongKe.Controllers
 
 
             }
-            if (chiNhanhs.Count() > 0) // danh cho admin khuvuc va admin tong
+            if (chiNhanhs != null) // danh cho admin khuvuc va admin tong
             {
                 for (int i = 0; i < chiNhanhs.Count(); i++)
                 {
@@ -3092,7 +3092,7 @@ namespace ThongKe.Controllers
 
 
             }
-            if (chiNhanhs.Count() > 0) // danh cho admin khuvuc va admin tong
+            if (chiNhanhs != null) // danh cho admin khuvuc va admin tong
             {
                 for (int i = 0; i < chiNhanhs.Count(); i++)
                 {
@@ -3593,7 +3593,7 @@ namespace ThongKe.Controllers
             {
                 chiNhanhs = _unitOfWork.dmChiNhanhRepository.GetAll().Select(x => x.Macn).Distinct().ToArray();
             }
-            if (chiNhanhs.Count() > 0) // danh cho admin khuvuc va admin tong
+            if (chiNhanhs != null) // danh cho admin khuvuc va admin tong
             {
                 for (int i = 0; i < chiNhanhs.Count(); i++)
                 {
@@ -3941,7 +3941,7 @@ namespace ThongKe.Controllers
                 chiNhanhs = _unitOfWork.dmChiNhanhRepository.GetAll().Select(x => x.Macn).Distinct().ToArray();
 
             }
-            if (chiNhanhs.Count() > 0) // danh cho admin khuvuc va admin tong
+            if (chiNhanhs != null) // danh cho admin khuvuc va admin tong
             {
                 for (int i = 0; i < chiNhanhs.Count(); i++)
                 {
@@ -4278,7 +4278,7 @@ namespace ThongKe.Controllers
                 chiNhanhs = _unitOfWork.dmChiNhanhRepository.GetAll().Select(x => x.Macn).Distinct().ToArray();
 
             }
-            if (chiNhanhs.Count() > 0) // danh cho admin khuvuc va admin tong
+            if (chiNhanhs != null) // danh cho admin khuvuc va admin tong
             {
                 for (int i = 0; i < chiNhanhs.Count(); i++)
                 {

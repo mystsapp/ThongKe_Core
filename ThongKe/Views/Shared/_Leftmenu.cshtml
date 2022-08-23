@@ -65,7 +65,7 @@
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
-                                Báo cáo Doanh Thu KL
+                                Báo cáo Doanh Thu
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
@@ -139,43 +139,44 @@
                             </li>
                         </ul>
                     </li>
+                    @if (user.Username == "hongvt")
+                    {
+                        @* Danh muc báo cáo KD*@
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Báo cáo Doanh Thu KD
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a asp-action="DoanhSoTheoSale" asp-controller="BaoCao" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Doanh số theo sale</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-action="DoanhSoTheoThang" asp-controller="BaoCao" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Doanh số theo tháng</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-action="DoanhSoTheoNgayDi" asp-controller="BaoCao" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Doanh số theo ngày đi tour</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-action="DoanhSoTheoThiTruong" asp-controller="BaoCao" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Doanh số theo thị trường (IB)</p>
+                                    </a>
+                                </li>
 
-                    @* Danh muc báo cáo KD*@
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>
-                                Báo cáo Doanh Thu KD
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a asp-action="DoanhSoTheoSale" asp-controller="BaoCao" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Doanh số theo sale</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a asp-action="DoanhSoTheoThang" asp-controller="BaoCao" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Doanh số theo tháng</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a asp-action="DoanhSoTheoNgayDi" asp-controller="BaoCao" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Doanh số theo ngày đi tour</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a asp-action="DoanhSoTheoThiTruong" asp-controller="BaoCao" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Doanh số theo thị trường (IB)</p>
-                                </a>
-                            </li>
-
-                            @* <li class="nav-item">
+                                @* <li class="nav-item">
                         <a href="../layout/fixed-topnav.html" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Fixed Navbar</p>
@@ -193,8 +194,10 @@
                         <p>Collapsed Sidebar</p>
                         </a>
                         </li>*@
-                        </ul>
-                    </li>
+                            </ul>
+                        </li>
+                    }
+
                 }
 
                 @if (user.Nhom == "KDO" || user.Nhom == "Admins")

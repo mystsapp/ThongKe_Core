@@ -826,7 +826,7 @@ namespace ThongKe.Services
                 tourDto.NgayDi = item.NgayDi;
                 tourDto.TuyenTQ = item.TuyenTq;
                 tourDto.SoKhachDK = item.SoKhachDk;
-                tourDto.DoanhThuDK = item.DoanhThuDk;
+                tourDto.DoanhThuDK = item.DoanhThuDk * (item.TyGia ?? 1);
                 tourDto.CompanyId = item.MaKh;// _unitOfWork.companyRepository.Find(x => x.CompanyId == item.MaKh).FirstOrDefault().Name;
 
                 if (item.NgayDamPhan.HasValue)
@@ -852,7 +852,7 @@ namespace ThongKe.Services
 
                 tourDto.SoKhachTT = item.SoKhachTt;
                 tourDto.SKTreEm = item.SktreEm;
-                tourDto.DoanhThuTT = item.DoanhThuTt;
+                tourDto.DoanhThuTT = item.DoanhThuTt * (item.TyGia ?? 1);
                 tourDto.ChuongTrinhTour = item.ChuongTrinhTour;
                 tourDto.NoiDungThanhLyHD = item.NoiDungThanhLyHd;
                 tourDto.DichVu = item.DichVu;
@@ -1376,7 +1376,7 @@ namespace ThongKe.Services
                 tourDto.NgayDi = item.NgayDi;
                 tourDto.TuyenTQ = item.TuyenTq;
                 tourDto.SoKhachDK = item.SoKhachDk;
-                tourDto.DoanhThuDK = item.DoanhThuDk;
+                tourDto.DoanhThuDK = item.DoanhThuDk * (item.TyGia ?? 1);
                 tourDto.CompanyId = item.MaKh;// _unitOfWork.companyRepository.Find(x => x.CompanyId == item.MaKh).FirstOrDefault().Name;
                 tourDto.TenKh = item.TenKh;
 
@@ -1403,7 +1403,7 @@ namespace ThongKe.Services
 
                 tourDto.SoKhachTT = item.SoKhachTt;
                 tourDto.SKTreEm = item.SktreEm;
-                tourDto.DoanhThuTT = item.DoanhThuTt;
+                tourDto.DoanhThuTT = item.DoanhThuTt * (item.TyGia ?? 1);
                 tourDto.ChuongTrinhTour = item.ChuongTrinhTour;
                 tourDto.NoiDungThanhLyHD = item.NoiDungThanhLyHd;
                 tourDto.DichVu = item.DichVu;
@@ -1594,7 +1594,7 @@ namespace ThongKe.Services
                 tourDto.NgayDi = item.NgayDi;
                 tourDto.TuyenTQ = item.TuyenTq;
                 tourDto.SoKhachDK = item.SoKhachDk;
-                tourDto.DoanhThuDK = item.DoanhThuDk;
+                tourDto.DoanhThuDK = item.DoanhThuDk * (item.TyGia ?? 1);
                 tourDto.CompanyId = item.MaKh;// _unitOfWork.companyRepository.Find(x => x.CompanyId == item.MaKh).FirstOrDefault().Name;
                 tourDto.TenKh = item.TenKh;// _unitOfWork.companyRepository.Find(x => x.CompanyId == item.MaKh).FirstOrDefault().Name;
 
@@ -1621,7 +1621,7 @@ namespace ThongKe.Services
 
                 tourDto.SoKhachTT = item.SoKhachTt;
                 tourDto.SKTreEm = item.SktreEm;
-                tourDto.DoanhThuTT = item.DoanhThuTt;
+                tourDto.DoanhThuTT = item.DoanhThuTt * (item.TyGia ?? 1);
                 tourDto.ChuongTrinhTour = item.ChuongTrinhTour;
                 tourDto.NoiDungThanhLyHD = item.NoiDungThanhLyHd;
                 tourDto.DichVu = item.DichVu;
@@ -1785,7 +1785,7 @@ namespace ThongKe.Services
                 tourDto.NgayDi = item.NgayDi;
                 tourDto.TuyenTQ = item.TuyenTq;
                 tourDto.SoKhachDK = item.SoKhachDk;
-                tourDto.DoanhThuDK = item.DoanhThuDk;
+                tourDto.DoanhThuDK = item.DoanhThuDk * (item.TyGia ?? 1);
                 tourDto.CompanyId = item.MaKh;// _unitOfWork.companyRepository.Find(x => x.CompanyId == item.MaKh).FirstOrDefault().Name;
                 tourDto.TenKh = item.TenKh;// _unitOfWork.companyRepository.Find(x => x.CompanyId == item.MaKh).FirstOrDefault().Name;
 
@@ -1812,7 +1812,7 @@ namespace ThongKe.Services
 
                 tourDto.SoKhachTT = item.SoKhachTt;
                 tourDto.SKTreEm = item.SktreEm;
-                tourDto.DoanhThuTT = item.DoanhThuTt;
+                tourDto.DoanhThuTT = item.DoanhThuTt * (item.TyGia ?? 1);
                 tourDto.ChuongTrinhTour = item.ChuongTrinhTour;
                 tourDto.NoiDungThanhLyHD = item.NoiDungThanhLyHd;
                 tourDto.DichVu = item.DichVu;

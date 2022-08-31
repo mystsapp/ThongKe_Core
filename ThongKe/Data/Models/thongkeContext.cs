@@ -44,6 +44,8 @@ namespace ThongKe.Data.Models
         public virtual DbSet<LoginViewModel> LoginViewModels { get; set; }
         public virtual DbSet<ThongKeKhachViewModel> ThongKeKhachViewModels { get; set; }
         public virtual DbSet<ThongKeDoanhThuViewModel> ThongKeDoanhThuViewModels { get; set; }
+        public virtual DbSet<TuyenTqTheoNgayBan> TuyenTqTheoNgayBans { get; set; }
+        public virtual DbSet<TuyentqChiTietNgayBanViewModel> TuyentqChiTietNgayBanViewModels { get; set; }
 
 //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 //        {

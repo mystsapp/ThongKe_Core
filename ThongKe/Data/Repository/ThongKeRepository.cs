@@ -51,8 +51,8 @@ namespace ThongKe.Data.Repository
 
 
         ////////////////////////////////////// listTuyentqTheoNgayBan //////////////////////////////////////////
-        IEnumerable<TuyentqNgaydi> listTuyentqTheoNgayBan(string tungay, string denngay, string chinhanh, string khoi);
-        IEnumerable<TuyentqChiTietViewModel> TuyentqTheoNgayBanChiTietToExcel(string tungay, string denngay, string chinhanh, string tuyentq, string khoi);
+        IEnumerable<TuyenTqTheoNgayBan> listTuyentqTheoNgayBan(string tungay, string denngay, string chinhanh, string khoi);
+        IEnumerable<TuyentqChiTietNgayBanViewModel> TuyentqTheoNgayBanChiTietToExcel(string tungay, string denngay, string chinhanh, string tuyentq, string khoi);
 
         ////////////////////////////////////// Tuyentq theo quy //////////////////////////////////////////
         IEnumerable<Tuyentheoquy> TuyenTqTheoQuyToExcel(int quy, int nam, string chinhanh, string khoi);
@@ -364,11 +364,11 @@ namespace ThongKe.Data.Repository
         }
 
         ////////////////////////////////////// listTuyentqTheoNgayBan //////////////////////////////////////////
-        public IEnumerable<TuyentqNgaydi> listTuyentqTheoNgayBan(string tungay, string denngay, string chinhanh, string khoi)
+        public IEnumerable<TuyenTqTheoNgayBan> listTuyentqTheoNgayBan(string tungay, string denngay, string chinhanh, string khoi)
         {
             if (tungay == null)
                 return null;
-            IEnumerable<TuyentqNgaydi> d = null;
+            IEnumerable<TuyenTqTheoNgayBan> d = null;
             var parameter = new SqlParameter[]
               {
                     new SqlParameter("@tungay",DateTime.Parse(tungay)),
@@ -377,36 +377,46 @@ namespace ThongKe.Data.Repository
               };
             if (khoi == "OB") 
             {
-                d = _context.TuyentqNgaydi.FromSqlRaw("EXECUTE dbo.spThongkeTuyentqTheoNgayBanOB @tungay, @denngay, @chinhanh", parameter).ToList();
+                d = _context.TuyenTqTheoNgayBans.FromSqlRaw("EXECUTE dbo.spThongkeTuyentqTheoNgayBanOB @tungay, @denngay, @chinhanh", parameter).ToList();
             }
             else
             {
-                d = _context.TuyentqNgaydi.FromSqlRaw("EXECUTE dbo.spThongkeTuyentqTheoNgayBanND @tungay, @denngay, @chinhanh", parameter).ToList();
+                d = _context.TuyenTqTheoNgayBans.FromSqlRaw("EXECUTE dbo.spThongkeTuyentqTheoNgayBanND @tungay, @denngay, @chinhanh", parameter).ToList();
             }
             var count = d.Count();
             return d;
         }
 
-        public IEnumerable<TuyentqChiTietViewModel> TuyentqTheoNgayBanChiTietToExcel(string tungay, string denngay, string chinhanh, string tuyentq, string khoi)
+        public IEnumerable<TuyentqChiTietNgayBanViewModel> TuyentqTheoNgayBanChiTietToExcel(string tungay, string denngay, string chinhanh, string tuyentq, string khoi)
         {
             if (tungay == null)
                 return null;
-            IEnumerable<TuyentqChiTietViewModel> d = null;
+            IEnumerable<TuyentqChiTietNgayBanViewModel> d = null;
+            
             var parameter = new SqlParameter[]
               {
-                    new SqlParameter("@tungay",tungay),
-                    new SqlParameter("@denngay",denngay),
+                    new SqlParameter("@tungay", Convert.ToDateTime(tungay)),
+                    new SqlParameter("@denngay", Convert.ToDateTime(denngay)),
                     new SqlParameter("@chinhanh",chinhanh),
                     new SqlParameter("@tuyentq",tuyentq)
               };
-            if (khoi == "OB")
+            try
             {
-                d = _context.TuyentqChiTietViewModels.FromSqlRaw("EXECUTE dbo.spThongkeTuyentqChitietOB_NgayBan @tungay, @denngay, @chinhanh, @tuyentq", parameter).ToList();
+                if (khoi == "OB")
+                {
+                    d = _context.TuyentqChiTietNgayBanViewModels.FromSqlRaw("EXECUTE dbo.spThongkeTuyentqChitietOB_NgayBan @tungay, @denngay, @chinhanh, @tuyentq", parameter).ToList();
+                }
+                else
+                {
+                    d = _context.TuyentqChiTietNgayBanViewModels.FromSqlRaw("EXECUTE dbo.spThongkeTuyentqChitietND_NgayBan @tungay, @denngay, @chinhanh, @tuyentq", parameter).ToList();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                d = _context.TuyentqChiTietViewModels.FromSqlRaw("EXECUTE dbo.spThongkeTuyentqChitietND_NgayBan @tungay, @denngay, @chinhanh, @tuyentq", parameter).ToList();
+
+                throw ex;
             }
+            
             var count = d.Count();
             return d;
         }

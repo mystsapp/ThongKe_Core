@@ -33,6 +33,7 @@ namespace ThongKe.Data.Repository
         IEnumerable<DoanThuDoanNgayDi> listQuayTheoNgayBan(string tungay, string denngay, string chinhanh, string khoi);
 
         IEnumerable<DoanhthuQuayChitiet> QuayTheoNgayBanChiTietToExcel(string tungay, string denngay, string quay, string chinhanh, string khoi);
+        
 
         /////////////////// Quay theo ngay di /////////////////////////////////////////////////
         IEnumerable<DoanThuDoanNgayDi> listQuayTheoNgayDi(string tungay, string denngay, string chinhanh, string khoi);
@@ -248,7 +249,7 @@ namespace ThongKe.Data.Repository
             var count = d.Count();
             return d;
         }
-
+        
         ////////////////////////////////////// Quay Theo Ngay di //////////////////////////////////////////
         ///
         public IEnumerable<DoanThuDoanNgayDi> listQuayTheoNgayDi(string tungay, string denngay, string chinhanh, string khoi)

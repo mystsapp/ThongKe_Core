@@ -1,4 +1,11 @@
 ﻿@model DoanhthuSaleQuayViewModel
+@using Microsoft.AspNetCore.Http
+@using ThongKe.Helps;
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var user = HttpContextAccessor.HttpContext.Session.Get<Users>("loginUser");
+}
 
 <!-- Main content -->
 <section class="content pt-2">
@@ -50,11 +57,16 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-2">
+                            <div class="col-md-4">
                                 <br />
                                 <span class="btn-group btn-block">
-                                    <button type="submit" id="btnSearch" class="btn btn-outline-primary btn-sm" formaction="/BaoCao/SaleTheoQuay"><i class="fa fa-search"></i></button>
-                                    <button type="submit" id="btnExportAll1" class="btn btn-outline-success btn-sm" formmethod="post" formaction="/BaoCao/SaleTheoQuayPost"><i class="fas fa-file-export"></i></button>
+                                    <button title="Tìm kiếm" type="submit" id="btnSearch" class="btn btn-outline-primary btn-sm" formaction="/BaoCao/SaleTheoQuay"><i class="fa fa-search"></i></button>
+                                    <button title="Xuất tất cả" type="submit" id="btnExportAll1" class="btn btn-outline-success btn-sm" formmethod="post" formaction="/BaoCao/SaleTheoQuayPost"><i class="fas fa-file-export"></i></button>
+                                    @if(user.Username == "hongvt" || user.Username == "hongtram" || user.Username == "huukhanh")
+                                    {
+                                        <button title="Xuất tất cả + chi tiết" type="submit" id="btnSaleTheoQuayChiTietToExcel_All" class="btn btn-outline-success btn-sm" formmethod="post" formaction="/BaoCao/SaleTheoQuayChiTietToExcel_All"><i class="fas fa-file-excel"></i></button>
+                                    }
+                                    
                                 </span>
                             </div>
 

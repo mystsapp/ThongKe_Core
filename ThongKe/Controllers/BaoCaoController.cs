@@ -1091,7 +1091,7 @@ namespace ThongKe.Controllers
                 {
                     try
                     {
-                        var doanhthuSaleChitiets = _unitOfWork.thongKeRepository.SaleTheoQuayChiTietToExcel_All(tungay, denngay, item, chinhanh, khoi);
+                        var doanhthuSaleChitiets = _unitOfWork.thongKeRepository.SaleTheoNgayDiChiTietToExcel_All(tungay, denngay, item, chinhanh, khoi);
 
                         d.AddRange(doanhthuSaleChitiets);
                     }

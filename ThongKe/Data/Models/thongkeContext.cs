@@ -46,6 +46,7 @@ namespace ThongKe.Data.Models
         public virtual DbSet<ThongKeDoanhThuViewModel> ThongKeDoanhThuViewModels { get; set; }
         public virtual DbSet<TuyenTqTheoNgayBan> TuyenTqTheoNgayBans { get; set; }
         public virtual DbSet<TuyentqChiTietNgayBanViewModel> TuyentqChiTietNgayBanViewModels { get; set; }
+        public virtual DbSet<DoanhThuSaleChiTietAll> DoanhThuSaleChiTietAlls { get; set; }
 
 //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 //        {
@@ -58,6 +59,7 @@ namespace ThongKe.Data.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<DoanhThuSaleChiTietAll>().HasKey(ba => new { ba.Nguoixuatve, ba.Doanhthu, ba.Tenkhach });
             modelBuilder.Entity<Users>(entity =>
             {
                 entity.HasKey(e => e.Username);

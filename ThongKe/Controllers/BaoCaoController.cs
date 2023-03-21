@@ -505,12 +505,12 @@ namespace ThongKe.Controllers
                 int dong = 5;
                 //var d = _unitOfWork.thongKeRepository.SaleTheoQuayChiTietToExcel(tungay, denngay, nhanvien, chinhanh, khoi);// Session["fullName"].ToString());
 
-                List<DoanhthuSaleChitiet> d = new List<DoanhthuSaleChitiet>();
+                List<DoanhThuSaleChiTietAll> d = new List<DoanhThuSaleChiTietAll>();
                 foreach (var item in listNhanVien)
                 {
                     try
                     {
-                        var doanhthuSaleChitiets = _unitOfWork.thongKeRepository.SaleTheoQuayChiTietToExcel(tungay, denngay, item, chinhanh, khoi);
+                        var doanhthuSaleChitiets = _unitOfWork.thongKeRepository.SaleTheoQuayChiTietToExcel_All(tungay, denngay, item, chinhanh, khoi);
 
                         d.AddRange(doanhthuSaleChitiets);
                     }
@@ -1086,12 +1086,12 @@ namespace ThongKe.Controllers
                 int dong = 5;
                 // var d = _unitOfWork.thongKeRepository.SaleTheoNgayDiChiTietToExcel(tungay, denngay, nhanvien, chinhanh, khoi);// Session["fullName"].ToString());
 
-                List<DoanhthuSaleChitiet> d = new List<DoanhthuSaleChitiet>();
+                List<DoanhThuSaleChiTietAll> d = new List<DoanhThuSaleChiTietAll>();
                 foreach (var item in listNhanVien)
                 {
                     try
                     {
-                        var doanhthuSaleChitiets = _unitOfWork.thongKeRepository.SaleTheoNgayDiChiTietToExcel(tungay, denngay, item, chinhanh, khoi);
+                        var doanhthuSaleChitiets = _unitOfWork.thongKeRepository.SaleTheoQuayChiTietToExcel_All(tungay, denngay, item, chinhanh, khoi);
 
                         d.AddRange(doanhthuSaleChitiets);
                     }
@@ -1100,7 +1100,7 @@ namespace ThongKe.Controllers
 
                         throw ex;
                     }
-                    
+
                 }
                 var dPlus = d.GroupBy(x => x.Nguoixuatve);
                 var doanhthuSaleChitietGroupByNguoiTaos = dPlus.Select(x => new DoanhthuSaleChitietGroupByNguoiTao()

@@ -5,7 +5,7 @@ namespace ThongKe.Models
 {
     public class DoanhthuSaleChitietGroupByNguoiTao
     {
-        public IEnumerable<DoanhthuSaleChitiet> DoanhthuSaleChitiets { get; set; }
+        public IEnumerable<DoanhThuSaleChiTietAll> DoanhthuSaleChitiets { get; set; }
         public string NguoiTao { get; set; }
     }
 }

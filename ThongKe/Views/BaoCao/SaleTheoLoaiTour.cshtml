@@ -1,0 +1,236 @@
+﻿@model SaleTheoLoaiTourViewModel
+
+@{
+    ViewData["Title"] = "Theo Sự Kiện";
+    int i = 1;
+}
+
+<!-- Main content -->
+<section class="content pt-2">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title text-bold">BÁO CÁO DOANH THU THEO LOẠI TOUR</h3> <!--SU KIEN-->
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body p-2">
+
+
+            <form id="formSearch" autocomplete="off">
+                @*<div class="p-4 border rounded">*@
+
+                <div class="form-group row">
+
+                    <div class="col-md-2">
+                        Từ ngày
+                        <input value="@ViewBag.searchFromDate" name="tungay" class="form-control form-control-sm maskInput" id="txtTuNgay" />
+                    </div>
+
+                    <div class="col-md-2">
+                        Đến ngày
+                        <input value="@ViewBag.searchToDate" name="denngay" class="form-control form-control-sm maskInput" id="txtDenNgay" />
+                    </div>
+
+                    <div class="col-md-2">
+                        Chi nhánh
+                        <select name="chinhanh" class="form-control form-control-sm border-input ddlChiNhanh" id="ddlChiNhanh"
+                                asp-items="@(new SelectList(Model.ChiNhanhToReturnViewModels,"Name","Name", ViewBag.chiNhanh))">
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        Khối
+                        <select class="form-control form-control-sm" id="ddlKhoi" name="khoi"
+                                asp-items="@(new SelectList(Model.KhoiViewModels_KL, "Name", "Name", ViewBag.khoi))">
+                        </select>
+                    </div>
+@* 
+                    <div class="col-md-2">
+                        Tuyến tham quan
+                        <select name="tuyentq" class="form-control form-control-sm border-input " id="ddlTuyentq"
+                                asp-items="@(new SelectList(Model.tuyenThamQuanViewModels,"tuyentq","tuyentq", ViewBag.ttq))">
+                        </select>
+                    </div>
+ *@
+                    <div class="col-md-2">
+                        <br />
+                        <span class="btn-group btn-block">
+                            <button type="submit" id="btnSearch" class="btn btn-outline-primary btn-sm" formaction="/BaoCao/SaleTheoLoaiTour"><i class="fa fa-search"></i></button>
+                            <button type="submit" id="btnExportAll1" class="btn btn-outline-success btn-sm" formmethod="post" formaction="/BaoCao/SaleTheoLoaiTourPost"><i class="fas fa-file-export"></i></button>
+                        </span>
+                    </div>
+
+                </div>
+
+
+                @*</div>*@
+
+            </form>
+            <div style="overflow-x:auto;">
+                <table class="table mytable text-nowrap" id="listAll">
+                    <thead>
+                        <tr class="table-info">
+                            <th>#</th>
+                            <th>STT</th>
+                            <th>Tuyến TQ</th>
+                            <th>Code CN</th>                            
+                            <th>Doanh số</th>
+                            <th>Thực Thu</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.SaleTheoLoaiTours != null)
+                        {
+                            @foreach (var item in Model.SaleTheoLoaiTours)
+                            {
+                                <tr>
+                                    <td>
+
+                                        <form id="frmDetail" asp-action="SaleTheoLoaiTourChiTietToExcel">
+                                            <input type="hidden" name="tungay" id="hidTuNgay" value="@Model.TuNgay" />
+                                            <input type="hidden" name="denngay" id="hidDenNgay" value="@Model.DenNgay" />
+                                            @* <input type="hidden" name="nhanvien" id="hidNhanVien" value="@item.Nguoixuatve" /> *@
+                                            @* <input type="hidden" name="tuyentq" id="hidTuyentq" value="@item.Tuyentq" /> *@
+                                            <input type="hidden" name="khoi" id="hidKhoi" value="@Model.Khoi" />
+                                            <button type="submit" class="btn btn-outline-success btnExportDetail"><i class="fas fa-file-export"></i></button>
+
+                                        </form>
+                                    </td>
+                                    <td>@i</td>
+                                    <td>@Html.DisplayFor(m => item.Tuyentq)</td>
+                                    <td id="tdChiNhanh">@Html.DisplayFor(m => item.Chinhanh)</td>
+                                    <td>@Html.DisplayFor(m => item.Tuyentq)</td>
+                                    <td>@Html.Raw(item.Doanhso.Value.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.Thucthu.Value.ToString("N0"))</td>
+
+                                </tr>
+                                i++;
+                            }
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+@*<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-list-alt text-info"></i> Danh Sách</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+
+
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+*@
+
+
+
+@section Scripts{
+    <script>
+        khoi = $('#ddlKhoi').val();
+            loadDdlTuyentq(khoi);
+
+        //$(function () {
+        //    $("#datepicker").datepicker({
+        //        dateFormat: 'dd/mm/yy'
+        //    });
+        //});
+
+        $('#listAll').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+        });
+
+//$('#ddlTuyentq').select2();
+//$('#ddlHttc').select2();
+
+        $('#ddlKhoi').off('change').on('change', function () {
+            var khoi = "";
+
+            khoi = $('#ddlKhoi').val();
+            loadDdlTuyentq(khoi);
+        });
+
+        function loadDdlTuyentq(khoi) {
+        $('#ddlTuyentq').html('');
+        var option = '';
+
+        $.ajax({
+            url: '/BaoCao/GetAllTuyentqByKhoi',
+            type: 'GET',
+            data: {
+                khoi: khoi
+            },
+            dataType: 'json',
+            success: function (response) {
+
+                var data = JSON.parse(response.data);
+                //$('#ddlTuyentq').html('');
+
+                $.each(data, function (i, item) {
+                    option = option + '<option value="' + item.tuyentq + '">' + item.tuyentq + '</option>'; //chinhanh1
+
+                });
+
+                //for (var i = 0; i < data.length; i++) {
+                //    // set the key/property (input element) for your object
+                //    var ele = data[i];
+                //    //console.log(ele);
+                //    option = option + '<option value="' + ele + '">' + ele + '</option>'; //chinhanh1
+                //    // add the property to the object and set the value
+                //    //params[ele] = $('#' + ele).val();
+                //}
+
+                $('#ddlTuyentq').html(option);
+
+            }
+        });
+
+    }
+    </script>
+    @*<script src="~/Admin/TheoTuyentq/theoTuyentqController.js"></script>*@
+    }

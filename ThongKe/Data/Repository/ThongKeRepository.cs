@@ -28,6 +28,11 @@ namespace ThongKe.Data.Repository
 
         /////////////////// sale theo tuyen tham quan /////////////////////////////////////////
         IEnumerable<DoanhthuSaleTuyen> ListSaleTheoTuyenThamQuan(string tungay, string denngay, string tuyentq, string khoi);
+        
+        /////////////////// sale theo loai tour /////////////////////////////////////////
+        IEnumerable<SaleTheoLoaiTour> ListSaleTheoLoaiTour(string tungay, string denngay, string chinhanh, string khoi);
+        IEnumerable<SaleTheoLoaiTourChiTiet> SaleTheoLoaiTourChiTietToExcel(string tungay, string denngay,
+            string chinhanh, string tuyentq, string khoi);
 
         IEnumerable<DoanhthuSaleTuyentqChitiet> SaleTheoTuyenThamQuanChiTietToExcel(string tungay, string denngay, string nhanvien, string tuyentq, string khoi);
 
@@ -227,7 +232,52 @@ namespace ThongKe.Data.Repository
             var count = d.Count();
             return d;
         }
+        
+        ////////////////////////////////////// Sale theo loai tour //////////////////////////////////////////
 
+        public IEnumerable<SaleTheoLoaiTour> ListSaleTheoLoaiTour(string tungay, string denngay, string chinhanh, string khoi)
+        {
+            chinhanh = chinhanh ?? "";
+            var parameter = new SqlParameter[]
+              {
+                    new SqlParameter("@tungay",DateTime.Parse(tungay)),
+                    new SqlParameter("@denngay",denngay),
+                    new SqlParameter("@tuyentq",chinhanh.Trim())
+              };
+            if(khoi == "OB")
+            {
+                return _context.SaleTheoLoaiTours.FromSqlRaw("EXECUTE dbo.spThongkeSukienTheoNgayBanOB @tungay, @denngay, @chinhanh", parameter).ToList();
+            }
+            else
+            {
+                return _context.SaleTheoLoaiTours.FromSqlRaw("EXECUTE dbo.spThongkeSukienTheoNgayBanND @tungay, @denngay, @chinhanh", parameter).ToList();
+            }
+            
+        }
+
+        public IEnumerable<SaleTheoLoaiTourChiTiet> SaleTheoLoaiTourChiTietToExcel(string tungay, string denngay, 
+            string chinhanh, string tuyentq, string khoi)
+        {
+            if (tungay == null)
+                return null;
+            var parameter = new SqlParameter[]
+              {
+                    new SqlParameter("@tungay",tungay),
+                    new SqlParameter("@denngay",denngay),
+                    new SqlParameter("@nhanvien",chinhanh),
+                    new SqlParameter("@tuyentq",tuyentq)
+              };
+            if (khoi == "OB")
+            {
+                return _context.SaleTheoLoaiTourChiTiets.FromSqlRaw("EXECUTE dbo.spThongkeSukienChitietOB_NgayBan @tungay, @denngay, @chinhanh, @tuyentq", parameter).ToList();
+            }
+            else
+            {
+                return _context.SaleTheoLoaiTourChiTiets.FromSqlRaw("EXECUTE dbo.spThongkeSukienChitietND_NgayBan @tungay, @denngay, @chinhanh, @tuyentq", parameter).ToList();
+            }
+
+        }
+        
         public IEnumerable<DoanhthuSaleTuyentqChitiet> SaleTheoTuyenThamQuanChiTietToExcel(string tungay, string denngay, string nhanvien, string tuyentq, string khoi)
         {
             if (tungay == null)

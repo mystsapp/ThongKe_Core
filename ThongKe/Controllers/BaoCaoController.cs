@@ -1625,7 +1625,7 @@ namespace ThongKe.Controllers
         
         /////////////////////////////////////// Sale Theo Loai Tour ///////////////////////////////////////////////////////////////
         public async Task<IActionResult> SaleTheoLoaiTour(string tungay = null, string denngay = null,
-            string chiNhanh = null, string khoi = null)
+            string chinhanh = null, string khoi = null)
         {
 
             var user = HttpContext.Session.Get<Users>("loginUser");
@@ -1690,10 +1690,10 @@ namespace ThongKe.Controllers
 
                 ViewBag.searchFromDate = tungay;
                 ViewBag.searchToDate = denngay;
-                ViewBag.chiNhanh = chiNhanh ?? "";
+                ViewBag.chiNhanh = chinhanh ?? "";
                 ViewBag.khoi = khoi;
 
-                dtSaleTuyenVM.SaleTheoLoaiTours = _baoCaoService.ListSaleTheoLoaiTour(tungay, denngay, chiNhanh, khoi);
+                dtSaleTuyenVM.SaleTheoLoaiTours = _baoCaoService.ListSaleTheoLoaiTour(tungay, denngay, chinhanh, khoi);
                 return View(dtSaleTuyenVM);
             }
             catch
@@ -1712,15 +1712,14 @@ namespace ThongKe.Controllers
             {
                 return RedirectToAction("SaleTheoLoaiTour", new { tungay, denngay, chiNhanh, khoi });
             }
-            //try
-            //{
-            //    DateTime.Parse(tungay);
-            //    DateTime.Parse(denngay);
-            //}
-            //catch
-            //{
-            //    return RedirectToAction("SaleTheoLoaiTour");
-            //}
+
+            var d = _baoCaoService.ListSaleTheoLoaiTour(tungay, denngay, chiNhanh, khoi);
+            if(d.Count() == 0)
+            {
+                SetAlert("No sale.", "warning");
+                //return RedirectToAction(nameof(SaleTheoNgayDi));
+                return RedirectToAction("SaleTheoLoaiTour", new { tungay, denngay, chiNhanh, khoi });
+            }
 
             string fromTo = "";
             ExcelPackage ExcelApp = new ExcelPackage();
@@ -1760,8 +1759,6 @@ namespace ThongKe.Controllers
             xlSheet.Cells[5, 1, 5, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
             int dong = 5;
 
-            var d = _baoCaoService.ListSaleTheoLoaiTour(tungay, denngay, chiNhanh, khoi);
-
             //du lieu
             int iRowIndex = 6;
             int idem = 1;
@@ -1795,12 +1792,7 @@ namespace ThongKe.Controllers
                     dong++;
                 }
             }
-            else
-            {
-                SetAlert("No sale.", "warning");
-                return RedirectToAction(nameof(SaleTheoNgayDi));
-            }
-
+            
             dong++;
             //// Merger cot 4,5 ghi tổng tiền
             //setRightAligment(dong, 3, dong, 3, xlSheet);
@@ -1808,13 +1800,13 @@ namespace ThongKe.Controllers
             //xlSheet.Cells[dong, 1].Value = "Tổng tiền: ";
 
             // Sum tổng tiền
-            xlSheet.Cells[dong, 4].Formula = "SUM(D6:E" + (6 + d.Count() - 1) + ")";
-            xlSheet.Cells[dong, 5].Formula = "SUM(E6:F" + (6 + d.Count() - 1) + ")";
+            xlSheet.Cells[dong, 4].Formula = "SUM(D6:D" + (5 + d.Count()) + ")";
+            xlSheet.Cells[dong, 5].Formula = "SUM(E6:E" + (5 + d.Count()) + ")";
 
             // định dạng số
             NumberFormat(dong, 4, dong, 5, xlSheet);
 
-            setBorder(5, 1, 5 + d.Count(), 6, xlSheet);
+            setBorder(5, 1, 5 + d.Count(), 5, xlSheet);
             setFontBold(5, 1, 5, 5, 11, xlSheet);
             setFontSize(6, 1, 6 + d.Count(), 5, 11, xlSheet);
             // canh giua cot stt
@@ -1851,6 +1843,14 @@ namespace ThongKe.Controllers
         {
             try
             {
+                var d = _unitOfWork.thongKeRepository.SaleTheoLoaiTourChiTietToExcel(tungay, denngay, chinhanh, tuyentq, khoi);// Session["fullName"].ToString());
+                if (d.Count() == 0)
+                {
+                    SetAlert("No sale.", "warning");
+                    //return RedirectToAction(nameof(SaleTheoNgayDi));
+                    return RedirectToAction("SaleTheoLoaiTour", new { tungay, denngay, chinhanh, khoi });
+                }
+
                 string fromTo = "";
                 ExcelPackage ExcelApp = new ExcelPackage();
                 ExcelWorksheet xlSheet = ExcelApp.Workbook.Worksheets.Add("Report");
@@ -1897,8 +1897,7 @@ namespace ThongKe.Controllers
                 xlSheet.Cells[5, 1, 5, 10].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
 
                 int dong = 5;
-                var d = _unitOfWork.thongKeRepository.SaleTheoLoaiTourChiTietToExcel(tungay, denngay, chinhanh, tuyentq, khoi);// Session["fullName"].ToString());
-
+                
                 //du lieu
                 int iRowIndex = 6;
                 int idem = 1;
@@ -1965,7 +1964,7 @@ namespace ThongKe.Controllers
                 //xlSheet.Cells[dong, 4].Value = "Tổng tiền: ";
 
                 //// Sum tổng tiền
-                xlSheet.Cells[dong, 10].Formula = "SUM(J6:J" + (6 + d.Count() - 1) + ")";
+                xlSheet.Cells[dong, 10].Formula = "SUM(J6:J" + (5 + d.Count()) + ")";
                 //xlSheet.Cells[dong, 7].Formula = "SUM(G6:G" + (6 + d.Count() - 1) + ")";
                 //// định dạng số
                 NumberFormat(dong, 10, dong, 10, xlSheet);

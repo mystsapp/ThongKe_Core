@@ -241,8 +241,8 @@ namespace ThongKe.Data.Repository
             var parameter = new SqlParameter[]
               {
                     new SqlParameter("@tungay",DateTime.Parse(tungay)),
-                    new SqlParameter("@denngay",denngay),
-                    new SqlParameter("@tuyentq",chinhanh.Trim())
+                    new SqlParameter("@denngay",DateTime.Parse(denngay)),
+                    new SqlParameter("@chinhanh",chinhanh.Trim())
               };
             if(khoi == "OB")
             {

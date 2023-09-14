@@ -35,7 +35,7 @@ namespace ThongKe.Controllers
             {
                 TempData["AlertType"] = "alert-success";
             }
-            else if (type == "waring")
+            else if (type == "warning")
             {
                 TempData["AlertType"] = "alert-warning";
             }

@@ -99,8 +99,10 @@
                                         <form id="frmDetail" asp-action="SaleTheoLoaiTourChiTietToExcel">
                                             <input type="hidden" name="tungay" id="hidTuNgay" value="@Model.TuNgay" />
                                             <input type="hidden" name="denngay" id="hidDenNgay" value="@Model.DenNgay" />
+                                            <input type="hidden" name="chiNhanh" id="hidDenNgay" value="@ViewBag.chiNhanh" />
+                                            <input type="hidden" name="khoi" id="hidDenNgay" value="@ViewBag.khoi" />
                                             @* <input type="hidden" name="nhanvien" id="hidNhanVien" value="@item.Nguoixuatve" /> *@
-                                            @* <input type="hidden" name="tuyentq" id="hidTuyentq" value="@item.Tuyentq" /> *@
+                                            <input type="hidden" name="tuyentq" id="hidTuyentq" value="@item.Tuyentq" />
                                             <input type="hidden" name="khoi" id="hidKhoi" value="@Model.Khoi" />
                                             <button type="submit" class="btn btn-outline-success btnExportDetail"><i class="fas fa-file-export"></i></button>
 
@@ -109,7 +111,7 @@
                                     <td>@i</td>
                                     <td>@Html.DisplayFor(m => item.Tuyentq)</td>
                                     <td id="tdChiNhanh">@Html.DisplayFor(m => item.Chinhanh)</td>
-                                    <td>@Html.DisplayFor(m => item.Tuyentq)</td>
+                                    @* <td>@Html.DisplayFor(m => item.Tuyentq)</td> *@
                                     <td>@Html.Raw(item.Doanhso.Value.ToString("N0"))</td>
                                     <td>@Html.Raw(item.Thucthu.Value.ToString("N0"))</td>
 

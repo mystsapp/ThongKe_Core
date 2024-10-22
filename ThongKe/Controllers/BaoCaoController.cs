@@ -767,11 +767,12 @@ namespace ThongKe.Controllers
             xlSheet.Column(3).Width = 10;// code cn
             xlSheet.Column(4).Width = 30;// doanh so
             xlSheet.Column(5).Width = 30;// doanh thu sale
+            xlSheet.Column(6).Width = 30;// Loaitour
 
             xlSheet.Cells[2, 1].Value = "BÁO CÁO DOANH THU THEO NGÀY ĐI SALE " + khoi + " " + chinhanh;
             xlSheet.Cells[2, 1].Style.Font.SetFromFont(new Font("Times New Roman", 16, FontStyle.Bold));
-            xlSheet.Cells[2, 1, 2, 5].Merge = true;
-            setCenterAligment(2, 1, 2, 5, xlSheet);
+            xlSheet.Cells[2, 1, 2, 6].Merge = true;
+            setCenterAligment(2, 1, 2, 6, xlSheet);
             // dinh dang tu ngay den ngay
             if (tungay == denngay)
             {
@@ -784,7 +785,7 @@ namespace ThongKe.Controllers
             xlSheet.Cells[3, 1].Value = fromTo;
             xlSheet.Cells[3, 1, 3, 5].Merge = true;
             xlSheet.Cells[3, 1].Style.Font.SetFromFont(new Font("Times New Roman", 14, FontStyle.Bold));
-            setCenterAligment(3, 1, 3, 5, xlSheet);
+            setCenterAligment(3, 1, 3, 6, xlSheet);
 
             // Tạo header
             xlSheet.Cells[5, 1].Value = "STT";
@@ -793,8 +794,9 @@ namespace ThongKe.Controllers
 
             xlSheet.Cells[5, 4].Value = "Tổng tiền";
             xlSheet.Cells[5, 5].Value = "Doanh số";
+            xlSheet.Cells[5, 6].Value = "Loai tour";
 
-            xlSheet.Cells[5, 1, 5, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+            xlSheet.Cells[5, 1, 5, 6].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
 
             int dong = 5;
 
@@ -825,6 +827,10 @@ namespace ThongKe.Controllers
                     xlSheet.Cells[iRowIndex, 4].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
                     xlSheet.Cells[iRowIndex, 5].Value = vm.Thucthu;
+                    TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
+                    xlSheet.Cells[iRowIndex, 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    
+                    xlSheet.Cells[iRowIndex, 5].Value = vm.Loaitour;
                     TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 

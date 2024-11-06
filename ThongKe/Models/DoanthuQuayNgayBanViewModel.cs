@@ -12,7 +12,7 @@ namespace ThongKe.Models
         public string DenNgay { get; set; }
         public string Khoi { get; set; }
 
-        public IEnumerable<DoanThuDoanNgayDi> DoanthuQuayNgayBans { get; set; }
+        public IEnumerable<DoanthuQuayNgayBan> DoanthuQuayNgayBans { get; set; }
         public List<ChiNhanhToReturnViewModel> chiNhanhToReturnViewModels { get; set; }
         public List<KhoiViewModel> KhoiViewModels_KL { get; set; }
         public DoanthuQuayNgayBanViewModel()

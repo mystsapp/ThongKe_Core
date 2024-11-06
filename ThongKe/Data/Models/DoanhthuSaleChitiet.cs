@@ -14,5 +14,6 @@ namespace ThongKe.Data.Models
         public decimal? Doanhthu { get; set; }
         public decimal? Thucthu { get; set; }
         public string Nguoixuatve { get; set; }
+        public string LoaiTour { get; set; }
     }
 }

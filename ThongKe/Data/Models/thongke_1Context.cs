@@ -1,23 +1,19 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using ThongKe.Models;
 
 namespace ThongKe.Data.Models
 {
-    public partial class thongkeContext : DbContext
+    public partial class thongke_1Context : DbContext
     {
-        public thongkeContext()
+        public thongke_1Context()
         {
         }
 
-        public thongkeContext(DbContextOptions<thongkeContext> options)
+        public thongke_1Context(DbContextOptions<thongke_1Context> options)
             : base(options)
         {
         }
-
-        public virtual DbSet<Users> Users { get; set; }
-        public virtual DbSet<Role> Roles { get; set; }
 
         public virtual DbSet<Chinhanh> Chinhanh { get; set; }
         public virtual DbSet<Chitiettour> Chitiettour { get; set; }
@@ -31,113 +27,33 @@ namespace ThongKe.Data.Models
         public virtual DbSet<DoanhthuSaleTuyentqChitiet> DoanhthuSaleTuyentqChitiet { get; set; }
         public virtual DbSet<DoanhthuToanhethong> DoanhthuToanhethong { get; set; }
         public virtual DbSet<DoanthuQuayNgayBan> DoanthuQuayNgayBan { get; set; }
+        public virtual DbSet<KhachHuys> KhachHuys { get; set; }
+        public virtual DbSet<LoginViewModels> LoginViewModels { get; set; }
         public virtual DbSet<QuayNgayBan> QuayNgayBan { get; set; }
+        public virtual DbSet<Roles> Roles { get; set; }
+        public virtual DbSet<ThongKeDoanhThuViewModels> ThongKeDoanhThuViewModels { get; set; }
+        public virtual DbSet<ThongKeKhachViewModels> ThongKeKhachViewModels { get; set; }
         public virtual DbSet<Thongkeweb> Thongkeweb { get; set; }
         public virtual DbSet<Thongkewebchitiet> Thongkewebchitiet { get; set; }
+        public virtual DbSet<TourBySgtcodeViewModels> TourBySgtcodeViewModels { get; set; }
         public virtual DbSet<Tuyentheoquy> Tuyentheoquy { get; set; }
+        public virtual DbSet<Tuyentq> Tuyentq { get; set; }
+        public virtual DbSet<TuyentqChiTietViewModels> TuyentqChiTietViewModels { get; set; }
         public virtual DbSet<TuyentqNgayban> TuyentqNgayban { get; set; }
         public virtual DbSet<TuyentqNgaydi> TuyentqNgaydi { get; set; }
-        public virtual DbSet<TuyenThamQuanViewModel> Tuyentq { get; set; }
-        public virtual DbSet<TourBySGTCodeViewModel> TourBySGTCodeViewModels { get; set; }
-        public virtual DbSet<TuyentqChiTietViewModel> TuyentqChiTietViewModels { get; set; }
-        public virtual DbSet<KhachHuy> KhachHuys { get; set; }
-        public virtual DbSet<LoginViewModel> LoginViewModels { get; set; }
-        public virtual DbSet<ThongKeKhachViewModel> ThongKeKhachViewModels { get; set; }
-        public virtual DbSet<ThongKeDoanhThuViewModel> ThongKeDoanhThuViewModels { get; set; }
-        public virtual DbSet<TuyenTqTheoNgayBan> TuyenTqTheoNgayBans { get; set; }
-        public virtual DbSet<SaleTheoLoaiTour> SaleTheoLoaiTours { get; set; }
-        public virtual DbSet<SaleTheoLoaiTourChiTiet> SaleTheoLoaiTourChiTiets { get; set; }
-        public virtual DbSet<TuyentqChiTietNgayBanViewModel> TuyentqChiTietNgayBanViewModels { get; set; }
-        public virtual DbSet<DoanhThuSaleChiTietAll> DoanhThuSaleChiTietAlls { get; set; }
-        public virtual DbSet<DoanhthuSaleChitietNgayBan> DoanhthuSaleChitietNgayBans { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
 
-
-//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
 //        {
 //            if (!optionsBuilder.IsConfigured)
 //            {
 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-//                optionsBuilder.UseSqlServer("Server=118.68.170.128;database=thongke;Trusted_Connection=true;User Id=vanhong;Password=Hong@2019;Integrated security=false;MultipleActiveResultSets=true");
+//                optionsBuilder.UseSqlServer("Server=118.68.170.128;database=thongke_1;Trusted_Connection=true;User Id=vanhong;Password=Hong@2019;Integrated security=false;MultipleActiveResultSets=true");
 //            }
 //        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<DoanhThuSaleChiTietAll>().HasKey(ba => new { ba.Nguoixuatve, ba.Doanhthu, ba.Tenkhach });
-            modelBuilder.Entity<Users>(entity =>
-            {
-                entity.HasKey(e => e.Username);
-
-                entity.ToTable("Users");
-
-                entity.Property(e => e.Username)
-                    .HasColumnName("username")
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Chinhanh)
-                    .HasColumnName("chinhanh")
-                    .HasMaxLength(3)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Daily)
-                    .HasColumnName("daily")
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Doimatkhau).HasColumnName("doimatkhau");
-
-                entity.Property(e => e.Hoten)
-                    .HasColumnName("hoten")
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Khoi)
-                    .IsRequired()
-                    .HasColumnName("khoi")
-                    .HasMaxLength(5)
-                    .IsUnicode(false)
-                    .HasDefaultValueSql("('OB')");
-
-                entity.Property(e => e.Ngaycapnhat)
-                    .HasColumnName("ngaycapnhat")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.Ngaydoimk)
-                    .HasColumnName("ngaydoimk")
-                    .HasColumnType("date")
-                    .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.Ngaytao)
-                    .HasColumnName("ngaytao")
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.Nguoicapnhat)
-                    .HasColumnName("nguoicapnhat")
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Nguoitao)
-                    .HasColumnName("nguoitao")
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Nhom)
-                    .HasColumnName("nhom")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Password)
-                    .HasColumnName("password")
-                    .HasMaxLength(50);
-
-                //entity.Property(e => e.Role)
-                //    .HasColumnName("role")
-                //    .HasMaxLength(50)
-                //    .IsUnicode(false);
-
-                entity.Property(e => e.Trangthai)
-                    .IsRequired()
-                    .HasColumnName("trangthai")
-                    .HasDefaultValueSql("((1))");
-            });
-
             modelBuilder.Entity<Chinhanh>(entity =>
             {
                 entity.ToTable("chinhanh");
@@ -390,6 +306,8 @@ namespace ThongKe.Data.Models
                     .HasColumnName("doanhthu")
                     .HasColumnType("decimal(18, 0)");
 
+                entity.Property(e => e.LoaiTour).HasMaxLength(150);
+
                 entity.Property(e => e.Nguoixuatve)
                     .HasColumnName("nguoixuatve")
                     .HasMaxLength(50);
@@ -581,6 +499,44 @@ namespace ThongKe.Data.Models
                 entity.Property(e => e.Sokhach).HasColumnName("sokhach");
             });
 
+            modelBuilder.Entity<KhachHuys>(entity =>
+            {
+                entity.HasKey(e => e.Stt);
+
+                entity.Property(e => e.Stt).HasColumnName("stt");
+
+                entity.Property(e => e.Batdau).HasColumnName("batdau");
+
+                entity.Property(e => e.Chinhanh).HasColumnName("chinhanh");
+
+                entity.Property(e => e.Dailyhuyve).HasColumnName("dailyhuyve");
+
+                entity.Property(e => e.Giatour)
+                    .HasColumnName("giatour")
+                    .HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.Ketthuc).HasColumnName("ketthuc");
+
+                entity.Property(e => e.Ngayhuyve).HasColumnName("ngayhuyve");
+
+                entity.Property(e => e.Nguoihuyve).HasColumnName("nguoihuyve");
+
+                entity.Property(e => e.Sgtcode).HasColumnName("sgtcode");
+
+                entity.Property(e => e.Tenkhach).HasColumnName("tenkhach");
+
+                entity.Property(e => e.Tuyentq).HasColumnName("tuyentq");
+
+                entity.Property(e => e.Vetourid).HasColumnName("vetourid");
+            });
+
+            modelBuilder.Entity<LoginViewModels>(entity =>
+            {
+                entity.HasKey(e => e.Username);
+
+                entity.Property(e => e.Password).IsRequired();
+            });
+
             modelBuilder.Entity<QuayNgayBan>(entity =>
             {
                 entity.HasKey(e => e.Stt);
@@ -607,6 +563,49 @@ namespace ThongKe.Data.Models
                     .HasColumnType("decimal(18, 0)");
 
                 entity.Property(e => e.Sokhach).HasColumnName("sokhach");
+            });
+
+            modelBuilder.Entity<Roles>(entity =>
+            {
+                entity.Property(e => e.ChiNhanhQl)
+                    .HasColumnName("ChiNhanhQL")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Description).HasMaxLength(250);
+
+                entity.Property(e => e.NguoiSua)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NguoiTao)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.RoleName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<ThongKeDoanhThuViewModels>(entity =>
+            {
+                entity.HasKey(e => e.DaiLyXuatVe);
+
+                entity.Property(e => e.DoanhThuHt)
+                    .HasColumnName("DoanhThuHT")
+                    .HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.DoanhThuTt)
+                    .HasColumnName("DoanhThuTT")
+                    .HasColumnType("decimal(18, 2)");
+            });
+
+            modelBuilder.Entity<ThongKeKhachViewModels>(entity =>
+            {
+                entity.HasKey(e => e.DaiLyXuatVe);
+
+                entity.Property(e => e.SoKhachHt).HasColumnName("SoKhachHT");
+
+                entity.Property(e => e.SoKhachTt).HasColumnName("SoKhachTT");
             });
 
             modelBuilder.Entity<Thongkeweb>(entity =>
@@ -706,6 +705,21 @@ namespace ThongKe.Data.Models
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<TourBySgtcodeViewModels>(entity =>
+            {
+                entity.HasKey(e => e.Sgtcode);
+
+                entity.ToTable("TourBySGTCodeViewModels");
+
+                entity.Property(e => e.Sgtcode).HasColumnName("sgtcode");
+
+                entity.Property(e => e.Batdau).HasColumnName("batdau");
+
+                entity.Property(e => e.Ketthuc).HasColumnName("ketthuc");
+
+                entity.Property(e => e.Tuyentq).HasColumnName("tuyentq");
+            });
+
             modelBuilder.Entity<Tuyentheoquy>(entity =>
             {
                 entity.HasKey(e => e.Stt);
@@ -755,6 +769,40 @@ namespace ThongKe.Data.Models
                 entity.Property(e => e.Tuyentq)
                     .HasColumnName("tuyentq")
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Tuyentq>(entity =>
+            {
+                entity.HasKey(e => e.Tuyentq1);
+
+                entity.Property(e => e.Tuyentq1).HasColumnName("tuyentq");
+            });
+
+            modelBuilder.Entity<TuyentqChiTietViewModels>(entity =>
+            {
+                entity.HasKey(e => e.Stt);
+
+                entity.Property(e => e.Stt).HasColumnName("stt");
+
+                entity.Property(e => e.Batdau).HasColumnName("batdau");
+
+                entity.Property(e => e.Chinhanh).HasColumnName("chinhanh");
+
+                entity.Property(e => e.Dailyxuatve).HasColumnName("dailyxuatve");
+
+                entity.Property(e => e.Doanhthu)
+                    .HasColumnName("doanhthu")
+                    .HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.Ketthuc).HasColumnName("ketthuc");
+
+                entity.Property(e => e.Sgtcode).HasColumnName("sgtcode");
+
+                entity.Property(e => e.Sk).HasColumnName("sk");
+
+                entity.Property(e => e.Tuyentq).HasColumnName("tuyentq");
+
+                entity.Property(e => e.Vetourid).HasColumnName("vetourid");
             });
 
             modelBuilder.Entity<TuyentqNgayban>(entity =>
@@ -824,6 +872,81 @@ namespace ThongKe.Data.Models
                 entity.Property(e => e.Tuyentq)
                     .HasColumnName("tuyentq")
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Users>(entity =>
+            {
+                entity.HasKey(e => e.Username);
+
+                entity.Property(e => e.Username)
+                    .HasColumnName("username")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Chinhanh)
+                    .HasColumnName("chinhanh")
+                    .HasMaxLength(3)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DaiLyQl).HasColumnName("DaiLyQL");
+
+                entity.Property(e => e.Daily)
+                    .HasColumnName("daily")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Doimatkhau).HasColumnName("doimatkhau");
+
+                entity.Property(e => e.Hoten)
+                    .IsRequired()
+                    .HasColumnName("hoten")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Khoi)
+                    .IsRequired()
+                    .HasColumnName("khoi")
+                    .HasMaxLength(5)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('OB')");
+
+                entity.Property(e => e.Ngaycapnhat)
+                    .HasColumnName("ngaycapnhat")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Ngaydoimk)
+                    .HasColumnName("ngaydoimk")
+                    .HasColumnType("date")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Ngaytao)
+                    .HasColumnName("ngaytao")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Nguoicapnhat)
+                    .HasColumnName("nguoicapnhat")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Nguoitao)
+                    .HasColumnName("nguoitao")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Nhom)
+                    .HasColumnName("nhom")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasColumnName("password")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.PhongBanId).HasMaxLength(50);
+
+                entity.Property(e => e.PhongBanQl).HasColumnName("PhongBanQL");
+
+                entity.Property(e => e.Trangthai)
+                    .IsRequired()
+                    .HasColumnName("trangthai")
+                    .HasDefaultValueSql("((1))");
             });
 
             OnModelCreatingPartial(modelBuilder);

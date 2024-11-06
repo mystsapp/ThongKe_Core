@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace ThongKe.Data.Models
+namespace ThongKe.Models
 {
-    public partial class DoanhthuSaleTuyentqChitiet
+    public class DoanhthuSaleChitietNgayBan
     {
+        [Key]
         public long Stt { get; set; }
         public string Chinhanh { get; set; }
         public string Sgtcode { get; set; }
@@ -14,6 +14,5 @@ namespace ThongKe.Data.Models
         public decimal? Doanhthu { get; set; }
         public decimal? Thucthu { get; set; }
         public string Nguoixuatve { get; set; }
-        public string Loaitour { get; set; }
     }
 }

@@ -10,20 +10,20 @@ using ThongKe.Models;
 
 namespace ThongKe.Data.Repository
 {
-    public interface IThongKeRepository : IRepository<DoanThuDoanNgayDi>
+    public interface IThongKeRepository : IRepository<DoanthuQuayNgayBan>
     {
         ////////////////// sale theo QUAY //////////////////////////////
         IEnumerable<DoanhthuSaleQuay> listSaleTheoQuay(string tungay, string denngay, string chinhanh, string khoi);
         IEnumerable<DoanhThuSaleChiTietAll> SaleTheoQuayChiTietToExcel_All(string tungay, string denngay, string nhanvien, string chinhanh, string khoi);
 
-        IEnumerable<DoanhthuSaleChitiet> SaleTheoQuayChiTietToExcel(string tungay, string denngay, string nhanvien, string chinhanh, string khoi);
+        IEnumerable<DoanhthuSaleChitietNgayBan> SaleTheoQuayChiTietToExcel(string tungay, string denngay, string nhanvien, string chinhanh, string khoi);
 
         ////////////////// sale theo ngay di //////////////////////////////
         IEnumerable<DoanhthuSaleQuay> ListSaleTheoNgayDi(string tungay, string denngay, string chinhanh, string khoi);
 
-        IEnumerable<DoanhthuSaleQuay> SaleTheoNgayDiPost(string tungay, string denngay, string chinhanh, string khoi);
+        List<DoanhthuSaleQuay> SaleTheoNgayDiPost(string tungay, string denngay, string chinhanh, string khoi);
 
-        IEnumerable<DoanhthuSaleChitiet> SaleTheoNgayDiChiTietToExcel(string tungay, string denngay, string nhanvien, string chinhanh, string khoi);
+        List<DoanhthuSaleChitiet> SaleTheoNgayDiChiTietToExcel(string tungay, string denngay, string nhanvien, string chinhanh, string khoi);
         IEnumerable<DoanhThuSaleChiTietAll> SaleTheoNgayDiChiTietToExcel_All(string tungay, string denngay, string nhanvien, string chinhanh, string khoi);
 
         /////////////////// sale theo tuyen tham quan /////////////////////////////////////////
@@ -37,13 +37,13 @@ namespace ThongKe.Data.Repository
         IEnumerable<DoanhthuSaleTuyentqChitiet> SaleTheoTuyenThamQuanChiTietToExcel(string tungay, string denngay, string nhanvien, string tuyentq, string khoi);
 
         /////////////////// Quay theo ngay ban /////////////////////////////////////////////////
-        IEnumerable<DoanThuDoanNgayDi> listQuayTheoNgayBan(string tungay, string denngay, string chinhanh, string khoi);
+        IEnumerable<DoanthuQuayNgayBan> listQuayTheoNgayBan(string tungay, string denngay, string chinhanh, string khoi);
 
         IEnumerable<DoanhthuQuayChitiet> QuayTheoNgayBanChiTietToExcel(string tungay, string denngay, string quay, string chinhanh, string khoi);
         
 
         /////////////////// Quay theo ngay di /////////////////////////////////////////////////
-        IEnumerable<DoanThuDoanNgayDi> listQuayTheoNgayDi(string tungay, string denngay, string chinhanh, string khoi);
+        IEnumerable<DoanthuQuayNgayBan> listQuayTheoNgayDi(string tungay, string denngay, string chinhanh, string khoi);
 
         IEnumerable<DoanhthuQuayChitiet> QuayTheoNgayDiChiTietToExcel(string tungay, string denngay, string quay, string chinhanh, string khoi);
 
@@ -90,7 +90,7 @@ namespace ThongKe.Data.Repository
         List<TourBySGTCodeViewModel> getTourbySgtcode(string sgtcode, string khoi);
     }
 
-    public class ThongKeRepository : Repository<DoanThuDoanNgayDi>, IThongKeRepository
+    public class ThongKeRepository : Repository<DoanthuQuayNgayBan>, IThongKeRepository
     {
         public ThongKeRepository(thongkeContext context) : base(context)
         {
@@ -113,7 +113,7 @@ namespace ThongKe.Data.Repository
             return d;
         }
 
-        public IEnumerable<DoanhthuSaleChitiet> SaleTheoQuayChiTietToExcel(string tungay, string denngay, string nhanvien, string chinhanh, string khoi)
+        public IEnumerable<DoanhthuSaleChitietNgayBan> SaleTheoQuayChiTietToExcel(string tungay, string denngay, string nhanvien, string chinhanh, string khoi)
         {
             if (tungay == null)
                 return null;
@@ -125,7 +125,7 @@ namespace ThongKe.Data.Repository
                     new SqlParameter("@chinhanh",chinhanh),
                     new SqlParameter("@khoi",khoi)
               };
-            var d = _context.DoanhthuSaleChitiet.FromSqlRaw("EXECUTE dbo.spDoanhThuSaleChitietNgayban @tungay, @denngay, @nhanvien, @chinhanh, @khoi", parameter).ToList();
+            var d = _context.DoanhthuSaleChitietNgayBans.FromSqlRaw("EXECUTE dbo.spDoanhThuSaleChitietNgayban @tungay, @denngay, @nhanvien, @chinhanh, @khoi", parameter).ToList();
             var count = d.Count();
             return d;
         }
@@ -160,11 +160,11 @@ namespace ThongKe.Data.Repository
                     new SqlParameter("@khoi",khoi)
               };
             var d = _context.DoanhthuSaleQuay.FromSqlRaw("EXECUTE dbo.spBaocaoDoanhThuSaleTheoNgayDi @tungay, @denngay, @chinhanh, @khoi", parameter).ToList();
-            var count = d.Count();
+            //var count = d.Count();
             return d;
         }
 
-        public IEnumerable<DoanhthuSaleQuay> SaleTheoNgayDiPost(string tungay, string denngay, string chinhanh, string khoi)
+        public List<DoanhthuSaleQuay> SaleTheoNgayDiPost(string tungay, string denngay, string chinhanh, string khoi)
         {
             if (tungay == null)
                 return null;
@@ -176,11 +176,11 @@ namespace ThongKe.Data.Repository
                     new SqlParameter("@khoi",khoi)
               };
             var d = _context.DoanhthuSaleQuay.FromSqlRaw("EXECUTE dbo.spBaocaoDoanhThuSaleTheoNgayDi @tungay, @denngay, @chinhanh, @khoi", parameter).ToList();
-            var count = d.Count();
+            //var count = d.Count();
             return d;
         }
 
-        public IEnumerable<DoanhthuSaleChitiet> SaleTheoNgayDiChiTietToExcel(string tungay, string denngay, string nhanvien, string chinhanh, string khoi)
+        public List<DoanhthuSaleChitiet> SaleTheoNgayDiChiTietToExcel(string tungay, string denngay, string nhanvien, string chinhanh, string khoi)
         {
             if (tungay == null)
                 return null;
@@ -193,7 +193,7 @@ namespace ThongKe.Data.Repository
                     new SqlParameter("@khoi",khoi)
               };
             var d = _context.DoanhthuSaleChitiet.FromSqlRaw("EXECUTE dbo.spDoanhThuSaleChitietNgaydi @tungay, @denngay, @nhanvien, @chinhanh, @khoi", parameter).ToList();
-            var count = d.Count();
+            //var count = d.Count();
             return d;
         }
         
@@ -209,8 +209,8 @@ namespace ThongKe.Data.Repository
                     new SqlParameter("@chinhanh",chinhanh),
                     new SqlParameter("@khoi",khoi)
               };
-            var d = _context.DoanhThuSaleChiTietAlls.FromSqlRaw("EXECUTE dbo.spDoanhThuSaleChitietNgaydi @tungay, @denngay, @nhanvien, @chinhanh, @khoi", parameter).ToList();
-            var count = d.Count();
+            var d = _context.DoanhThuSaleChiTietAlls.FromSqlRaw("EXECUTE dbo.spDoanhThuSaleChitietNgaydi @tungay, @denngay, @nhanvien, @chinhanh, @khoi", parameter);
+            //var count = d.Count();
             return d;
         }
 
@@ -228,8 +228,8 @@ namespace ThongKe.Data.Repository
                     new SqlParameter("@tuyentq",tuyentq.Trim()),
                     new SqlParameter("@khoi",khoi)
               };
-            var d = _context.DoanhthuSaleTuyen.FromSqlRaw("EXECUTE dbo.spBaocaoDoanhThuSaleTheoTuyen @tungay, @denngay, @tuyentq, @khoi", parameter).ToList();
-            var count = d.Count();
+            var d = _context.DoanhthuSaleTuyen.FromSqlRaw("EXECUTE dbo.spBaocaoDoanhThuSaleTheoTuyen @tungay, @denngay, @tuyentq, @khoi", parameter);
+            //var count = d.Count();
             return d;
         }
         
@@ -296,11 +296,11 @@ namespace ThongKe.Data.Repository
         }
 
         ////////////////////////////////////// Quay Theo Ngay Ban //////////////////////////////////////////
-        public IEnumerable<DoanThuDoanNgayDi> listQuayTheoNgayBan(string tungay, string denngay, string chinhanh, string khoi)
+        public IEnumerable<DoanthuQuayNgayBan> listQuayTheoNgayBan(string tungay, string denngay, string chinhanh, string khoi)
         {
             if (tungay == null)
                 return null;
-            IEnumerable<DoanThuDoanNgayDi> d = null;
+            IEnumerable<DoanthuQuayNgayBan> d = null;
             var parameter = new SqlParameter[]
               {
                     new SqlParameter("@tungay",DateTime.Parse(tungay)),
@@ -338,7 +338,7 @@ namespace ThongKe.Data.Repository
         
         ////////////////////////////////////// Quay Theo Ngay di //////////////////////////////////////////
         ///
-        public IEnumerable<DoanThuDoanNgayDi> listQuayTheoNgayDi(string tungay, string denngay, string chinhanh, string khoi)
+        public IEnumerable<DoanthuQuayNgayBan> listQuayTheoNgayDi(string tungay, string denngay, string chinhanh, string khoi)
         {
             if (tungay == null)
                 return null;

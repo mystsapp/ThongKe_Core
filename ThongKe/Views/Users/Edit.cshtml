@@ -2,11 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit user";
-}
-
-
-
-<!-- Content Header (Page header) -->
+}>
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -23,10 +19,8 @@
         </div>
     </div><!-- /.container-fluid -->
 </section>
-
 <!-- Main content -->
 <section class="content">
-
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
@@ -42,20 +36,13 @@
             </div>
         </div>
         <div class="card-body">
-
-
             <form method="post" autocomplete="off" enctype="multipart/form-data">
-                @*<div class="p-4 border rounded">*@
-
                     <input type="hidden" asp-for="OldPass" value="@Model.User.Password" />
                     <input type="hidden" asp-for="User.Password" />
                     <input type="hidden" asp-for="User.Username" />
                     <input type="hidden" asp-for="User.Nhom" />
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-
                     <div class="form-group row">
-
                         <div class="col-2">
                             <label asp-for="User.Username"></label><span class="text-danger">(*)</span>
                         </div>
@@ -73,7 +60,6 @@
                         </div>
 
                     </div>
-
                     <div class="form-group row">
 
                         <div class="col-2">
@@ -95,9 +81,6 @@
                         </div>
 
                     </div>
-
-
-
                     <div class="form-group row">
 
                         <div class="col-2">
@@ -147,31 +130,28 @@
                     <div class="form-group row">
 
                         <div class="col-2">
-                            <label asp-for="User.PhongBanQL"></label> (IB)
+                            <label asp-for="User.PhongBanQl"></label> (IB)
                         </div>
                         <div class="col-4">
-                            <input type="hidden" asp-for="User.PhongBanQL" id="hidDdlPhongBanQL" />
+                            <input type="hidden" asp-for="User.PhongBanQl" id="hidDdlPhongBanQL" />
                             <select class="phongBans select2-hidden-accessible" multiple="" data-placeholder="Chọn phòng ban" style="width: 100%;" data-select2-id="24" tabindex="-1" aria-hidden="true"
                                     asp-items="@(new SelectList(Model.PhongBans, "Maphong", "Maphong"))" id="ddlPhongBanQL">
                             </select>
-                            <span class="text-danger" asp-validation-for="User.PhongBanQL"></span>
+                            <span class="text-danger" asp-validation-for="User.PhongBanQl"></span>
                         </div>
 
                         <div class="col-2">
-                            <label asp-for="User.DaiLyQL"></label> (ND, OB)
+                            <label asp-for="User.DaiLyQl"></label> (ND, OB)
                         </div>
                         <div class="col-4">
-                            <input type="hidden" asp-for="User.DaiLyQL" id="hidDdlDaiLyQL" />
+                            <input type="hidden" asp-for="User.DaiLyQl" id="hidDdlDaiLyQL" />
                             <select class="daiLyQL select2-hidden-accessible" multiple="" data-placeholder="Chọn đại lý" style="width: 100%;" data-select2-id="23" tabindex="-1" aria-hidden="true"
                                     asp-items="@(new SelectList(Model.Dmdailies, "Id", "Daily"))" id="ddlDaiLyQL">
                             </select>
-                            <span class="text-danger" asp-validation-for="User.DaiLyQL"></span>
+                            <span class="text-danger" asp-validation-for="User.DaiLyQl"></span>
                         </div>
-
                     </div>
-
                     <div class="form-group row">
-
                         <div class="col-2">
                             <label asp-for="User.PhongBanId"></label><span class="text-danger  text-bold">(**)</span>
                         </div>
@@ -180,8 +160,7 @@
                                     asp-items="@(new SelectList(Model.PhongBans, "Maphong", "Tenphong"))" id="ddlPhongBanId">
                             </select>
                             <span class="text-danger" asp-validation-for="User.PhongBanId"></span>
-                        </div>
-                        
+                        </div>                        
                         <div class="col-2">
                             <label asp-for="User.Nhom"></label><span class="text-danger  text-bold">(**)</span>
                         </div>
@@ -189,32 +168,19 @@
                             <input class="form-control" asp-for="User.Nhom" readonly/>
                             <span class="text-danger" asp-validation-for="User.PhongBanId"></span>
                         </div>
-
                     </div>
-
                     <div class="form-group ">
                         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
                         <a class="btn btn-success" asp-action="Index"><i class="fas fa-backward"></i></a>
                     </div>
-
-                @*</div>*@
             </form>
-
-
         </div>
-        <!-- /.card-body -->
-
     </div>
-    <!-- /.card -->
-
 </section>
-<!-- /.content -->
 @section Scripts{
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
-
     }
-
     <script>
         $(document).ready(function() {
             OnOffPhongBanQL();

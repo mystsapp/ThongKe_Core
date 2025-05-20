@@ -13,5 +13,6 @@ namespace ThongKe.Data.Models
         public string Chinhanh { get; set; }
         public decimal? Doanhso { get; set; }
         public decimal? Thucthu { get; set; }
+        public int Chiemcho { get; set; }
     }
 }

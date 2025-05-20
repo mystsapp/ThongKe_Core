@@ -3750,11 +3750,12 @@ namespace ThongKe.Controllers
             xlSheet.Column(3).Width = 10;// Code chinhanh
             xlSheet.Column(4).Width = 30;// Tổng tiền
             xlSheet.Column(5).Width = 30;// Doanh số
+            xlSheet.Column(6).Width = 15;// Số chổ
 
             xlSheet.Cells[2, 1].Value = "BÁO CÁO DOANH THU TUYẾN TQ THEO NGÀY BÁN KHỐI " + khoi + " " + chinhanh;
             xlSheet.Cells[2, 1].Style.Font.SetFromFont(new Font("Times New Roman", 16, FontStyle.Bold));
-            xlSheet.Cells[2, 1, 2, 5].Merge = true;
-            setCenterAligment(2, 1, 2, 5, xlSheet);
+            xlSheet.Cells[2, 1, 2, 6].Merge = true;
+            setCenterAligment(2, 1, 2, 6, xlSheet);
             // dinh dang tu ngay den ngay
             if (tungay == denngay)
             {
@@ -3765,9 +3766,9 @@ namespace ThongKe.Controllers
                 fromTo = "Từ ngày: " + tungay + " đến ngày: " + denngay;
             }
             xlSheet.Cells[3, 1].Value = fromTo;
-            xlSheet.Cells[3, 1, 3, 5].Merge = true;
+            xlSheet.Cells[3, 1, 3, 6].Merge = true;
             xlSheet.Cells[3, 1].Style.Font.SetFromFont(new Font("Times New Roman", 14, FontStyle.Bold));
-            setCenterAligment(3, 1, 3, 5, xlSheet);
+            setCenterAligment(3, 1, 3, 6, xlSheet);
 
             // Tạo header
             xlSheet.Cells[5, 1].Value = "STT";
@@ -3776,8 +3777,9 @@ namespace ThongKe.Controllers
             xlSheet.Cells[5, 3].Value = "Code chinhanh";
             xlSheet.Cells[5, 4].Value = "Tổng tiền";
             xlSheet.Cells[5, 5].Value = "Doanh số";
+            xlSheet.Cells[5, 6].Value = "Số chổ";
 
-            xlSheet.Cells[5, 1, 5, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+            xlSheet.Cells[5, 1, 5, 6].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
 
             // do du lieu tu table
             int dong = 5;
@@ -3809,8 +3811,12 @@ namespace ThongKe.Controllers
                     xlSheet.Cells[iRowIndex, 4].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
                     xlSheet.Cells[iRowIndex, 5].Value = vm.Thucthu;
-                    TrSetCellBorder(xlSheet, iRowIndex, 4, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
+                    TrSetCellBorder(xlSheet, iRowIndex, 5, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
                     xlSheet.Cells[iRowIndex, 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    
+                    xlSheet.Cells[iRowIndex, 6].Value = vm.Chiemcho;
+                    TrSetCellBorder(xlSheet, iRowIndex, 6, ExcelBorderStyle.Dotted, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 10, FontStyle.Regular);
+                    xlSheet.Cells[iRowIndex, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
                     iRowIndex += 1;
                     idem += 1;
@@ -3832,18 +3838,18 @@ namespace ThongKe.Controllers
             xlSheet.Cells[dong, 4].Formula = "SUM(D6:D" + (6 + d.Count() - 1) + ")"; // tong tien
             xlSheet.Cells[dong, 5].Formula = "SUM(E6:E" + (6 + d.Count() - 1) + ")"; // doanh so
 
-            setBorder(5, 1, 5 + d.Count(), 5, xlSheet);
-            setFontBold(5, 1, 5, 5, 11, xlSheet);
-            setFontSize(6, 1, 6 + d.Count(), 5, 11, xlSheet);
+            setBorder(5, 1, 5 + d.Count(), 6, xlSheet);
+            setFontBold(5, 1, 5, 6, 11, xlSheet);
+            setFontSize(6, 1, 6 + d.Count(), 6, 11, xlSheet);
             // canh giua cot stt
             setCenterAligment(6, 1, 6 + d.Count(), 1, xlSheet);
             // canh giua code chinhanh
             setCenterAligment(6, 3, 6 + d.Count(), 3, xlSheet);
-            NumberFormat(6, 4, 6 + d.Count(), 5, xlSheet);
+            NumberFormat(6, 4, 6 + d.Count(), 6, xlSheet);
             // định dạng số cot tong cong
             NumberFormat(dong, 4, dong, 5, xlSheet);
-            setBorder(dong, 4, dong, 5, xlSheet);
-            setFontBold(dong, 4, dong, 5, 12, xlSheet);
+            setBorder(dong, 4, dong, 6, xlSheet);
+            setFontBold(dong, 4, dong, 6, 12, xlSheet);
 
             //xlSheet.View.FreezePanes(6, 20);
 
@@ -5831,7 +5837,7 @@ namespace ThongKe.Controllers
             xlSheet.Column(16).Width = 15;//  NGÀY TẠO
 
 
-            xlSheet.Cells[2, 1].Value = "BÁO CÁO DOANH THU ONLINE THEO NGÀY DI ";
+            xlSheet.Cells[2, 1].Value = "BÁO CÁO DOANH THU ONLINE THEO NGÀY ĐI ";
             xlSheet.Cells[2, 1].Style.Font.SetFromFont(new Font("Times New Roman", 16, FontStyle.Bold));
             xlSheet.Cells[2, 1, 2, 12].Merge = true;
             setCenterAligment(2, 1, 2, 12, xlSheet);

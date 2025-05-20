@@ -74,6 +74,7 @@
                             <th>Code CN</th>
                             <th>Tổng tiền</th>
                             <th>Doanh số</th>
+                            <th>Số chổ</th>
 
                         </tr>
                     </thead>
@@ -100,6 +101,7 @@
                                     <td id="tdChiNhanh">@Html.DisplayFor(m => item.Chinhanh)</td>
                                     <td>@Html.Raw(item.Doanhso.Value.ToString("N0"))</td>
                                     <td>@Html.Raw(item.Thucthu.Value.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.Chiemcho.ToString("N0"))</td>
 
                                 </tr>
                             }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using ThongKe.Data.Interfaces;
@@ -479,14 +480,15 @@ namespace ThongKe.Data.Repository
             if (tungay == null)
                 return null;
             IEnumerable<TuyentqChiTietNgayBanViewModel> d = null;
-            
-            var parameter = new SqlParameter[]
-              {
-                    new SqlParameter("@tungay", Convert.ToDateTime(tungay)),
-                    new SqlParameter("@denngay", Convert.ToDateTime(denngay)),
-                    new SqlParameter("@chinhanh",chinhanh),
-                    new SqlParameter("@tuyentq",tuyentq)
-              };
+            var dateTimeTungay = DateTime.ParseExact(tungay, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+var dateTimeDenngay = DateTime.ParseExact(denngay, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+var parameter = new SqlParameter[]
+{
+    new SqlParameter("@tungay", dateTimeTungay.ToString("yyyy-MM-dd")),
+    new SqlParameter("@denngay", dateTimeDenngay.ToString("yyyy-MM-dd")),
+    new SqlParameter("@chinhanh", chinhanh),
+    new SqlParameter("@tuyentq", tuyentq)
+};
             try
             {
                 if (khoi == "OB")

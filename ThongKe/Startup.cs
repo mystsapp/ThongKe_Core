@@ -17,6 +17,7 @@ using ThongKe.Data.Models_KDIB;
 using ThongKe.Data.Models_KDND;
 using ThongKe.Data.Models_KDOB;
 using ThongKe.Data.Models_QLTour;
+using ThongKe.Data.Models_Tourleob;
 using ThongKe.Data.Repository;
 using ThongKe.Data.Repository.KDIB;
 using ThongKe.Data.Repository.KDOB;
@@ -42,6 +43,7 @@ namespace ThongKe
             services.AddDbContext<qlkdtrnoidiaContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultKDND"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<SaleDoanIBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultKDIB"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<qltourContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultQLTour"))/*.EnableSensitiveDataLogging()*/);
+            services.AddDbContext<tourleobContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TourleobConnection"))/*.EnableSensitiveDataLogging()*/);
 
             // thongke
             services.AddTransient<IUserRepository, UserRepository>();

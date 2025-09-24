@@ -1,0 +1,157 @@
+﻿@model KhachVaVetourDTO
+@using Microsoft.AspNetCore.Http
+@using ThongKe.Data.DTOs.Tourleob
+@using ThongKe.Helps;
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "GetKhachvetours";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var user = HttpContextAccessor.HttpContext.Session.Get<Users>("loginUser");
+}
+
+<section class="content pt-2">
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title text-bold"> BÁO CÁO DOANH THU KHÁCH LẺ OB</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body p-2">
+            <form id="formSearch" autocomplete="off">
+                <div class="container" style="padding-bottom:5px; background-color: aliceblue;" id="search">
+                    <div class="col-md-12">
+                        <div class="row" style="padding-top: 10px;">
+                            <div class="col-md-2">
+                                Từ ngày
+                                <input value="@ViewBag.TuNgay" name="tungay" class="form-control form-control-sm maskInput" id="txtTuNgay" />
+                            </div>
+                            <div class="col-md-2">
+                                Đến ngày
+                                <input value="@ViewBag.DenNgay" name="denngay" class="form-control form-control-sm maskInput" id="txtDenNgay" />
+                            </div>
+                            <div class="col-md-2">
+                                Chi nhánh
+                                <select name="chiNhanh" class="form-control form-control-sm border-input ddlChiNhanh" id="ddlChiNhanh"
+                                        asp-items="@(new SelectList(ViewBag.ChiNhanhs, ViewBag.chiNhanh))">
+                                </select>
+                            </div>
+
+                            <div class="col-md-2">
+                                Đại lý xuất vé
+                                <select class="form-control form-control-sm" id="ddlQuay" name="quay"
+                                        asp-items="@(new SelectList(ViewBag.dmdailys, "Daily", "Daily", ViewBag.daily))">
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <br />
+                                <span class="btn-group btn-block">
+                                    <button title="Tìm kiếm" type="submit" id="btnSearch" class="btn btn-outline-primary btn-sm" formaction="/Tourleob/GetKhachvetours"><i class="fa fa-search"></i></button>
+                                    <button title="Xuất tất cả" type="submit" id="btnExportAll1" class="btn btn-outline-success btn-sm" formmethod="post" formaction="/Tourleob/GetKhachvetoursExcel"><i class="fas fa-file-export"></i></button>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </form>
+            <br />
+            <div style="overflow-x:auto;">
+                <table class="table mytable text-nowrap" id="listAll">
+                    <thead>
+                        <tr class="table-info">
+                            <th>#</th>
+                            <th>Sgtcode</th>
+                            <th>Tuyến tq</th>
+                            <th>Ngày xuất vé</th>
+                            <th>Người xuất vé</th>
+                            <th>Đại lý xuất vé</th>
+                            <th>Số khách</th>
+                            <th>Doanh số</th>
+                            <th>Stt vé</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.VetourDTOs.Count > 0)
+                        {
+                            @foreach (var item in Model.VetourDTOs)
+                            {
+                                <tr>
+                                    <td>
+
+                                        @* <form id="frmDetail" asp-action="GetKhachvetoursExcelChitiet">
+                                            <input type="hidden" name="tungay" id="hidTuNgay" value="@Model.TuNgay" />
+                                            <input type="hidden" name="denngay" id="hidDenNgay" value="@Model.DenNgay" />
+                                            <input type="hidden" name="nhanvien" id="hidNhanVien" value="@item.Nguoixuatve" />
+                                            <input type="hidden" name="chinhanh" id="hidChiNhanh" value="@item.Chinhanh" />
+                                            <input type="hidden" name="khoi" id="hidKhoi" value="@Model.Khoi" />
+                                            <button type="submit" class="btn btn-outline-success btnExportDetail"><i class="fas fa-file-export"></i></button>
+
+                                        </form> *@
+                                    </td>
+                                    <td>@Html.DisplayFor(m => item.Sgtcode)</td>
+                                    <td>@Html.DisplayFor(m => item.TuyenTq)</td>
+                                    <td>@Html.Raw(item.Ngayxuatve.Value.ToString("dd/MM/yyyy"))</td>
+                                    <td>@Html.DisplayFor(m => item.Nguoixuatve)</td>
+                                    <td>@Html.DisplayFor(m => item.Dailyxuatve)</td>
+                                    <td>@Html.Raw(Model.KhachvetourDTOs.Where(x => x.Idvetour == item.Id).Count().ToString("N0"))</td>
+                                    <td>@Html.Raw((item.Giatour + item.Dichvukhac - item.Giamgia).ToString("N0"))</td>
+                                    <td>@Html.DisplayFor(m => item.VetourId)</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+@section Scripts {
+    <script>
+
+        $('#listAll').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+        });
+    </script>
+}
+  <style>
+           /*#listDoanhSoTheoSale {
+                                                                                                               box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                                                                                                           }*/
+
+           #search {
+               box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+           }
+
+           /*.tblTour .cursor-pointer:hover {
+                                                                                                               background-color: #3E5C9A;
+                                                                                                               cursor: pointer;
+                                                                                                           }*/
+
+           /*.hoverClass {
+                                                                                                               background-color: #3E5C9A;
+                                                                                                           }*/
+</style>

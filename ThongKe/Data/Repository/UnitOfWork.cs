@@ -7,10 +7,12 @@ using ThongKe.Data.Models_KDIB;
 using ThongKe.Data.Models_KDND;
 using ThongKe.Data.Models_KDOB;
 using ThongKe.Data.Models_QLTour;
+using ThongKe.Data.Models_Tourleob;
 using ThongKe.Data.Repository.KDIB;
 using ThongKe.Data.Repository.KDND;
 using ThongKe.Data.Repository.KDOB;
 using ThongKe.Data.Repository.QLTour;
+using ThongKe.Data.Repository.Tourleob;
 
 namespace ThongKe.Data.Repository
 {
@@ -41,6 +43,9 @@ namespace ThongKe.Data.Repository
         // KDND
         ITourKDOBRepository tourKDOBRepository { get; }
 
+        // tourleob
+        ITourleobRepository tourleobRepository { get; }
+
         Task<int> Complete();
     }
 
@@ -51,16 +56,17 @@ namespace ThongKe.Data.Repository
         private readonly SaleDoanIBContext _saleDoanIBContext;
         private readonly qlkdtrnoidiaContext _qlkdtrnoidiaContext;
         private readonly qlkdtrContext _qlkdtrContext;
+        private readonly tourleobContext _tourleobContext;
 
         public UnitOfWork(thongkeContext context, qltourContext qltourContext, SaleDoanIBContext saleDoanIBContext,
-            qlkdtrnoidiaContext qlkdtrnoidiaContext, qlkdtrContext qlkdtrContext)
+            qlkdtrnoidiaContext qlkdtrnoidiaContext, qlkdtrContext qlkdtrContext, tourleobContext tourleobContext)
         {
             _context = context;
             _qltourContext = qltourContext;
             _saleDoanIBContext = saleDoanIBContext;
             _qlkdtrnoidiaContext = qlkdtrnoidiaContext;
             _qlkdtrContext = qlkdtrContext;
-
+            _tourleobContext = tourleobContext;
             userRepository = new UserRepository(_context);
             chiNhanhRepository = new ChiNhanhRepository(_context);
             dMDaiLyRepository = new DMDaiLyRepository(_context);
@@ -84,6 +90,9 @@ namespace ThongKe.Data.Repository
 
             // KDOB
             tourKDOBRepository = new TourKDOBRepository(_qlkdtrContext);
+
+            // tourleob
+            tourleobRepository = new TourleobRepository(_tourleobContext);
         }
 
         public IUserRepository userRepository { get; }
@@ -115,6 +124,8 @@ namespace ThongKe.Data.Repository
         public IUserIBRepository userIBRepository {get;}
 
         public ITourKDOBRepository tourKDOBRepository { get; }
+
+        public ITourleobRepository tourleobRepository { get; }
 
         public async Task<int> Complete()
         {

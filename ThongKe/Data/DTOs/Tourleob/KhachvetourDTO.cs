@@ -46,9 +46,16 @@ namespace ThongKe.Data.DTOs.Tourleob
         public string Logfile { get; set; }
         public bool Huytour { get; set; }
         public string Codegiamgia { get; set; }
+        /// <summary>
+        /// id of the parent Vetour
+        /// </summary>
         public decimal? Idvetour { get; set; }
         // bonus properties
         public string TuyenTq { get; set; }
         public string Chudetour { get; set; }
+        /// <summary>
+        /// chinhanh xuat ve
+        /// </summary>
+        public string Chinhanh { get; set; } 
     }
 }

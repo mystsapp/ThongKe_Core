@@ -59,6 +59,13 @@ namespace ThongKe.Data.DTOs.Tourleob
         // bonus properties
         public string TuyenTq { get; set; }
         public string Chudetour { get; set; }
+        /// <summary>
+        /// chinhanh xuat ve
+        /// </summary>
         public string Chinhanh { get; set; }
+        public DateTime Batdau { get; set; }
+        public DateTime Ketthuc { get; set; }
+        public int SoKhach { get; set; }
+        public decimal DoanhThu { get; set; }
     }
 }

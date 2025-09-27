@@ -186,7 +186,7 @@ namespace ThongKe.Data.Repository.Tourleob
             //});
             //khachVaVetourDTO.KhachvetourDTOs = khachvetours;
             #endregion
-            khachVaVetourDTO.VetourDTOs = vetours;
+            khachVaVetourDTO.VetourDTOs = vetours.OrderByDescending(x => x.Batdau).ToList();
             return khachVaVetourDTO;
         }
         public List<Dmdaily> GetDmdailys(List<string> chinhanhs)
